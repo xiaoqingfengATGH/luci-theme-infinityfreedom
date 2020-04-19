@@ -42,3 +42,14 @@ Enable the Theme
 
   * Go to System -> System -> Language and Style
   * Choose 'infinityfreedom' in the Design selectbox
+
+ScreenShots
+----------------
+![](/screenshots/000.Login.jpg)
+![](/screenshots/001.Overview.jpg)
+![](/screenshots/002.Firewall.jpg)
+![](/screenshots/003.KernelLog.jpg)
+![](/screenshots/100.System.jpg)
+![](/screenshots/101.SoftwarePkgs.jpg)
+![](/screenshots/207_upnp.jpg)
+![](/screenshots/304.Samba.jpg)
