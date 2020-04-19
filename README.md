@@ -1,5 +1,23 @@
 # luci-theme-infinityfreedom
 
+[1]: https://img.shields.io/badge/license-Apache2-brightgreen.svg
+[2]: /LICENSE
+[3]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
+[4]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/pulls
+[5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
+[6]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues/new
+[7]: https://img.shields.io/badge/release-v1.0-blue.svg?
+[8]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/releases
+[9]: https://img.shields.io/github/downloads/xiaoqingfengATGH/luci-theme-infinityfreedom/total
+[10]: https://img.shields.io/badge/Contact-telegram-blue
+[11]: https://t.me/t_homelede
+[![license][1]][2]
+[![PRs Welcome][3]][4]
+[![Issue Welcome][5]][6]
+[![Release Version][7]][8]
+[![Release Count][9]][8]
+[![Contact Me][10]][11]
+
 InfinityFreedom is a clean HTML5 theme for LuCI. It is based on luci-theme-material.
 
 Copyright 2020 Richard Yu <xiaoqingfengatgm@gmail.com>
