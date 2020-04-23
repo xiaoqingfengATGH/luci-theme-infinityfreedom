@@ -138,7 +138,7 @@ html, body {
     font-family: Roboto,'Hiragino Sans GB W6','Microsoft Yahei' !important;
     font-size:10pt;
     line-height: 150%;
-    color:##f8f9fe;
+    color:#ffffff;
     /*min-width: 960px;*/
 	background: url('../images/main_bg.jpg');
 	background-repeat:no-repeat;
@@ -181,7 +181,7 @@ input,
     height: 34px;
     line-height: normal;
     font-size: 1.2rem;
-    font-family: 'Courier New', 'Hiragino Sans GB W6','Microsoft Yahei', sans-serif;
+    font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei', sans-serif;
     background-color: rgba(7,34,62,.4);
     transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
     -webkit-transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
@@ -385,7 +385,7 @@ header > .container > .brand {
     cursor: default;
 	background-color: rgba(7,34,62,.8);
     display:block;
-    width:17rem;
+    width:18rem;
     padding-right: 10px;
     height:60px;
     text-align:center;
@@ -845,19 +845,17 @@ table,
     border-spacing: 0;
     border-collapse: collapse;
     width: 100%;
-    /*border: 1px solid #eee;*/
-	/* TODO */
-	border-bottom: 1px solid #eee;
+    border: 1px solid #07223e;
 }
 
 table > tbody > tr > td, table > tbody > tr > th, table > tfoot > tr > td, table > tfoot > tr > th, table > thead > tr > td, table > thead > tr > th,
 .table > .tbody > .tr > .td, .table > .tbody > .tr > .th, .table > .tfoot > .tr > .td, .table > .tfoot > .tr > .th, .table > .thead > .tr > .td, .table > .thead > .tr > .th {
 font-size: 1rem;
 	white-space: nowrap;
-	color: #ffffff;/*#525f7f;*/
+	color: #ffffff;
 	padding: 6px;
 	line-height: 1.5;
-	border-top: 1px solid #eee;
+	border-top: 1px solid rgb(7, 34, 62,.75);
 	white-space: nowrap;
 }
 
@@ -873,12 +871,12 @@ fieldset > table > tbody > tr:nth-of-type(odd),
 fieldset > .table > .tbody > .tr:nth-of-type(odd) {
     background-color: #2c435b;
 }
-/*
-fieldset > table > tr:nth-of-type(odd),
-fieldset > .table > .tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
+
+fieldset > table > tbody > tr:nth-of-type(even),
+fieldset > .table > .tbody > .tr:nth-of-type(even) {
+    background-color: rgb(44, 67, 91,.85);
 }
-*/
+
 /* fix progress bar */
 #swaptotal > div,
 #swapfree > div,
@@ -957,10 +955,19 @@ td > table > tbody > tr > td,
     -webkit-appearance: none;
 }
 
+.cbi-button-link {
+	border: 1px solid #81c784;
+	color:#81c784;
+}
+.cbi-button-link:hover{
+	background-color:#81c784;
+	color:#ffffff;
+}
+
 .cbi-button:hover,
 .cbi-button:focus,
 .cbi-button:active {
-    color: #ff8534;
+    /*color: #ff8534;*/
     outline: 0;
     text-decoration: none;
 }
@@ -1164,7 +1171,7 @@ form.inline + form.inline,
 
 .cbi-value-description {
     font-size: small;
-    opacity: 0.6;
+    opacity: 0.7;
     padding: 0.5rem 0 0 0;
 }
 
@@ -1184,12 +1191,20 @@ form.inline + form.inline,
     vertical-align: middle;
     display: inline-block;
     width: 100%;
-    /*border-top:1px dashed #e4eaec;*/
 }
 
 .cbi-section-table-descr > .cbi-section-table-cell,
 .cbi-section-table-titles > .cbi-section-table-cell {
     border: none;
+}
+
+.cbi-rowstyle-1 {
+    background-color: transparent;
+}
+
+.cbi-rowstyle-1 .cbi-button-up,
+.cbi-rowstyle-1 .cbi-button-down{
+    background-color: #9876AA!important;
 }
 
 .cbi-rowstyle-2 {
@@ -1198,7 +1213,7 @@ form.inline + form.inline,
 
 .cbi-rowstyle-2 .cbi-button-up,
 .cbi-rowstyle-2 .cbi-button-down{
-    background-color: #843484 !important;
+    background-color: #9876AA!important;
 }
 
 .cbi-section-table .cbi-section-table-titles .cbi-section-table-cell {
@@ -1426,7 +1441,8 @@ form.inline + form.inline,
     border-bottom: 1px solid #ff8534;
     padding: 0.5rem 1rem;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
-    background: #fff;
+	border: 1px solid #07223e;
+	background-color: rgba(7,34,62,.5);
 }
 
 td > .ifacebadge,
@@ -1483,16 +1499,15 @@ td > .ifacebadge,
 /*textarea*/
 
 .cbi-input-textarea {
-    color: #76838f;
+    color: #9876AA;
     padding: 6px 10px;
     margin: 0;
-    line-height: normal;
-    font-size: 10pt;
-    font-family : 'Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
+    line-height: 120%;
+    font-size: 1.2rem;
+    font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
     border: 1px solid #e4eaec;
-    color: #ffffff;
     border-radius: 0;
-    background-color: rgba(7,34,62,.5);
+    background-color: #2B2B2B;/*rgba(7,34,62,.5)*/;
     transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
     -webkit-transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
     outline-style: none;
@@ -1507,14 +1522,15 @@ td > .ifacebadge,
     width: 100%;
     min-height: 15rem;
     padding: 1rem;
-    font-size: small;
-    color: #ffffff;
+    font-size: 1.2rem;
+	line-height:120%;
+    color: #A9B7C6;
     margin-bottom: 20px;
     border-radius: 0;
-    background-color: rgba(7,34,62,.5);
+    background-color: rgba(7,34,62,.75);/*rgba(53,53,53,.9)*/
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
     border: none;
-	font-family : 'Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
+	font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
 	/* For FireFox */
 	scrollbar-color: rgba(50,50,50,.3) rgba(50,50,50,.1);
 	scrollbar-width: thin;
@@ -1606,8 +1622,8 @@ td > .ifacebadge,
 }
 
 .ifacebox {
-    border: 1px solid #e4eaec;
-    background-color: #f9f9f9;
+    border: 1px solid #07223e;
+	background-color: rgba(7,34,62,.5);
     display: inline-flex;
     flex-direction: column;
     line-height: 1.2em;
@@ -1699,7 +1715,7 @@ td > .ifacebadge,
 
 div.cbi-value var, td.cbi-value-field var, .td.cbi-value-field var {
     font-style: italic;
-    color: #0069D6;
+    color: #FFC66D;
 }
 
 small {
@@ -2322,4 +2338,15 @@ body.lang_pl.node-main-login .cbi-value-title {
     .cbi-value-field .cbi-dropdown {
         min-width: 25rem;
     }
+}
+
+@media screen and (min-width: 2561px), screen and (min-height:1441px) {
+    html, body {
+		font-size:12pt;
+		line-height: 200%;
+		background: url('../images/main_bg_5k.jpg');
+		background-repeat:no-repeat;
+		background-attachment:fixed;
+		background-position:center;
+	}
 }
