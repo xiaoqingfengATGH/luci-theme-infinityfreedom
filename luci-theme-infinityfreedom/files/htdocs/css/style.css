@@ -1032,6 +1032,7 @@ form.inline + form.inline,
 .cbi-button-find,
 .cbi-input-reload,
 .cbi-button-reload {
+	margin-top:-3px;
     color: #fff !important;
     background-color: #81c784 !important;
     border-color: #81c784 !important;
