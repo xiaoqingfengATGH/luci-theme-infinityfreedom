@@ -961,6 +961,17 @@ td > table > tbody > tr > td,
     -webkit-appearance: none;
 }
 
+.cbi-button-fieldadd {
+	border: 1px solid #64b5f6;
+	color:#64b5f6;
+	margin-top:-3px;
+}
+
+.cbi-button-fieldadd:hover {
+	background: #64b5f6;
+    color: #fff;
+}
+
 .cbi-button-link {
 	border: 1px solid #81c784;
 	color:#81c784;
