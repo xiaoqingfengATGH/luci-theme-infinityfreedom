@@ -150,8 +150,9 @@ html, body {
 	background-repeat:no-repeat;
     background-attachment:fixed;
     background-position:center;
-	/* For FireFox */
-	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
+	/* For FireFox window */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,1);
+	scrollbar-width: thin;
 }
 
 body div {
@@ -344,8 +345,8 @@ footer > a {
 	box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15);
 	overflow-x: auto;
 	position: fixed;
-	/*
-	scrollbar-color: rgba(50,50,50,.3) rgba(50,50,50,.1);*/
+	/* For firefox */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
 	scrollbar-width: thin;
 }
 
@@ -447,7 +448,7 @@ header > .container > .brand {
 }
 
 .error {
-    color: red;
+    color: #d92323;
 }
 
 .alert-message > h4 {
@@ -815,6 +816,7 @@ fieldset {
     margin-bottom: 1.25rem;
     position: relative;
 	/* For Firefox */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
 	scrollbar-width: thin;
 }
 
@@ -1532,7 +1534,7 @@ td > .ifacebadge,
     vertical-align: baseline;
     border-radius: 3px;
 	/* For FireFox */
-	scrollbar-color: rgba(50,50,50,.3) rgba(50,50,50,.1);
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
 	scrollbar-width: thin;
 }
 
@@ -1545,12 +1547,12 @@ td > .ifacebadge,
     color: #A9B7C6;
     margin-bottom: 20px;
     border-radius: 0;
-    background-color: rgba(7,34,62,.75);/*rgba(53,53,53,.9)*/
+    background-color: rgba(7,34,62,.75);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
     border: none;
 	font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
 	/* For FireFox */
-	scrollbar-color: rgba(50,50,50,.3) rgba(50,50,50,.1);
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
 	scrollbar-width: thin;
 }
 
@@ -1959,9 +1961,23 @@ header > .container > .pull-right > * {
 }
 
 .node-system-packages > .main .cbi-value > pre {
-    background-color: #eee;
-    padding: 0.5rem;
     overflow: auto;
+	padding: 1rem;
+    font-size: 1.2rem;
+	line-height:120%;
+    color: #A9B7C6;
+    margin-bottom: 20px;
+    border-radius: 0;
+    background-color: rgba(7,34,62,.75);/*rgba(53,53,53,.9)*/
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
+    border: none;
+	font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
+	/* For FireFox */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
+	scrollbar-width: thin;
+}
+.node-system-packages > .main .cbi-value > pre.error {
+	color: #d92323;
 }
 
 .cbi-tabmenu + .cbi-section {
