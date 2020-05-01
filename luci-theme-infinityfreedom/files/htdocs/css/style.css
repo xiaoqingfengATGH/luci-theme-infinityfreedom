@@ -448,7 +448,6 @@ header > .container > .brand {
     min-width: inherit;
     overflow: auto;
     border-radius: 0;
-    background-color: #FFF;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
 }
 
@@ -1941,6 +1940,7 @@ header > .container > .pull-right > * {
 .node-system-reboot > .main > .main-right h3 {
 	font-size:1.2rem;
 	color:#ffffff;
+	background-color: rgba(7,34,62,.4);
 }
 
 /* fix Services  Network Shares*/
