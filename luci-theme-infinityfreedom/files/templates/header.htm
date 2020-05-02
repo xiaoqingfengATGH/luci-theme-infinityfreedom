@@ -245,8 +245,7 @@
         },
         success : function() {
 			var brandContainer = $("header > .container > .brand");
-			brandContainer.css("background", "url(" + brandurl + ") 50% 50%/cover no-repeat rgba(7,34,62,.8)");
-			brandContainer.css("background-size", "171px 50px");
+			brandContainer.addClass("brandWithBackground");
 			var brand = $("body > header > div > a.brand");
 			brand.html('');
         }
