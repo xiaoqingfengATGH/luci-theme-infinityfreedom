@@ -326,7 +326,7 @@ footer > a {
 	position: absolute;
 	z-index: 200;
 	left: 50%;
-	top: 50%;
+	top: calc(50vh - 9rem);
 	font-size: 1.2rem;
 	text-align: center;
 	width: 300px;
@@ -350,7 +350,6 @@ footer > a {
 	height: auto;
 	font-size: 1rem;
 	display: block;
-	top: 80%;
 	background: 0 0;
 }
 
