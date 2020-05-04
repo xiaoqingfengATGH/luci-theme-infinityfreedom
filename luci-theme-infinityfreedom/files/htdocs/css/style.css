@@ -1241,7 +1241,6 @@ form.inline + form.inline,
 
 .cbi-rowstyle-1 .cbi-button-up,
 .cbi-rowstyle-1 .cbi-button-down{
-    background-color: #9876AA!important;
 }
 
 .cbi-rowstyle-2 {
@@ -1766,6 +1765,7 @@ small {
     min-width: 0;
     padding: 0.2rem 0.3rem;
     font-size: 10pt;
+	background-color: #9876AA;
 }
 
 .cbi-optionals {
