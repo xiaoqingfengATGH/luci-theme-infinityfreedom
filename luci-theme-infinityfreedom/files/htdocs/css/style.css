@@ -151,6 +151,9 @@ html {
 	font-size:10pt;
 	margin: 0px;
     padding: 0px;
+	/* For FireFox window */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,1);
+	scrollbar-width: thin;
 }
 
 body {
@@ -165,9 +168,6 @@ body {
     background-attachment:fixed;
     background-position:center;
 	background-color:#07223e;
-	/* For FireFox window */
-	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,1);
-	scrollbar-width: thin;
 }
 
 body div {
@@ -2044,6 +2044,38 @@ body.lang_pl.node-main-login .cbi-value-title {
     width: 12rem;
 }
 
+/* Fix Style For Apps */
+/* For luci-app-accesscontrol */
+div#cbi-webrestriction.cbi-map .cbi-value.cbi-value-last div.cbi-value-field font.webrestriction_status {
+	display: block;
+	padding-top:6px;
+}
+/* For luci-app-control-weburl */
+fieldset#cbi-weburl-basic.cbi-section div.cbi-value-field font.weburl_status {
+	display: block;
+	padding-top:6px;
+}
+
+/* For luci-app-control-timewol */
+div#cbi-timewol.cbi-map .cbi-value.cbi-value-last div.cbi-value-field font.timewol_status {
+	display: block;
+	padding-top:6px;
+}
+/* For luci-app-kodexplorer */
+div#cbi-kodexplorer.cbi-map div#_nginx_status.cbi-value-field font {
+	display: block;
+	padding-top:6px;
+}
+div#cbi-kodexplorer.cbi-map div#_php_status.cbi-value-field font {
+	display: block;
+	padding-top:6px;
+}
+
+/* For luci-app-aria2 */
+div#cbi-aria2.cbi-map fieldset.cbi-section div.cbi-section-descr input#use_websocket {
+	vertical-align: middle;
+}
+
 @media screen and (max-width: 1600px) {
     .main-left {
         /*width: calc(0% + 15rem);*/
@@ -2401,8 +2433,10 @@ body.lang_pl.node-main-login .cbi-value-title {
 }
 
 @media screen and (min-width: 2561px), screen and (min-height:1441px) {
-    html, body {
+    html {
 		font-size:12pt;
+	} 
+	body {
 		line-height: 200%;
 		background: url('../images/main_bg_5k.jpg');
 		background-repeat:no-repeat;
