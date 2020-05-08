@@ -39,6 +39,7 @@
   background: rgba(238,238,238,.5);
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);*/
 }
+
 ::-webkit-scrollbar-thumb:window-inactive {
   background: #eee;
 }
@@ -70,24 +71,15 @@ body::-webkit-scrollbar-thumb {
 }
 
 @font-face {
-    font-family: 'icomoon';
-    src: url('../fonts/font.eot');
-    src: url('../fonts/font.eot') format('embedded-opentype'),
-    url('../fonts/font.ttf') format('truetype'),
-    url('../fonts/font.woff') format('woff'),
-    url('../fonts/font.svg') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-@font-face {
-    font-family: "advancedtomato";
-    src:url("../fonts/advancedtomato.eot");
-    src:url("../fonts/advancedtomato.eot?#iefix") format("embedded-opentype"),
-        url("../fonts/advancedtomato.woff") format("woff"),
-        url("../fonts/advancedtomato.ttf") format("truetype"),
-        url("../fonts/advancedtomato.svg#advancedtomato") format("svg");
-    font-weight: normal;
-    font-style: normal;
+  font-family: 'icomoon';
+  src:  url('../fonts/icomoon.eot?p86j8');
+  src:  url('../fonts/icomoon.eot?p86j8#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?p86j8') format('truetype'),
+    url('../fonts/icomoon.woff?p86j8') format('woff'),
+    url('../fonts/icomoon.svg?p86j8#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 .table { display: table; }
@@ -300,7 +292,7 @@ footer > a {
     font-size: 2.5rem;
 }
 .main > .loading > span > .loading-img:before {
-    content: "\e603";
+    content: "\e981";
 	color: #ff8534;
 }
 
@@ -528,23 +520,6 @@ header > .container > .brand {
 	padding: 0;
 }
 
-.main > .main-left > .nav > .slide > a[data-title="Status"]:before {
-    content: "\e026";
-    display: inline-block;
-    top: -1px;
-    left:-10px;
-    position: relative;
-    vertical-align: middle;
-    display: inline-block;
-    font-family: "advancedtomato" !important;
-    font-style: normal !important;
-    font-weight: normal !important;
-    font-variant: normal !important;
-    text-transform: none !important;
-    speak: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-}
 .main > .main-left > .nav > .slide > a:before {
     display: inline-block;
     top: -1px;
@@ -552,7 +527,7 @@ header > .container > .brand {
     position: relative;
     vertical-align: middle;
     display: inline-block;
-    font-family: "advancedtomato" !important;
+    font-family: "icomoon" !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -560,58 +535,87 @@ header > .container > .brand {
     speak: none;
     line-height: 1;
     -webkit-font-smoothing: antialiased;
+	border-radius: 50%;
+	background-color:transparent;
 }
 
-
 .main > .main-left > .nav > .slide > a[data-title="Status"]:before {
-    content: "\e026";
-	color: #5e72e4!important;
-	border-radius: 50%; 
+    content: "\e900";
+	color: #1DA4F6 !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="System"]:before {
-    content: "\e01c";
-color: #FF00FF!important;
-}
-
-.main > .main-left > .nav > .slide > a[data-title="Network"]:before {
-    content: "\e00e";
-color: #8965e0!important;
-}
-.main > .main-left > .nav > .slide > a[data-title="VPN"]:before {
-    content: "\e029";
- color: #5F9EA0!important;
+    content: "\e994";
+	color: #C04DEF !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Services"]:before {
-    content: "\e01b";
- color: #11cdef!important;
+    content: "\e94b";
+    color: #FAC536 !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="NAS"]:before {
-    content: "\e00b";
-   color: #F1C40F!important;
+    content: "\e9c5";
+   color: #39EA49 !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Control"]:before {
-    content: "\e024";
-  color: 	#3CB371!important;
+    content: "\e953";
+	color:#F25056 !important;
 }
+
+.main > .main-left > .nav > .slide > a[data-title="dns"]:before {
+    content: "\e9a5";
+	color: #FF9800!important;
+}
+
+.main > .main-left > .nav > .slide > a[data-title="VPN"]:before {
+    content: "\e9af";
+	color: #1DA4F6 !important;
+}
+
+.main > .main-left > .nav > .slide > a[data-title="Network"]:before {
+    content: "\e9bc";
+	color: #C04DEF !important;
+}
+
+.main > .main-left > .nav > .slide > a[data-title="Bandwidth Monitor"]:before {
+    content: "\e9ae";
+	color: #FAC536 !important;
+}
+
 .main > .main-left > .nav > .slide > a[data-title="Statistics"]:before {
-    content: "\e023";
-  color: #1E90FF!important;
+    content: "\e99b";
+	color: #39EA49 !important;
 }
 .main > .main-left > .nav > .slide > a[data-title="QOS"]:before {
-    content: "\e00a";
+    content: "\e99d";
     color: #f3a4b5!important;
 }
 .main > .main-left > .nav > .slide > a[data-title="Docker"]:before {
     content: "\e025";
     color: #66CC00!important;
 }
-.main > .main-left > .nav > .slide > a[data-title="Bandwidth Monitor"]:before {
-    content: "\e00f";
-color: #2dce89!important;
+
+.main > .main-left > .nav > li > a[data-title="Logout"]:before {
+    content: "\ea14";
+	color: #ffffff !important;
+	display: inline-block;
+    top: -1px;
+    left:-10px;
+    position: relative;
+    vertical-align: middle;
+    display: inline-block;
+    font-family: "icomoon" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+	border-radius: 50%;
+	background-color:transparent;
 }
 
 .main > .main-left > .nav > li > a[data-title="Logout"] {
@@ -621,46 +625,16 @@ color: #2dce89!important;
 .main > .main-left > .nav > li > a[data-title="Logout"]:hover {
     color: #ff8534;
 }
-.main > .main-left > .nav > li > a[data-title="Logout"]:before {
-    content: "\e005";
-    display: inline-block;
-    top: -1px;
-    left:-10px;
-    position: relative;
-    vertical-align: middle;
-    display: inline-block;
-    font-family: "advancedtomato" !important;
-    font-style: normal !important;
-    font-weight: normal !important;
-    font-variant: normal !important;
-    text-transform: none !important;
-    speak: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-	color: #9400D3!important;
-}
 
 .main > .main-left > .nav > li > a[data-title="Reboot"] {
     padding-left:36px;
     line-height:40px;
 }
+
 .main > .main-left > .nav > li > a[data-title="Reboot"]:before {
-    content: "\e004";
-    display: inline-block;
-    top: -1px;
-    left:-10px;
-    position: relative;
-    vertical-align: middle;
-    display: inline-block;
-    font-family: "advancedtomato" !important;
-    font-style: normal !important;
-    font-weight: normal !important;
-    font-variant: normal !important;
-    text-transform: none !important;
-    speak: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
+    content: "\ea14";
 }
+
 .main > .main-left > .nav > .slide > ul {
     display: none;
     list-style:dotted;
@@ -701,12 +675,15 @@ color: #2dce89!important;
     position: absolute;
     display: block;
     width: 1px;
-    border-left: 1px dashed white;
     z-index: 1;
 }
 
+div.main div.main-left ul.nav li.slide a {
+	/* remove dashed line in firefox */
+	outline: none;
+}
+
 .main > .main-left > .nav > .slide > .slide-menu > .active {
-   
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > li > a {
@@ -728,27 +705,22 @@ color: #2dce89!important;
     position: absolute;
     display: block;
     width: 15px;
-    border-bottom: 1px dashed white;
+    /*border-bottom: 1px dashed white;*/
     z-index: 1;
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > .active > a {
- /* border-left: #ffffff 15px solid; */
   color: #ff8534;
 
 
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > li:hover {
-       /* border-left: #ffffff 3px solid; */
 	color: #ff8534;
-	/*background: #3366CC;*/
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > .active:hover {
-   /* border-left: #ffffff 3px solid; */
 	color: #ff8534;
-	/*background-color: #003366;*/
 	cursor: hand;
 }
 
@@ -773,7 +745,6 @@ h2 {
 	font-size: 1.5rem;
 	padding: 0.5rem;
 	font-weight: bold;
-	/* border-bottom: 1px solid #eee; */
 }
 
 h3 {
