@@ -71,7 +71,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 @font-face {
-  font-family: 'icomoon';
+  font-family: 'HomeLedeIcomoon';
   src:  url('../fonts/icomoon.eot?p86j8');
   src:  url('../fonts/icomoon.eot?p86j8#iefix') format('embedded-opentype'),
     url('../fonts/icomoon.ttf?p86j8') format('truetype'),
@@ -80,6 +80,17 @@ body::-webkit-scrollbar-thumb {
   font-weight: normal;
   font-style: normal;
   font-display: block;
+}
+
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/font.eot');
+    src: url('../fonts/font.eot') format('embedded-opentype'),
+    url('../fonts/font.ttf') format('truetype'),
+    url('../fonts/font.woff') format('woff'),
+    url('../fonts/font.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 .table { display: table; }
@@ -292,6 +303,7 @@ footer > a {
     font-size: 2.5rem;
 }
 .main > .loading > span > .loading-img:before {
+	font-family: 'HomeLedeIcomoon' !important;
     content: "\e981";
 	color: #ff8534;
 }
@@ -527,7 +539,7 @@ header > .container > .brand {
     position: relative;
     vertical-align: middle;
     display: inline-block;
-    font-family: "icomoon" !important;
+    font-family: "HomeLedeIcomoon" !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -550,7 +562,7 @@ header > .container > .brand {
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Services"]:before {
-    content: "\e94b";
+    content: "\e904";
     color: #FAC536 !important;
 }
 
@@ -580,7 +592,7 @@ header > .container > .brand {
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Bandwidth Monitor"]:before {
-    content: "\e9ae";
+    content: "\e9a6";
 	color: #FAC536 !important;
 }
 
@@ -606,7 +618,7 @@ header > .container > .brand {
     position: relative;
     vertical-align: middle;
     display: inline-block;
-    font-family: "icomoon" !important;
+    font-family: "HomeLedeIcomoon" !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -1174,6 +1186,7 @@ form.inline + form.inline,
 }
 
 .cbi-value-helpicon:before {
+	font-family: 'HomeLedeIcomoon' !important;
     content: "\ea09";
 }
 
