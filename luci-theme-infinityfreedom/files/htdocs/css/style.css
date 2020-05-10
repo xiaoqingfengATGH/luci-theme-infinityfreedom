@@ -93,6 +93,10 @@ body::-webkit-scrollbar-thumb {
     font-style: normal;
 }
 
+div#maincontent div.container table.table tbody#tableBody{
+	background-color:rgba(7,34,62,.4);
+}
+
 .table { display: table; }
 .tr { display: table-row; }
 .thead { display: table-header-group; }
@@ -104,8 +108,7 @@ body::-webkit-scrollbar-thumb {
     display: table-cell;
     padding: 12px;
     line-height: 1.42857143;
-    border-top: 1px dashed #EEE;
-
+    border-top: 1px solid rgba(7,34,62,.4);
     white-space: nowrap;
 }
 
@@ -115,6 +118,14 @@ body::-webkit-scrollbar-thumb {
 
 .table[width="33%"], .th[width="33%"], .td[width="33%"] { width: 33%; }
 .table[width="100%"], .th[width="100%"], .td[width="100%"] { width: 100%; }
+
+tr:nth-of-type(2n+1){
+	background-color:#2c435b;
+}
+
+tr:nth-of-type(2n){
+	background-color:rgb(44, 67, 91,.85);
+}
 
 .cbi-button-up,
 .cbi-button-down,
@@ -2058,6 +2069,12 @@ div#cbi-kodexplorer.cbi-map div#_php_status.cbi-value-field font {
 /* For luci-app-aria2 */
 div#cbi-aria2.cbi-map fieldset.cbi-section div.cbi-section-descr input#use_websocket {
 	vertical-align: middle;
+}
+
+/* For luci-app-ipsec-vpnserver-manyusers */
+div#cbi-ipsec.cbi-map .cbi-value div.cbi-value-field font.ipsec-server_status {
+	display: block;
+	padding-top:6px;
 }
 
 @media screen and (max-width: 1600px) {
