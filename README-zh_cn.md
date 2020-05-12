@@ -1,5 +1,5 @@
 # luci-theme-infinityfreedom
-[ 中文说明 ](/README-zh_cn.md)
+[ English Version Click Here ](/README.md)
 
 [1]: https://img.shields.io/badge/license-Apache2-brightgreen.svg
 [2]: /LICENSE
@@ -19,37 +19,43 @@
 [![Release Count][9]][8]
 [![Contact Me][10]][11]
 
-InfinityFreedom is a clean HTML5 theme for LuCI. It is based on luci-theme-material.
+InfinityFreedom 是一款基于luci-theme-material构建的，使用HTML5、CSS3编写的Luci主题。
 
 Copyright 2020 Richard Yu <xiaoqingfengatgm@gmail.com>
 
-This theme is specially designed for HomeLede (based on OpenWrt) firmware, and can also be used for other versions of OpenWrt. It is currently compatible with Luci18, and other versions of Luci are planned to be developed after this version is stable.
+这个主题是为HomeLede（基于OpenWrt，专门为家庭使用场景设计的固件）专门设计的，也可以用于OpenWrt其他版本，目前兼容Luci18，Luci其他版本计划在此版本稳定后开发。
 
-For information on HomeLede firmware please see:
+如需了解HomeLede固件请见：
 https://github.com/xiaoqingfengATGH/HomeLede
 
-### Adding InfinityFreedom to your own LEDE/OpenWRT Build
+### 将 InfinityFreedom 主题添加至 LEDE/OpenWRT 源码的方法。
 
-Edit your feeds.conf.default and add the following to it:
+编辑源码文件夹根目录feeds.conf.default并加入如下内容:
 
     # luci-theme-infinityfreedom
     src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 
-Update your build environment and install the package:
+更新feeds，并安装主题：
 
     $ scripts/feeds update infinityfreedom
     $ scripts/feeds install luci-theme-infinityfreedom
+
+打开配置菜单：
+
     $ make menuconfig
 
-Go to LuCI -> Themes, select luci-theme-infinityfreedom, exit, save and build as usual.
+找到 LuCI -> Themes, 选择 luci-theme-infinityfreedom, 保存后退出，编译固件。 
 
-Enable the Theme
+主题默认会自动启用，如果没有启动可以手动开启。
+
+手动开启主题
 ----------------
 
-  * Go to System -> System -> Language and Style
-  * Choose 'infinityfreedom' in the Design selectbox
+  * 系统 -> 系统 -> 语言和界面
+  * 主题处选择 'infinityfreedom'，右下角“保存&应用”
+  * 按F5刷新浏览器
 
-ScreenShots
+屏幕截图
 ----------------
 ![](/screenshots/000.Login.jpg)
 ![](/screenshots/001.Overview.jpg)
