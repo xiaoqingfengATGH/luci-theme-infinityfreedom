@@ -616,7 +616,7 @@ header > .container > .brand {
     color: #f3a4b5!important;
 }
 .main > .main-left > .nav > .slide > a[data-title="Docker"]:before {
-    content: "\e025";
+    content: "\e901";
     color: #66CC00!important;
 }
 
@@ -2074,6 +2074,22 @@ div#cbi-aria2.cbi-map fieldset.cbi-section div.cbi-section-descr input#use_webso
 div#cbi-ipsec.cbi-map .cbi-value div.cbi-value-field font.ipsec-server_status {
 	display: block;
 	padding-top:6px;
+}
+
+/* For luci-app-dockerman */
+div#cbi-dockerman.cbi-map div.pure-g.status
+{
+	margin: 1rem 0rem 1rem 0rem;
+	padding: 0 1rem;
+	background-color: rgba(7,34,62,.4);
+}
+div#cbi-dockerman.cbi-map div.pure-g.status div.pure-u-1-4
+{
+	background-color: rgba(7,34,62,.5);
+}
+div#cbi-dockerman.cbi-map div.pure-g.status div.pure-u-1-4 div.block.pure-g div.pure-u-2-5 div.img-con svg
+{
+	fill: white;
 }
 
 @media screen and (max-width: 1600px) {
