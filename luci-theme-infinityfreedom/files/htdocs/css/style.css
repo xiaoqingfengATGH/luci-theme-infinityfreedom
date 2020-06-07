@@ -2092,6 +2092,26 @@ div#cbi-dockerman.cbi-map div.pure-g.status div.pure-u-1-4 div.block.pure-g div.
 	fill: white;
 }
 
+/* For DDNS */
+textarea.ddns_logview
+{
+	border: 1px solid #e4eaec;
+	width: 100%;
+    min-height: 15rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+	line-height:120%;
+    color: #A9B7C6;
+    margin-bottom: 20px;
+    border-radius: 0;
+    background-color: rgba(7,34,62,.75);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
+	font-family : 'Consolas','Courier New', 'Hiragino Sans GB W6','Microsoft Yahei';
+	/* For FireFox */
+	scrollbar-color: rgba(238,238,238,.5) rgba(50,50,50,.3);
+	scrollbar-width: thin;
+}
+
 @media screen and (max-width: 1600px) {
     .main-left {
         /*width: calc(0% + 15rem);*/
