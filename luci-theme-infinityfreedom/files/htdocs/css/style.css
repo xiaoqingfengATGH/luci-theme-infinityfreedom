@@ -2076,6 +2076,12 @@ div#cbi-ipsec.cbi-map .cbi-value div.cbi-value-field font.ipsec-server_status {
 	padding-top:6px;
 }
 
+/* For luci-app-strongswanInDocker */
+div#cbi-strongswanInDocker.cbi-map .cbi-value div.cbi-value-field font.ipsec-server_status {
+	display: block;
+	padding-top:6px;
+}
+
 /* For luci-app-dockerman */
 div#cbi-dockerman.cbi-map div.pure-g.status
 {
