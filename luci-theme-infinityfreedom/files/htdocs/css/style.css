@@ -2141,6 +2141,12 @@ textarea.ddns_logview
 	scrollbar-width: thin;
 }
 
+/* For luci-app-passwall */
+#_passwall_status_fieldset > div > div:nth-child(10) > div > div.pure-u-1-5 > div > img
+{
+	filter:invert(100%);
+}
+
 @media screen and (max-width: 1600px) {
     .main-left {
         /*width: calc(0% + 15rem);*/
