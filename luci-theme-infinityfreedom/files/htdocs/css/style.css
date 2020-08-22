@@ -2146,6 +2146,16 @@ textarea.ddns_logview
 {
 	filter:invert(100%);
 }
+div#cbi-passwall.cbi-map fieldset > fieldset > div > div > div  label
+{
+	padding: 7px 10px;
+}
+
+div#cbi-passwall.cbi-map fieldset > fieldset > div > div > div  label input.cbi-input-checkbox
+{
+	vertical-align: top;
+	margin-top: 3px;
+}
 
 @media screen and (max-width: 1600px) {
     .main-left {
