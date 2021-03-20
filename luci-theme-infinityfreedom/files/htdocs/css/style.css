@@ -2163,6 +2163,32 @@ div#cbi-passwall.cbi-map div#set_node_div
 	background : rgba(7,34,62,.9);
 }
 
+div#cbi-passwall.cbi-map fieldset > fieldset > div#add_link_div
+{
+	position: fixed;
+	width: 55rem;
+	height: 20rem;
+}
+
+#add_link_div > div:nth-child(1) > label
+{
+	width: 30rem;
+}
+
+#add_link_div > div > div> textarea#nodes_link
+{
+	width: 52rem;
+	height: 10rem;
+}
+
+fieldset#cbi-passwall-nodes > div.cbi-section-node input.cbi-input-checkbox.nodes_select
+{
+	vertical-align: top;
+    margin-top: 5px;
+	width : 1.3rem;
+	height: 1.3rem;
+}
+
 /* For luci-app-beamInDocker */
 div#cbi-beamInDocker.cbi-map .cbi-value div.cbi-value-field font.ipsec-server_status ,
 div#cbi-beamInDocker.cbi-map .cbi-value div.cbi-value-field font#beamInDocker-download_status.beamInDocker-download_status
