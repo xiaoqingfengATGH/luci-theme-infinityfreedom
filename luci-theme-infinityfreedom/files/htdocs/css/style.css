@@ -2232,7 +2232,7 @@ div#cbi-softethervpn.cbi-map .cbi-value div.cbi-value-field font.softethervpn_st
 }
 
 /* For luci-app-homeconnect */
-div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field font.softethervpn_status
+div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_status
 {
 	display: block;
 	padding-top:6px;
