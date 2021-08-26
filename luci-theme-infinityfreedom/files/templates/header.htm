@@ -224,7 +224,7 @@
 <header>
 	<div class="container">
 		<span class="showSide"></span>
-		<a class="brand" href="#"><%="OpenWrt"%></a>
+		<a class="brand" href="#"><%=boardinfo.hostname%></a>
 		<div class="pull-right">
 			<% render_changes() %>
 			<span id="xhr_poll_status" style="display:none" onclick="XHR.running() ? XHR.halt() : XHR.run()">
