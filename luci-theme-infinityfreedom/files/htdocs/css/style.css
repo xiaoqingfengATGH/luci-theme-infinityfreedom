@@ -124,7 +124,7 @@ tr:nth-of-type(2n+1){
 }
 
 tr:nth-of-type(2n){
-	background-color:rgb(44, 67, 91,.85);
+	background-color:rgba(44, 67, 91,.85);
 }
 
 .cbi-button-up,
@@ -299,7 +299,7 @@ footer > a {
     height: 100%;
     z-index: 1000;
     display: block;
-    background-color: rgb(44, 67, 91,.7);
+    background-color: rgba(44, 67, 91,.7);
     top: 0;
 }
 
@@ -355,7 +355,7 @@ footer > a {
 	width: 300px;
 	height: 180px;
 	transform: translate(-50%,-50%);
-	background: rgb(100,181,246,.9);
+	background: rgba(100,181,246,.9);
 	color: #fff;
 	transition: all .3s ease-in-out;
 }
@@ -875,7 +875,7 @@ font-size: 1rem;
 	color: #ffffff;
 	padding: 6px;
 	line-height: 1.5;
-	border-top: 1px solid rgb(7, 34, 62,.75);
+	border-top: 1px solid rgba(7, 34, 62,.75);
 	white-space: nowrap;
 }
 
@@ -894,7 +894,7 @@ fieldset > .table > .tbody > .tr:nth-of-type(odd) {
 
 fieldset > table > tbody > tr:nth-of-type(even),
 fieldset > .table > .tbody > .tr:nth-of-type(even) {
-    background-color: rgb(44, 67, 91,.85);
+    background-color: rgba(44, 67, 91,.85);
 }
 
 /* fix progress bar */
