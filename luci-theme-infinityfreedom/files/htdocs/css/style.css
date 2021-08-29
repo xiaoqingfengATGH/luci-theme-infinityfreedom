@@ -60,6 +60,18 @@ div#maincontent div.container table.table tbody#tableBody {
     background-color: rgba(7, 34, 62, .4);
 }
 
+@font-face {
+    font-family: 'HomeLedeIcomoon';
+    src:  url('../fonts/icomoon.eot?p86j8');
+    src:  url('../fonts/icomoon.eot?p86j8#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?p86j8') format('truetype'),
+    url('../fonts/icomoon.woff?p86j8') format('woff'),
+    url('../fonts/icomoon.svg?p86j8#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 .table {
     display: table;
 }
@@ -298,7 +310,7 @@ footer > a {
 }
 
 .main > .loading > span > .loading-img:before {
-    font-family: Futura, 'Microsoft Yahei', sans-serif;
+    font-family: 'HomeLedeIcomoon' !important;
     content: "\e981";
     color: #ff8534;
 }
@@ -536,7 +548,7 @@ header > .container > .brand {
     position: relative;
     vertical-align: middle;
     display: inline-block;
-    font-family: Futura, 'Microsoft Yahei', sans-serif;
+    font-family: 'HomeLedeIcomoon' !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -617,7 +629,7 @@ header > .container > .brand {
     position: relative;
     vertical-align: middle;
     display: inline-block;
-    font-family: Futura, 'Microsoft Yahei', sans-serif;
+    font-family: 'HomeLedeIcomoon' !important;
     font-style: normal !important;
     font-weight: normal !important;
     font-variant: normal !important;
@@ -1195,7 +1207,7 @@ form.inline + form.inline,
 }
 
 .cbi-value-helpicon:before {
-    font-family: Futura, 'Microsoft Yahei', sans-serif;
+    font-family: 'HomeLedeIcomoon' !important;
     content: "\ea09";
 }
 
