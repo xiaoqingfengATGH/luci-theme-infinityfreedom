@@ -62,8 +62,8 @@ div#maincontent div.container table.table tbody#tableBody {
 
 @font-face {
     font-family: 'HomeLedeIcomoon';
-    src:  url('../fonts/icomoon.eot?p86j8');
-    src:  url('../fonts/icomoon.eot?p86j8#iefix') format('embedded-opentype'),
+    src: url('../fonts/icomoon.eot?p86j8');
+    src: url('../fonts/icomoon.eot?p86j8#iefix') format('embedded-opentype'),
     url('../fonts/icomoon.ttf?p86j8') format('truetype'),
     url('../fonts/icomoon.woff?p86j8') format('woff'),
     url('../fonts/icomoon.svg?p86j8#icomoon') format('svg');
@@ -2365,6 +2365,7 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
         /*width: initial;*/
         padding-left: 5px;
         padding-right: 20px;
+        font-family: Apple Chancery, Futura, sans-serif;
     }
 
     .main-left {
