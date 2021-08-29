@@ -1760,6 +1760,7 @@ div.cbi-value var, td.cbi-value-field var, .td.cbi-value-field var {
 small {
     font-size: small;
     white-space: normal;
+    color: white;
 }
 
 .cbi-button-up,
