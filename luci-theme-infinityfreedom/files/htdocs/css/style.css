@@ -263,7 +263,7 @@ header, .main {
 }
 
 header {
-    height: 60px;
+    height: 4.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     transition: box-shadow .2s;
     float: left;
@@ -379,11 +379,11 @@ footer > a {
 
 .main-left {
     float: left;
-    top: 4rem;
+    top: 4.5rem;
     width: 15%;
     width: calc(0% + 18rem);
     height: 100%;
-    height: calc(100% - 4rem);
+    height: calc(100% - 4.5rem);
     box-shadow: 0 0 2rem 0 rgba(136, 152, 170, .15);
     overflow-x: auto;
     position: fixed;
@@ -432,14 +432,14 @@ header > .container {
 
 header > .container > .brand {
     font-size: 28px;
-    line-height: 60px;
+    line-height: 4.5rem;
     color: white;
     cursor: default;
     background-color: rgba(7, 34, 62, 0.33);
     display: block;
     width: 18rem;
     padding-right: 10px;
-    height: 60px;
+    height: 4.5rem;
     text-align: center;
     float: left;
     font-weight: 600;
