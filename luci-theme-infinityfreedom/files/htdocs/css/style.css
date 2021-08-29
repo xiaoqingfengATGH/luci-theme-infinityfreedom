@@ -390,6 +390,7 @@ footer > a {
     scrollbar-color: rgba(238, 238, 238, .5) rgba(50, 50, 50, .3);
     scrollbar-width: thin;
     text-shadow: 1px 1px 5px #000;
+    background: linear-gradient(rgba(81, 100, 120, 0.67), rgba(7, 34, 62, 0.67)) !important;
 }
 
 
@@ -398,6 +399,7 @@ footer > a {
     width: calc(100% - 17rem);
     float: right;
     height: 100%;
+    text-shadow: 0 1px 3px #222;
 }
 
 .main-right > #maincontent {
@@ -418,7 +420,7 @@ footer > a {
 }
 
 header {
-    background: linear-gradient(90deg, #07223e 0, #516478) !important;
+    background: linear-gradient(90deg, rgba(7, 34, 62, 0.67), rgba(81, 100, 120, 0.67)) !important;
     color: white;
 }
 
@@ -432,7 +434,7 @@ header > .container > .brand {
     line-height: 60px;
     color: white;
     cursor: default;
-    background-color: rgba(7, 34, 62, .8);
+    background-color: rgba(7, 34, 62, 0.33);
     display: block;
     width: 18rem;
     padding-right: 10px;
@@ -820,10 +822,8 @@ fieldset {
     overflow-x: auto;
     overflow-y: hidden;
 
-    border-radius: 0;
-
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    border-radius: 4px;
+    border-radius: 0.5rem;
     -webkit-overflow-scrolling: touch;
 
     background-repeat: no-repeat;
@@ -831,7 +831,6 @@ fieldset {
     background-size: cover;
     background-position: center center;
     border: 0 solid #07223e;
-    border-radius: 0;
     color: #fff;
     display: block;
     font-size: 1.2rem;
@@ -2307,22 +2306,28 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
 
 @media screen and (max-width: 1280px) {
     header {
-        /*height: 3.5rem;*/
+        height: 4rem;
     }
 
     header > .container {
         /*margin-top: 0.25rem;*/
     }
 
+    header > .container > .brand {
+        line-height: 50px;
+        height: 4rem;
+        width: 17rem;
+    }
+
     .main {
-        top: 3.5rem;
-        height: calc(100% - 3.5rem);
+        top: 4rem;
+        height: calc(100% - 4rem);
     }
 
     .main-left {
         width: calc(0% + 17rem);
-        top: 3.5rem;
-        height: calc(100% - 3.5rem);
+        top: 4rem;
+        height: calc(100% - 4rem);
     }
 
     .main-right {
