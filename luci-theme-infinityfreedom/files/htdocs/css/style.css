@@ -158,7 +158,7 @@ tr:nth-of-type(2n) {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     font-weight: 500;
     line-height: 1.1;
     color: white;
@@ -181,10 +181,11 @@ body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     line-height: 150%;
     color: #ffffff;
-    background: #07223e url('../images/main_bg.jpg') no-repeat fixed center;
+    background: #07223e url(../images/main_bg.jpg) center center;
+    background-size: cover;
 }
 
 body div {
@@ -221,7 +222,7 @@ input,
     height: 34px;
     line-height: normal;
     font-size: 1.2rem;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     background-color: rgba(7, 34, 62, .4);
     transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
     -webkit-transition: color 150ms ease, border-color 150ms ease, opacity 150ms ease;
@@ -390,7 +391,7 @@ footer > a {
     scrollbar-color: rgba(238, 238, 238, .5) rgba(50, 50, 50, .3);
     scrollbar-width: thin;
     text-shadow: 1px 1px 5px #000;
-    background: linear-gradient(rgba(81, 100, 120, 0.67), rgba(7, 34, 62, 0.67)) !important;
+    background: linear-gradient(rgba(81, 100, 120, 0.8), rgba(7, 34, 62, 0.67)) !important;
 }
 
 
@@ -443,13 +444,13 @@ header > .container > .brand {
     float: left;
     font-weight: 600;
     letter-spacing: 3px;
-    font-family: Apple Chancery, Futura, sans-serif;
+    font-family: Apple Chancery, Arial, sans-serif;
 }
 
 .brandMark:after {
     content: "";
     font-size: 14px;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     position: absolute;
     top: -10px;
     font-weight: normal !important;
@@ -1565,7 +1566,7 @@ td > .ifacebadge,
     margin: 0;
     line-height: 120%;
     font-size: 1.2rem;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     border: 1px solid #e4eaec;
     border-radius: 0;
     background-color: #2B2B2B; /*rgba(7,34,62,.5)*/;
@@ -1815,7 +1816,7 @@ small {
     background-color: rgba(7, 34, 62, .5);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
     border: none;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
 }
 
 input[name="ping"],
@@ -1857,7 +1858,7 @@ header > .container > .pull-right > * {
     display: none;
     color: #76838f;
     content: "\e029";
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     font-weight: normal !important;
     font-size: 14px;
     top: 18px;
@@ -2016,7 +2017,7 @@ header > .container > .pull-right > * {
     background-color: rgba(7, 34, 62, .75); /*rgba(53,53,53,.9)*/
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, .16), 0 0 2px 0 rgba(0, 0, 0, .12);
     border: none;
-    font-family: Futura, 'PingFang SC', 'Microsoft Yahei', sans-serif;
+    font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     /* For FireFox */
     scrollbar-color: rgba(238, 238, 238, .5) rgba(50, 50, 50, .3);
     scrollbar-width: thin;
@@ -2262,11 +2263,17 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
 }
 
 @media screen and (max-width: 1600px) {
+    .main {
+        top: 4.5rem;
+    }
+
     .main-left {
         /*width: calc(0% + 15rem);*/
+        top: 4.5rem;
     }
 
     .main-right {
+        top: 4.5rem;
         width: calc(100% - 18rem);
         /*background-color: #516478;*/
     }
@@ -2331,6 +2338,7 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
     }
 
     .main-right {
+        top: 4rem;
         width: calc(100% - 17rem);
     }
 
@@ -2381,19 +2389,25 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
         /*width: initial;*/
         padding-left: 5px;
         padding-right: 20px;
-        font-family: Apple Chancery, Futura, sans-serif;
+        font-family: Apple Chancery, "Edwardian Script ITC", Arial, sans-serif;
+    }
+
+    .main {
+        top: 3.5rem;
     }
 
     .main-left {
         width: 0;
         position: fixed;
         z-index: 100;
-        background-color: #07223e;
+        background: #07223e !important;
         opacity: .8;
+        top: 3.5rem;
     }
 
     .main-right {
         width: 100%;
+        top: 3.5rem;
     }
 
     .showSide {
@@ -2631,7 +2645,7 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
 
     body {
         line-height: 200%;
-        background: url('../images/main_bg_5k.jpg');
+        background: url('../images/main_bg.jpg');
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;
