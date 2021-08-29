@@ -72,6 +72,17 @@ div#maincontent div.container table.table tbody#tableBody {
     font-display: block;
 }
 
+@font-face {
+    font-family: 'icomoon';
+    src: url('../fonts/font.eot');
+    src: url('../fonts/font.eot') format('embedded-opentype'),
+    url('../fonts/font.ttf') format('truetype'),
+    url('../fonts/font.woff') format('woff'),
+    url('../fonts/font.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .table {
     display: table;
 }
@@ -127,7 +138,7 @@ tr:nth-of-type(2n) {
 .cbi-value-helpicon,
 .showSide,
 .main > .loading > span {
-    font-family: Futura, 'Microsoft Yahei', sans-serif;
+    font-family: 'icomoon', Roboto !important;
     font-size: 10px;
     speak: none;
     font-style: normal !important;
@@ -186,7 +197,7 @@ a {
 }
 
 a:hover {
-    color: #ff8534;
+    color: cyan;
 }
 
 em {
@@ -222,7 +233,7 @@ input,
 
 select:not([multiple="multiple"]):focus,
 input:focus {
-    border-color: #ff8534;
+    border-color: cyan;
 }
 
 select[multiple="multiple"] {
@@ -234,7 +245,7 @@ code {
 }
 
 abbr {
-    color: #ff8534;
+    color: cyan;
     text-decoration: underline;
     cursor: help;
 }
@@ -312,7 +323,7 @@ footer > a {
 .main > .loading > span > .loading-img:before {
     font-family: 'HomeLedeIcomoon' !important;
     content: "\e981";
-    color: #ff8534;
+    color: cyan;
 }
 
 .main > .loading > span > .loading-img {
@@ -378,6 +389,7 @@ footer > a {
     /* For firefox */
     scrollbar-color: rgba(238, 238, 238, .5) rgba(50, 50, 50, .3);
     scrollbar-width: thin;
+    text-shadow: 1px 1px 5px #000;
 }
 
 
@@ -563,7 +575,7 @@ header > .container > .brand {
 
 .main > .main-left > .nav > .slide > a[data-title="Status"]:before {
     content: "\e900";
-    color: #1DA4F6 !important;
+    color: deepskyblue !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="System"]:before {
@@ -573,7 +585,7 @@ header > .container > .brand {
 
 .main > .main-left > .nav > .slide > a[data-title="Services"]:before {
     content: "\e904";
-    color: #FAC536 !important;
+    color: cyan !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="NAS"]:before {
@@ -588,7 +600,7 @@ header > .container > .brand {
 
 .main > .main-left > .nav > .slide > a[data-title="dns"]:before {
     content: "\e9a5";
-    color: #FF9800 !important;
+    color: darkcyan !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="VPN"]:before {
@@ -603,7 +615,7 @@ header > .container > .brand {
 
 .main > .main-left > .nav > .slide > a[data-title="Bandwidth Monitor"]:before {
     content: "\e9a6";
-    color: #FAC536 !important;
+    color: cyan !important;
 }
 
 .main > .main-left > .nav > .slide > a[data-title="Statistics"]:before {
@@ -648,7 +660,7 @@ header > .container > .brand {
 }
 
 .main > .main-left > .nav > li > a[data-title="Logout"]:hover {
-    color: #ff8534;
+    color: cyan;
 }
 
 .main > .main-left > .nav > li > a[data-title="Reboot"] {
@@ -674,7 +686,7 @@ header > .container > .brand {
 
 .main > .main-left > .nav > li:hover,
 .main > .main-left > .nav > .slide > .menu:hover {
-    color: #ff8534;
+    color: cyan;
     cursor: hand;
 }
 
@@ -720,7 +732,7 @@ div.main div.main-left ul.nav li.slide a {
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > li > a:hover {
-    color: #ff8534;
+    color: cyan;
 }
 
 .slide-menu li a:before {
@@ -735,17 +747,15 @@ div.main div.main-left ul.nav li.slide a {
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > .active > a {
-    color: #ff8534;
-
-
+    color: cyan;
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > li:hover {
-    color: #ff8534;
+    color: cyan;
 }
 
 .main > .main-left > .nav > .slide > .slide-menu > .active:hover {
-    color: #ff8534;
+    color: cyan;
     cursor: hand;
 }
 
@@ -1000,7 +1010,7 @@ td > table > tbody > tr > td,
 .cbi-button:hover,
 .cbi-button:focus,
 .cbi-button:active {
-    /*color: #ff8534;*/
+    /*color: cyan;*/
     outline: 0;
     text-decoration: none;
 }
@@ -1130,7 +1140,7 @@ form.inline + form.inline,
 .tabs > li[class~="active"],
 .tabs > li:hover {
     cursor: pointer;
-    border-bottom: 2px solid #ff8534;
+    border-bottom: 2px solid cyan;
     color: #ffffff;
     margin-bottom: -0.2rem;
 }
@@ -1161,7 +1171,7 @@ form.inline + form.inline,
 }
 
 .cbi-tabmenu > li[class~="cbi-tab"] {
-    border-bottom: 2px solid #ff8534;
+    border-bottom: 2px solid cyan;
     opacity: 1;
     margin-right: 1.25rem;
     cursor: pointer;
@@ -1182,7 +1192,7 @@ form.inline + form.inline,
 
 .cbi-tabmenu > li[class~="cbi-tab-disabled"]:hover {
     opacity: 1;
-    border-bottom: 2px solid #ff8534;
+    border-bottom: 2px solid cyan;
 }
 
 .cbi-section-node-tabbed {
@@ -1490,7 +1500,7 @@ form.inline + form.inline,
 
 .ifacebadge {
     display: inline-flex;
-    border-bottom: 1px solid #ff8534;
+    border-bottom: 1px solid cyan;
     padding: 0.5rem 1rem;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     border: 1px solid #07223e;
@@ -1551,7 +1561,7 @@ td > .ifacebadge,
 /*textarea*/
 
 .cbi-input-textarea {
-    color: #9876AA;
+    color: chartreuse;
     padding: 6px 10px;
     margin: 0;
     line-height: 120%;
