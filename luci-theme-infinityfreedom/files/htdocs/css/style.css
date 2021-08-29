@@ -429,6 +429,7 @@ header > .container > .brand {
     float: left;
     font-weight: 600;
     letter-spacing: 3px;
+    font-family: Apple Chancery, Futura, sans-serif;
 }
 
 .brandMark:after {
