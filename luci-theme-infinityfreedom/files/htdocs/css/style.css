@@ -184,7 +184,7 @@ body {
     font-family: Arial, 'PingFang SC', 'Microsoft Yahei', sans-serif;
     line-height: 150%;
     color: #ffffff;
-    background: #07223e url(../images/main_bg.jpg) center center;
+    background: #07223e url(../images/main_bg.jpg) fixed center center;
     background-size: cover;
 }
 
@@ -769,6 +769,7 @@ li {
 
 #maincontent > .container {
     margin: 0 2rem 1rem 2rem;
+    border-radius: 0.5rem;
 }
 
 
@@ -1938,6 +1939,7 @@ header > .container > .pull-right > * {
 .node-main-login > .main .cbi-input-user,
 .node-main-login > .main .cbi-input-password {
     min-width: 15rem;
+    border-radius: 0.5rem;
 }
 
 .node-main-login footer {
@@ -2283,6 +2285,7 @@ div#cbi-homeconnect.cbi-map .cbi-value div.cbi-value-field > font.softethervpn_s
         padding: 0.3rem 0.6rem;
         font-size: 1rem;
         line-height: 1.5;
+        border-radius: 0.5rem;
     }
 
     header > .container > .pull-right > * {
