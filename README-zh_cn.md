@@ -33,11 +33,11 @@ https://github.com/xiaoqingfengATGH/HomeLede
 编辑源码文件夹根目录feeds.conf.default并加入如下内容:
 
     # luci-theme-infinityfreedom
-    src-git infinityfreedom-ng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+    src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 
 更新feeds，并安装主题：
 
-    $ scripts/feeds update infinityfreedom-ng
+    $ scripts/feeds update infinityfreedomng
     $ scripts/feeds install luci-theme-infinityfreedom-ng
 
 打开配置菜单：
