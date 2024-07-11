@@ -1,4 +1,4 @@
-# luci-theme-infinityfreedom
+# luci-theme-infinityfreedom-ng (Next Generation)
 [ English Version Click Here ](/README.md)
 
 [1]: https://img.shields.io/badge/license-Apache2-brightgreen.svg
@@ -19,32 +19,32 @@
 [![Release Count][9]][8]
 [![Contact Me][10]][11]
 
-InfinityFreedom 是一款基于luci-theme-material构建的，使用HTML5、CSS3编写的Luci主题。
+InfinityFreedom-NG 是一款为Homelede固件定制的Luci主题，基于HTML5、CSS3，响应式布局，适用于PC、Pad及移动端。
 
-Copyright 2020 Richard Yu <xiaoqingfengatgm@gmail.com>
+Copyright 2024 Eric <xiaoqingfengatgm@gmail.com>
 
-这个主题是为HomeLede（基于OpenWrt，专门为家庭使用场景设计的固件）专门设计的，也可以用于OpenWrt其他版本，目前兼容Luci18，Luci其他版本计划在此版本稳定后开发。
+这个主题是也可以用于OpenWrt其他版本，目前兼容Luci18。
 
 如需了解HomeLede固件请见：
 https://github.com/xiaoqingfengATGH/HomeLede
 
-### 将 InfinityFreedom 主题添加至 LEDE/OpenWRT 源码的方法。
+### 将 InfinityFreedom-ng 主题添加至 LEDE/OpenWRT 源码的方法。
 
 编辑源码文件夹根目录feeds.conf.default并加入如下内容:
 
     # luci-theme-infinityfreedom
-    src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+    src-git infinityfreedom-ng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 
 更新feeds，并安装主题：
 
-    $ scripts/feeds update infinityfreedom
-    $ scripts/feeds install luci-theme-infinityfreedom
+    $ scripts/feeds update infinityfreedom-ng
+    $ scripts/feeds install luci-theme-infinityfreedom-ng
 
 打开配置菜单：
 
     $ make menuconfig
 
-找到 LuCI -> Themes, 选择 luci-theme-infinityfreedom, 保存后退出，编译固件。 
+找到 LuCI -> Themes, 选择 luci-theme-infinityfreedom-ng, 保存后退出，编译固件。 
 
 主题默认会自动启用，如果没有启动可以手动开启。
 
@@ -52,18 +52,19 @@ https://github.com/xiaoqingfengATGH/HomeLede
 ----------------
 
   * 系统 -> 系统 -> 语言和界面
-  * 主题处选择 'infinityfreedom'，右下角“保存&应用”
+  * 主题处选择 'infinityfreedom-ng'，右下角“保存&应用”
   * 按F5刷新浏览器
 
 屏幕截图
 ----------------
-![](/screenshots/000.Login.jpg)
-![](/screenshots/001.Overview.jpg)
-![](/screenshots/002.Firewall.jpg)
-![](/screenshots/003.KernelLog.jpg)
-![](/screenshots/004.Route.jpg)
-![](/screenshots/005.SysLog.jpg)
-![](/screenshots/100.System.jpg)
-![](/screenshots/101.SoftwarePkgs.jpg)
-![](/screenshots/207.upnp.jpg)
-![](/screenshots/304.Samba.jpg)
+![](/screenshots/000.Login.png)
+![](/screenshots/001.Overview.png)
+![](/screenshots/002.Firewall.png)
+![](/screenshots/003.KernelLog.png)
+![](/screenshots/004.Route.png)
+![](/screenshots/005.SysLog.png)
+![](/screenshots/006_RealTimeMontor.png)
+![](/screenshots/100.System.png)
+![](/screenshots/101.SoftwarePkgs.png)
+![](/screenshots/207.upnp.png)
+![](/screenshots/304.Samba.png)
