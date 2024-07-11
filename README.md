@@ -38,7 +38,7 @@ Edit your feeds.conf.default and add the following to it:
 Update your build environment and install the package:
 
     $ scripts/feeds update infinityfreedomng
-    $ scripts/feeds install luci-theme-infinityfreedomng
+    $ scripts/feeds install luci-theme-infinityfreedom-ng
     $ make menuconfig
 
 Go to LuCI -> Themes, select luci-theme-infinityfreedom-ng, exit, save and build as usual.
