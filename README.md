@@ -33,12 +33,12 @@ https://github.com/xiaoqingfengATGH/HomeLede
 Edit your feeds.conf.default and add the following to it:
 
     # luci-theme-infinityfreedom
-    src-git infinityfreedom-ng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+    src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 
 Update your build environment and install the package:
 
-    $ scripts/feeds update infinityfreedom-ng
-    $ scripts/feeds install luci-theme-infinityfreedom-ng
+    $ scripts/feeds update infinityfreedomng
+    $ scripts/feeds install luci-theme-infinityfreedomng
     $ make menuconfig
 
 Go to LuCI -> Themes, select luci-theme-infinityfreedom-ng, exit, save and build as usual.
