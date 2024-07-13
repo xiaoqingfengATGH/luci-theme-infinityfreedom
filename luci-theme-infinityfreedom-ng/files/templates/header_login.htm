@@ -94,7 +94,7 @@
 		<script src="<%=media%>/assets/js/vue.global.prod.js"></script>
 	</head>
 
-<body class="loading authentication-bg lang_<%=luci.i18n.context.lang%> <%- if node then %><%= striptags( node.title ) %><%- end %> <% if luci.dispatcher.context.authsession then %>logged-in<% end %>"
+<body class="authentication-bg lang_<%=luci.i18n.context.lang%> <%- if node then %><%= striptags( node.title ) %><%- end %> <% if luci.dispatcher.context.authsession then %>logged-in<% end %>"
     data-layout='{"mode": "dark", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "dark", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
 	<!-- App js-->
 	<script src="<%=media%>/assets/js/app.min.js"></script>
