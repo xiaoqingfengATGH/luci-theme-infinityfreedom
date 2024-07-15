@@ -7,7 +7,7 @@
 [4]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/pulls
 [5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
 [6]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues/new
-[7]: https://img.shields.io/badge/release-NGv1.0beta-orange.svg?
+[7]: https://img.shields.io/badge/release-NGv1.1beta-orange.svg?
 [8]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/releases
 [9]: https://img.shields.io/github/downloads/xiaoqingfengATGH/luci-theme-infinityfreedom/total
 [10]: https://img.shields.io/badge/Contact-telegram-blue
@@ -52,7 +52,7 @@ https://github.com/xiaoqingfengATGH/HomeLede
 ----------------
 
   * 系统 -> 系统 -> 语言和界面
-  * 主题处选择 'infinityfreedom-ng'，右下角“保存&应用”
+  * 主题处选择 'infinityfreedomNG'，右下角“保存&应用”
   * 按F5刷新浏览器
 
 屏幕截图

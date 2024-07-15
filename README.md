@@ -7,7 +7,7 @@
 [4]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/pulls
 [5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
 [6]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues/new
-[7]: https://img.shields.io/badge/release-NGv1.0beta-orange.svg?
+[7]: https://img.shields.io/badge/release-NGv1.1beta-orange.svg?
 [8]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/releases
 [9]: https://img.shields.io/github/downloads/xiaoqingfengATGH/luci-theme-infinityfreedom/total
 [10]: https://img.shields.io/badge/Contact-telegram-blue
@@ -41,13 +41,13 @@ Update your build environment and install the package:
     $ scripts/feeds install luci-theme-infinityfreedom-ng
     $ make menuconfig
 
-Go to LuCI -> Themes, select luci-theme-infinityfreedom-ng, exit, save and build as usual.
+Go to LuCI -> Themes, select luci-infinityfreedom-ng, exit, save and build as usual.
 
 Enable the Theme
 ----------------
 
   * Go to System -> System -> Language and Style
-  * Choose 'luci-theme-infinityfreedom-ng' in the Design selectbox
+  * Choose 'infinityfreedomNG' in the Design selectbox
 
 ScreenShots
 ----------------
