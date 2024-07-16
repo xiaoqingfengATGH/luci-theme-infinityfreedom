@@ -35,6 +35,7 @@ $ scripts/feeds install luci-theme-infinityfreedom-ng
 $ make menuconfig
 找到 LuCI -> Themes, 选择 luci-theme-infinityfreedom-ng, 保存后退出，编译固件。
 
+
 也可以仅单独构建主题，在固件编译根路径下，执行如下命令：
 
 ```
