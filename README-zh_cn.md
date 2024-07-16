@@ -28,13 +28,16 @@ src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinit
 
 更新feeds，并安装主题：
 
+```
 $ scripts/feeds update infinityfreedomng
 $ scripts/feeds install luci-theme-infinityfreedom-ng
+```
 
-
-打开配置菜单：
-
+随后执行如下命令打开配置菜单：
+```
 $ make menuconfig
+```
+
 找到 LuCI -> Themes, 选择 luci-theme-infinityfreedom-ng, 保存后退出，编译固件。
 
 
