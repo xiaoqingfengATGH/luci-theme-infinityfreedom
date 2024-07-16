@@ -28,10 +28,11 @@ src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinit
 
 Update your build environment and install the package:
 
+```
 $ scripts/feeds update infinityfreedomng
 $ scripts/feeds install luci-theme-infinityfreedom-ng
 $ make menuconfig
-
+```
 
 Go to LuCI -> Themes, select luci-infinityfreedom-ng, exit, save and build as usual.
 
