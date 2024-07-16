@@ -30,6 +30,8 @@ src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinit
 
 $ scripts/feeds update infinityfreedomng
 $ scripts/feeds install luci-theme-infinityfreedom-ng
+
+
 打开配置菜单：
 
 $ make menuconfig
