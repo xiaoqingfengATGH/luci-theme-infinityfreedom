@@ -22,7 +22,7 @@ https://github.com/xiaoqingfengATGH/HomeLede
 
 Edit your feeds.conf.default and add the following to it:
 
-# luci-theme-infinityfreedom
+luci-theme-infinityfreedom
 
 src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 Update your build environment and install the package:

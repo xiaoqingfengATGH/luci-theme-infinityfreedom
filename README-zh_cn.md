@@ -1,4 +1,4 @@
-# luci-theme-infinityfreedom-ng (Next Generation)
+# luci-theme-infinityfreedom-ng (新一代版本)
 
 [ English Version Click Here ](/README.md)
 
@@ -22,9 +22,10 @@ https://github.com/xiaoqingfengATGH/HomeLede
 
 编辑源码文件夹根目录feeds.conf.default并加入如下内容:
 
-# luci-theme-infinityfreedom
-
+```
 src-git infinityfreedomng https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+```
+
 更新feeds，并安装主题：
 
 $ scripts/feeds update infinityfreedomng
