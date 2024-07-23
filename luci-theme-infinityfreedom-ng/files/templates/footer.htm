@@ -27,10 +27,11 @@
         <footer class="footer">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-6">
-                        <script>document.write(new Date().getFullYear())</script> &copy; <%= ver.luciname %> (<%= ver.luciversion %> / <%= ver.distversion %>
+                    <div class="col-md-9" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" 
+						 title="<%= os.date("%Y") %> &copy; <%= ver.luciname %> (<%= ver.luciversion %> / <%= ver.distversion %>">
+                        <%= os.date("%Y") %> &copy; <%= ver.luciname %> (<%= ver.luciversion %> / <%= ver.distversion %>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="text-md-end footer-links d-none d-sm-block">
                             <a href="https://github.com/xiaoqingfengATGH/HomeLede" target="_blank">固件源码</a>
                             <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki" target="_blank">交流讨论</a>
