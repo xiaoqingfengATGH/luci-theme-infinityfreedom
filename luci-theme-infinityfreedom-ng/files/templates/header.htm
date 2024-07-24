@@ -229,6 +229,25 @@
 			end
 		end
 	end
+
+	local function exec_command(command)
+		local handle = io.popen(command)
+		local result = handle:read("*a")  -- 读取所有输出
+		handle:close()
+		return result
+	end
+
+	local function detectAdGuardHome()
+		local host = exec_command("uci show network | grep network.lan.ipaddr|cut -d \"'\" -f 2")
+		if #host > 0 then
+			host = host:gsub("[\r\n]", "")
+		end
+		local adGuardUrl = "http://" .. host .. ":3000"
+		local adGuardHomeRespCode = exec_command("wget --server-response --spider \"" .. adGuardUrl .. "\" 2>&1 | awk '/HTTP\\// {print $2; exit}'")
+		if adGuardHomeRespCode~=nil and #adGuardHomeRespCode > 0 then
+			write("const RouterHost=\"" .. host .. "\", AdGuardReady = true, AdGuardUrl = \"" .. adGuardUrl .. "\";")
+		end
+	end
 -%>
 <!DOCTYPE html>
 <html lang="<%=luci.i18n.context.lang%>">
@@ -365,6 +384,22 @@
 		} 
 	})
 
+	<% detectAdGuardHome() %>
+
+	if(typeof(AdGuardReady)!="undefined" && AdGuardReady)
+	{
+		topMenu.menus.forEach(menu => {
+			if(menu["data-title"]=="dns") {
+				menu["subs"].push(
+					{
+					"data-title": "AdGuardHome",
+					"href": AdGuardUrl,
+					"title": "AdGuardHome"
+					}
+				)
+			}
+		});
+	}
 
 	var luciLocation = <%= luci.http.write_json(luci.dispatcher.context.path) %>;
 	var selectedMenu = null;
