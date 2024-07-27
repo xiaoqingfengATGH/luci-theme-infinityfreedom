@@ -75,7 +75,7 @@ ScreenShots
 [4]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/pulls
 [5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
 [6]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues/new
-[7]: https://img.shields.io/badge/release-NGv1.3-orange.svg?
+[7]: https://img.shields.io/badge/release-NGv1.5-orange.svg?
 [8]: https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/releases
 [9]: https://img.shields.io/github/downloads/xiaoqingfengATGH/luci-theme-infinityfreedom/total
 [10]: https://img.shields.io/badge/Contact-telegram-blue
