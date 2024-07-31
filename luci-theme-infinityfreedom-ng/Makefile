@@ -10,7 +10,7 @@ THEME_NAME:=infinityfreedom-ng
 THEME_TITLE:=infinityfreedom-ng
 
 PKG_NAME:=luci-theme-$(THEME_NAME)
-PKG_VERSION:=1.5-20240727
+PKG_VERSION:=1.51-20240731
 
 PKG_RELEASE:=1
 
