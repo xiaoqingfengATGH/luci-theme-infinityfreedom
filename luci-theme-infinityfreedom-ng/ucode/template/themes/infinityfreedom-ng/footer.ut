@@ -118,6 +118,7 @@
 
 			wrapSections();
 			wrapBareView();
+			styleModernButtons();
 			renderPage(t);
 
 			/* poll-driven views (e.g. dockerman/containers) rebuild their
@@ -135,9 +136,52 @@
 			let restylePending = false;
 			let restyleLast = 0;
 
+			/* modern client views render <button> elements instead of the
+			   legacy <input type=submit> - the legacy renderButtons() only
+			   matches input.cbi-button-* so these get no theme classes at
+			   all (browser-default white buttons).
+
+			   LuCI 24.10 ui.js adds a bare .btn (transparent background)
+			   to view buttons, and form.js adds semantic classes it does
+			   not style itself: positive / negative / neutral / action.
+			   Map them onto the theme's bootstrap button variants - same
+			   colors the legacy inputs got via renderButtons(). */
+			function styleModernButtons(root) {
+				root = root || viewEl;
+				let map = {
+					'cbi-button-apply':  'btn btn-primary waves-effect waves-light',
+					'cbi-button-save':   'btn btn-info waves-effect waves-light',
+					'cbi-button-reset':  'btn btn-warning waves-effect waves-light',
+					'cbi-button-add':    'btn btn-success waves-effect waves-light',
+					'cbi-button-edit':   'btn btn-info waves-effect waves-light',
+					'cbi-button-remove': 'btn btn-danger waves-effect waves-light',
+					'cbi-button-reload': 'btn btn-purple waves-effect waves-light',
+					/* new in LuCI >= 22.03 client-side views */
+					'cbi-button-positive': 'btn btn-success waves-effect waves-light',
+					'cbi-button-negative': 'btn btn-danger waves-effect waves-light',
+					'cbi-button-neutral':  'btn btn-secondary waves-effect waves-light',
+					'cbi-button-action':   'btn btn-purple waves-effect waves-light'
+				};
+
+				jQuery(root).find('button.cbi-button, button[class*="cbi-button-"]').each(function(i, e) {
+					let el = jQuery(e);
+					for (let cls in map) {
+						if (el.hasClass(cls)) {
+							el.addClass(map[cls]);
+							break;
+						}
+					}
+				});
+
+				/* form.js maps apply/save/reset onto plain .cbi-button
+				   without any semantic suffix */
+				jQuery(root).find('button.cbi-button:not([class*="cbi-button-"])').addClass('btn btn-purple waves-effect waves-light');
+			}
+
 			function restylePollRefreshed() {
 				wrapSections();
 				wrapBareView();
+				styleModernButtons();
 				jQuery("h2[name=content]").css('display', 'none');
 				jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
 			}
@@ -169,6 +213,26 @@
 				});
 				obs.observe(viewEl, { childList: true, subtree: true });
 			}
+
+			/* LuCI renders dialogs (ui.showModal) into #modal_overlay at
+			   body level, outside #view. ui.js creates that node during
+			   setupDOM (after this script runs), so: watch body for its
+			   creation, then watch the overlay itself for dialog content
+			   and style those buttons too */
+			function watchModalOverlay(ov) {
+				if (ov.__ngWatched)
+					return;
+				ov.__ngWatched = true;
+				new MutationObserver(function() {
+					styleModernButtons(ov);
+				}).observe(ov, { childList: true, subtree: true });
+			}
+
+			let modalObserver = new MutationObserver(function() {
+				document.querySelectorAll('#modal_overlay').forEach(watchModalOverlay);
+			});
+			modalObserver.observe(document.body, { childList: true, subtree: false });
+			document.querySelectorAll('#modal_overlay').forEach(watchModalOverlay);
 
 			/* legacy ngRender.js moves title/descr at load time which is
 			   too early for async views - redo it here */
