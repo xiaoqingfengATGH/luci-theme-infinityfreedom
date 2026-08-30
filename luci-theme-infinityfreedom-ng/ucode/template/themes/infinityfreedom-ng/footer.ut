@@ -38,19 +38,89 @@
 
 <script>
 	/* run the bootstrap-ification once the client side view is in place.
-	   - for legacy pages (admin_status/index template) the DOM is already
-	     there when this script executes
-	   - for modern client rendered views wait for the view to load */
-	function ngApplyRender() {
-		if (typeof(ngRenderFormControls) != "undefined")
-			ngRenderFormControls();
-	}
+	   - for legacy pages (server rendered template actions) the DOM is
+	     already there when this script executes
+	   - for modern client rendered views #view is filled asynchronously;
+	     wait for it to settle, then render ONCE (renderPage() is not
+	     idempotent - re-running would nest the card wrappers) */
+	(function() {
+		let viewEl = document.getElementById('view');
 
-	if (typeof(L) != "undefined" && L.dom && document.getElementById('view')) {
-		document.getElementById('view').addEventListener('luci-loaded', function() {
-			ngApplyRender();
-		}, { once: false });
-	}
+		if (!viewEl || typeof(renderPage) == "undefined")
+			return;
+
+		function ngFullRender() {
+			let t = (typeof(luciLocation) != "undefined")
+				&& luciLocation.length == 3
+				&& luciLocation[1] == "status"
+				&& luciLocation[2] == "overview";
+
+			/* modern client rendered views use <div class="cbi-section">
+			   where legacy server rendered CBI used <fieldset> - apply the
+			   same card treatment before the legacy renderer runs */
+			jQuery("div.cbi-section:not(fieldset)").each(function(i, e) {
+				let el = jQuery(e);
+				if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
+					return;
+				let col = jQuery('<div class="col-12"></div>');
+				let card = jQuery('<div class="card"></div>');
+				el.wrap(col);
+				el.wrap(card);
+				el.addClass('card-body');
+			});
+			jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
+			jQuery("div.cbi-map > .cbi-section > h3:first-child").css('font-size', 'large');
+
+			renderPage(t);
+
+			/* legacy ngRender.js moves title/descr at load time which is
+			   too early for async views - redo it here */
+			let titleEle = jQuery("h2[name=content]");
+			if (titleEle.length > 0) {
+				jQuery("#homelede_page_title").html(titleEle[0].innerHTML);
+				jQuery("#homelede_page_desc_popup > div.toast-header > strong.me-auto").html(titleEle[0].innerHTML);
+				titleEle[0].style.display = "none";
+			}
+
+			let descr = jQuery("div.cbi-map-descr");
+			if (descr.length > 0) {
+				let d = jQuery(descr[0]);
+				jQuery("#homelede_page_desc").html(d.html()).attr("title", "点击放大页面描述。");
+				jQuery("#homelede_page_desc_popup > div.toast-body").html(d.html());
+				d.css("display", "none");
+			}
+		}
+
+		/* view.ut always renders a spinning "Loading view…" placeholder
+		   inside #view, so "has children" is not "has content" */
+		function hasRealContent() {
+			let v = document.getElementById('view');
+			if (!v || v.children.length == 0)
+				return false;
+			return !v.querySelector('.spinning') && v.textContent.indexOf('Loading view') < 0;
+		}
+
+		/* synchronous (legacy server rendered) pages: DOM is ready now */
+		if (hasRealContent()) {
+			ngFullRender();
+			return;
+		}
+
+		/* async client rendered views */
+		let timer = null;
+		let obs = new MutationObserver(function() {
+			if (timer)
+				clearTimeout(timer);
+			timer = setTimeout(function() {
+				if (hasRealContent()) {
+					obs.disconnect();
+					ngFullRender();
+				}
+			}, 400);
+		});
+
+		obs.observe(viewEl, { childList: true, subtree: true });
+	})();
 </script>
 
 <!-- Right bar overlay-->

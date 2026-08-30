@@ -208,7 +208,7 @@
 						html += ',';
 				}
 
-				html += ']';
+				html += '],';   /* comma closes the subs member */
 			}
 			else {
 				html += `"href":"${node_url(prefix, e.name)}",`;
@@ -529,6 +529,9 @@
 						document.addEventListener("webkitfullscreenchange", t),
 						document.addEventListener("mozfullscreenchange", t)
 					</script>
+
+                    <!-- modern LuCI ui.js indicators (poll-status, uci-changes, ...) -->
+                    <li id="indicators" class="dropdown notification-list topbar-dropdown"></li>
 
                     <li id="unchangedIndicator" class="dropdown notification-list topbar-dropdown hidden">
                         <a class="nav-link dropdown-toggle waves-effect waves-light" href="#"
