@@ -46,3 +46,10 @@ div.ifacebox .zonebadge{border-radius:2px}
    .table markup elsewhere keeps its tbody-derived styling). */
 .cbi-section > div > table.table > tr > td,
 .cbi-section > div > table.table > tr > th{padding:.85rem .85rem;vertical-align:middle}
+
+/* cbi tab panels (form.js renders one div[data-tab] per tab, the
+   active one flagged data-tab-active="true"). Without these rules
+   every panel renders stacked and tab clicks change nothing visibly -
+   bootstrap cascade.css parity. */
+[data-tab-title]{height:0;opacity:0;overflow:hidden;padding-top:0;padding-bottom:0}
+[data-tab-active="true"]{opacity:1;height:auto;overflow:visible;padding-top:1.5rem;padding-bottom:1.5rem;transition:opacity .25s ease-in}

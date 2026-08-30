@@ -72,6 +72,23 @@
 			   where legacy server rendered CBI used <fieldset> - apply the
 			   same card treatment before the legacy renderer runs */
 			function wrapSections() {
+				/* tabbed maps (network/network) render one section per tab
+				   panel as direct children of .cbi-map-tabbed, with the
+				   tab menu as the group's preceding sibling - ui.tabs
+				   switchTab() resolves panels via menu.nextElementSibling
+				   and group.childNodes[data-tab], so panels must stay
+				   direct children: wrap the WHOLE group (menu + panels)
+				   as a single card instead */
+				jQuery(".cbi-map-tabbed").each(function(i, e) {
+					let mt = jQuery(e);
+					if (mt.closest('.card').length > 0)
+						return;
+					let menu = mt.prev('ul.cbi-tabmenu');
+					let target = (menu.length > 0 ? menu : jQuery()).add(mt);
+					target.wrapAll('<div class="card"></div>').wrapAll('<div class="col-12"></div>');
+					mt.children('.cbi-section').addClass('card-body');
+				});
+
 				jQuery("div.cbi-section:not(fieldset)").each(function(i, e) {
 					let el = jQuery(e);
 					/* already wrapped, or a nested section inside a tab
@@ -80,6 +97,8 @@
 					if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
 						return;
 					if (el.closest('.cbi-tabcontainer').length > 0)
+						return;
+					if (el.closest('.cbi-map-tabbed').length > 0)
 						return;
 					let col = jQuery('<div class="col-12"></div>');
 					let card = jQuery('<div class="card"></div>');
