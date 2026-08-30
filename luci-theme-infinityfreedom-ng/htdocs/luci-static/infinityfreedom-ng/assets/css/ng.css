@@ -53,3 +53,50 @@ div.ifacebox .zonebadge{border-radius:2px}
    bootstrap cascade.css parity. */
 [data-tab-title]{height:0;opacity:0;overflow:hidden;padding-top:0;padding-bottom:0}
 [data-tab-active="true"]{opacity:1;height:auto;overflow:visible;padding-top:1.5rem;padding-bottom:1.5rem;transition:opacity .25s ease-in}
+
+/* LuCI 24.10 client-side dropdown widget (div.cbi-dropdown) and
+   dynamic list (div.cbi-dynlist). The theme has no rules for them
+   (legacy views used native <select>), so they render as transparent
+   stacked blocks. Ported from bootstrap cascade.css, dark palette. */
+.cbi-dropdown{display:inline-flex !important;cursor:pointer;height:auto;position:relative;padding:0 !important;min-width:210px;max-width:400px;width:auto}
+.cbi-dropdown:not(.btn):not(.cbi-button){background:linear-gradient(#3b4651 0%,#333d47 100%);border:1px solid #424e5a;border-radius:3px;color:#c0cbd4;font-size:13px;min-height:30px}
+.cbi-dropdown img{max-height:1.6em;width:auto}
+.cbi-dropdown > ul{margin:0 !important;padding:0;list-style:none;overflow-x:hidden;overflow-y:hidden;display:flex;width:100%}
+.cbi-dropdown > ul.preview{display:none}
+.cbi-dropdown > .open,.cbi-dropdown > .more{flex-grow:0;flex-shrink:0;display:flex;flex-direction:column;justify-content:center;text-align:center;line-height:2em;padding:0 .3em;color:#94a0ad}
+.cbi-dropdown > .more,.cbi-dropdown:not(.btn):not(.cbi-button) > ul > li[placeholder]{color:#94a0ad;display:none}
+.cbi-dropdown > ul > li{display:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;flex-grow:1;align-items:center;align-self:center;color:inherit}
+.cbi-dropdown > ul.dropdown > li,.cbi-dropdown:not(.btn):not(.cbi-button) > ul > li{min-height:20px;padding:.25em;color:#c0cbd4}
+.cbi-dropdown > ul > li .hide-open{display:block;display:initial}
+.cbi-dropdown > ul > li .hide-close{display:none}
+.cbi-dropdown > ul > li[display]:not([display="0"]){border-left:1px solid #424e5a}
+.cbi-dropdown[empty] > ul{max-width:1px}
+.cbi-dropdown > ul > li > form{display:none;margin:0;padding:0;pointer-events:none}
+.cbi-dropdown > ul > li img{vertical-align:middle;margin-right:.25em}
+.cbi-dropdown > ul > li input[type="text"]{height:20px}
+.cbi-dropdown[open]{position:relative}
+.cbi-dropdown[open] > ul.dropdown{display:block;background:#2c333b;border:1px solid #424e5a;box-shadow:0 0 4px rgba(0,0,0,.4);position:absolute;z-index:1100;max-width:none;min-width:100%;width:auto;transition:max-height .125s ease-in;overflow-y:auto}
+.cbi-dropdown > ul > li[display],.cbi-dropdown[open] > ul.preview,.cbi-dropdown[open] > ul.dropdown > li,.cbi-dropdown[multiple] > ul > li > label,.cbi-dropdown[multiple][open] > ul.dropdown > li,.cbi-dropdown[multiple][more] > .more,.cbi-dropdown[multiple][empty] > .more{flex-grow:1;display:flex !important}
+.cbi-dropdown[empty] > ul > li,.cbi-dropdown[optional][open] > ul.dropdown > li[placeholder]{display:block !important}
+.cbi-dropdown[multiple][open] > ul.dropdown > li > form{display:flex !important}
+.cbi-dropdown[open] > ul.dropdown > li .hide-open{display:none}
+.cbi-dropdown[open] > ul.dropdown > li .hide-close{display:block;display:initial}
+.cbi-dropdown[open] > ul.dropdown > li{border-bottom:1px solid #424e5a}
+.cbi-dropdown[open] > ul.dropdown > li[selected]{background:#348cd4;color:#fff}
+.cbi-dropdown[open] > ul.dropdown > li.focus,.cbi-dropdown[open] > ul.dropdown > li:hover{background:rgba(52,140,212,.5);color:#fff}
+.cbi-dropdown[open] > ul.dropdown > li[selected].focus,.cbi-dropdown[open] > ul.dropdown > li[selected]:hover{background:linear-gradient(90deg,#348cd4 50%,rgba(52,140,212,.5))}
+.cbi-dropdown[open] > ul.dropdown > li:last-child{margin-bottom:0;border-bottom:none}
+.cbi-dropdown[open] > ul.dropdown > li[unselectable]{opacity:.7}
+.cbi-dropdown[open] > ul.dropdown > li > input.create-item-input:first-child:last-child{width:100%}
+.cbi-dropdown:focus,.cbi-dropdown[open]{outline:0;border-color:rgba(82,168,236,.8) !important;box-shadow:0 0 8px rgba(82,168,236,.6)}
+.cbi-dropdown[disabled]:not(.btn):not(.cbi-button){opacity:.55;cursor:default}
+.td > .cbi-dropdown:not(.btn):not(.cbi-button),.cbi-dynlist > .add-item > .cbi-dropdown{width:100%}
+.cbi-dynlist{height:auto;min-height:30px;display:inline-flex;flex-direction:column;min-width:210px;max-width:400px;width:auto}
+.cbi-dynlist > .item{margin-bottom:4px;box-shadow:0 0 2px rgba(0,0,0,.3);background:#3b4651;padding:6px 2em 6px 4px;border:1px solid #424e5a;border-radius:3px;color:#c0cbd4;position:relative;pointer-events:auto;overflow:hidden;word-break:break-all;cursor:move}
+.cbi-dynlist > .item::after{content:"×";position:absolute;display:inline-flex;align-items:center;top:-1px;right:-1px;bottom:-1px;padding:0 6px;border:1px solid #424e5a;border-radius:0 3px 3px 0;font-weight:bold;color:#f7531f;background:#333d47}
+.cbi-dynlist > .item.drag-over{border-top:1px solid #c0cbd4}
+.cbi-dynlist > .item.dragging{opacity:.5}
+.cbi-dynlist > .item > span{pointer-events:none}
+.cbi-dynlist > .add-item{display:flex}
+.cbi-dynlist > .add-item > input,.cbi-dynlist > .add-item > button{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbi-dynlist > .add-item > .cbi-input-text.drag-over,.cbi-dynlist > .add-item > .cbi-button-add.drag-over{border-top:1px solid #c0cbd4}

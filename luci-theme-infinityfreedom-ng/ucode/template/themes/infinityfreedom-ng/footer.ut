@@ -146,6 +146,7 @@
 			wrapSections();
 			wrapBareView();
 			styleModernButtons();
+			styleModernFormControls();
 			/* renderPage already ran at ngRender.js parse time over the
 			   full server DOM (no #view on full-template pages like
 			   passwall2 - that call wrapped the fieldsets, styled the
@@ -253,11 +254,34 @@
 				jQuery(root).find('button.cbi-button:not([class*="cbi-button-"])').addClass('btn btn-purple waves-effect waves-light');
 			}
 
+			/* form.js renders its widgets after ngRender.js parsed, so
+			   ngRenderFormControls() (bootstrap classes for selects,
+			   text inputs) never sees them - re-apply here. Also covers
+			   the checkboxes form.js emits without any class (legacy
+			   server markup had cbi-input-checkbox) and the LuCI
+			   dropdown widgets (div.cbi-dropdown) which need a dark
+			   variant to be visible. Idempotent by class checks. */
+			function styleModernFormControls(root) {
+				root = root || viewEl;
+
+				jQuery(root).find('select.cbi-input-select:not(.form-select), select:not([class])').addClass('form-select');
+				jQuery(root).find('input.cbi-input-text:not(.form-control), input[type=text]:not(.form-control):not(.create-item-input)').addClass('form-control');
+				jQuery(root).find('input.cbi-input-password:not(.form-control)').addClass('form-control');
+				jQuery(root).find('textarea:not(.form-control)').addClass('form-control');
+				jQuery(root).find('input[type=checkbox]:not(.form-check-input):not([class])').addClass('form-check-input');
+
+				/* modern form.js toggles use <input type=checkbox> inside
+				   .cbi-value-field without the legacy cbi-input-checkbox
+				   class - give them the checkbox look too */
+				jQuery(root).find('.cbi-value-field > input[type=checkbox]:not(.form-check-input)').addClass('form-check-input');
+			}
+
 			function restylePollRefreshed() {
 				wrapSections();
 				wrapBareView();
 				styleTabmenus(viewEl);
 				styleModernButtons();
+				styleModernFormControls();
 				jQuery("h2[name=content]").css('display', 'none');
 				jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
 			}
