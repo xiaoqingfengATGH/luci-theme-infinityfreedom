@@ -1,0 +1,36 @@
+{#
+	InfinityFreedom-NG (Next Generation) is a clean HTML5 theme for LuCI.
+
+	luci-theme-infinityfreedom-ng (ucode migration)
+	Copyright 2024 Eric <xiaoqingfengatgm@gmail.com>
+
+	Have a bug? Please create an issue here on GitHub!
+	https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues
+
+	Licensed to the public under the Apache License 2.0
+-#}
+
+            </div> <!-- content -->
+        </div> <!-- content-page -->
+	</div> <!-- END wrapper -->
+
+	<script>
+	jQuery(function()
+	{
+		if(jQuery("body").hasClass("authentication-bg")){
+			jQuery("footer.footer").addClass("footer-login")
+			jQuery("div.content-page").addClass("content-page-login")
+		}
+	})
+	</script>
+	<script>
+		jQuery(function(){
+			if(typeof(animation)!="undefined"){
+				animation.destroy();
+			}
+			jQuery("#loading_cover").hide()
+		})
+	</script>
+</body>
+
+</html>

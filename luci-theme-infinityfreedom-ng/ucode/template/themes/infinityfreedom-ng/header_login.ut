@@ -1,0 +1,81 @@
+{#
+	InfinityFreedom-NG (Next Generation) is a clean HTML5 theme for LuCI.
+
+	luci-theme-infinityfreedom-ng (ucode migration)
+	Copyright 2024 Eric <xiaoqingfengatgm@gmail.com>
+
+	Have a bug? Please create an issue here on GitHub!
+	https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues
+
+	Licensed to the public under the Apache License 2.0
+-#}
+
+{%
+	const boardinfo = ubus.call('system', 'board');
+	const hostname = striptags(boardinfo?.hostname ?? '?');
+
+	// send as HTML5
+	http.prepare_content('text/html; charset=UTF-8');
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+	<head>
+		<meta charset="utf-8">
+		<title>
+		{{ striptags(`${hostname}${dispatched?.title ? ` - ${_(dispatched.title)}` : ''}`) }} - LuCI
+		</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta content="A theme customized for Homelede, also applicable to other OpenWrt distributions" name="description" />
+		<meta content="xiaoqingfengatgm@gmail.com" name="author" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<meta name="application-name" content="{{ hostname }} - LuCI">
+		<meta name="apple-mobile-web-app-title" content="{{ hostname }} - LuCI">
+		<meta name="format-detection" content="telephone=no, email=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="full-screen" content="yes">
+		<meta name="x5-page-mode" content="app">
+		<meta name="browsermode" content="application">
+		<meta name="theme-color" content="#0099CC">
+		<meta name="msapplication-tap-highlight" content="no">
+		<meta name="msapplication-TileColor" content="#0099CC">
+
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="{{ media }}/assets/images/favicon.ico">
+
+		<!-- App css -->
+		<link href="{{ media }}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+		<link href="{{ media }}/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+
+		<link href="{{ media }}/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+		<link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+
+		<!-- icons -->
+		<link href="{{ media }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+		<link href="{{ media }}/assets/css/ng.css" rel="stylesheet" type="text/css" />
+
+		<link rel="shortcut icon" href="{{ media }}/favicon.ico">
+		{% if (node?.css): %}
+		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+		{% endif %}
+		{% if (css): %}
+		<style title="text/css">{{ css }}</style>
+		{% endif %}
+		<script src="{{ resource }}/cbi.js"></script>
+		<!-- Vendor js -->
+		<script src="{{ media }}/assets/js/vendor.min.js"></script>
+		<script src="{{ media }}/assets/js/vue.global.prod.js"></script>
+	</head>
+
+<body class="authentication-bg lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"
+    data-layout='{"mode": "dark", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "dark", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
+	<!-- App js-->
+	<script src="{{ media }}/assets/js/app.min.js"></script>
+	<!-- Begin page -->
+    <div id="wrapper">
+        <div class="content-page">
+            <div class="content">

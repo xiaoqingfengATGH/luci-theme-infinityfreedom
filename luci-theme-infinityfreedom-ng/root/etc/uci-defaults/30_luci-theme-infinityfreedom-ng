@@ -1,0 +1,12 @@
+#!/bin/sh
+
+[ -n "$IPKG_INSTROOT" ] || [ "$PKG_UPGRADE" = "1" ] || {
+	uci -q get luci.themes.infinityfreedomNG >/dev/null 2>&1 || \
+	uci batch <<-EOF
+		set luci.themes.infinityfreedomNG=/luci-static/infinityfreedom-ng
+		set luci.main.mediaurlbase=/luci-static/infinityfreedom-ng
+		commit luci
+	EOF
+}
+
+exit 0

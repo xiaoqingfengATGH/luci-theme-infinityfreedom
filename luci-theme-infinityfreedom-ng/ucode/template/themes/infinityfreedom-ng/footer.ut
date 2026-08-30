@@ -1,0 +1,78 @@
+{#
+	InfinityFreedom-NG (Next Generation) is a clean HTML5 theme for LuCI.
+
+	luci-theme-infinityfreedom-ng (ucode migration)
+	Copyright 2024 Eric <xiaoqingfengatgm@gmail.com>
+
+	Have a bug? Please create an issue here on GitHub!
+	https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues
+
+	Licensed to the public under the Apache License 2.0
+-#}
+
+                </div><!-- container-fluid -->
+
+       </div> <!-- content -->
+	   <script src="{{ media }}/assets/js/ngRender.js"></script>
+        <!-- Footer Start -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-9" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"
+						 title="{{ localtime(time()).year }} &copy; {{ version.luciname }} ({{ version.luciversion }} / {{ version.distversion }})">
+                        {{ localtime(time()).year }} &copy; {{ version.luciname }} ({{ version.luciversion }} / {{ version.distversion }})
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-md-end footer-links d-none d-sm-block">
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede" target="_blank">{{ _('固件源码') }}</a>
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki" target="_blank">{{ _('交流讨论') }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end Footer -->
+
+    </div> <!-- content-page -->
+</div> <!-- END wrapper -->
+
+<script>
+	/* run the bootstrap-ification once the client side view is in place.
+	   - for legacy pages (admin_status/index template) the DOM is already
+	     there when this script executes
+	   - for modern client rendered views wait for the view to load */
+	function ngApplyRender() {
+		if (typeof(ngRenderFormControls) != "undefined")
+			ngRenderFormControls();
+	}
+
+	if (typeof(L) != "undefined" && L.dom && document.getElementById('view')) {
+		document.getElementById('view').addEventListener('luci-loaded', function() {
+			ngApplyRender();
+		}, { once: false });
+	}
+</script>
+
+<!-- Right bar overlay-->
+<div class="rightbar-overlay"></div>
+<script>
+jQuery(function()
+{
+	if(jQuery("body").hasClass("authentication-bg")){
+		jQuery("footer.footer").addClass("footer-login")
+		jQuery("div.content-page").addClass("content-page-login")
+	}
+})
+</script>
+<script src="{{ media }}/assets/js/thirdLevelMenuApp.js"></script>
+<script>
+	jQuery(function(){
+		if(typeof(animation)!="undefined"){
+			animation.destroy();
+		}
+		jQuery("#loading_cover").hide()
+	})
+</script>
+</body>
+
+</html>

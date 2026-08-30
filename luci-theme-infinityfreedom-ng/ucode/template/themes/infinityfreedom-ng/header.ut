@@ -1,0 +1,928 @@
+{#
+	InfinityFreedom-NG (Next Generation) is a clean HTML5 theme for LuCI.
+
+	luci-theme-infinityfreedom-ng (ucode migration)
+	Copyright 2024 Eric <xiaoqingfengatgm@gmail.com>
+
+	Have a bug? Please create an issue here on GitHub!
+	https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom/issues
+
+	Licensed to the public under the Apache License 2.0
+-#}
+
+{%
+	import { popen } from 'fs';
+	import { getuid, getspnam } from 'luci.core';
+
+	const boardinfo = ubus.call('system', 'board');
+	const hostname = striptags(boardinfo?.hostname ?? '?');
+
+	// send as HTML5
+	http.prepare_content('text/html; charset=UTF-8');
+
+	// dispatched request path, e.g. [ 'admin', 'network', 'network' ]
+	const request_path = ctx.path ?? [];
+
+	// full menu tree (ACL filtered for the current session)
+	const menu = dispatcher.menu_json(ctx.authacl ?? {}) ?? {};
+
+	/* first visible top level category (usually "admin") */
+	function first_category() {
+		for (let e in children_names(menu))
+			return e.name;
+
+		return 'admin';
+	}
+
+	/* numeric-aware string comparison, mirrors L.naturalCompare() */
+	function natural_cmp(a, b) {
+		let i = 0, j = 0;
+
+		while (i < length(a) && j < length(b)) {
+			let ca = substr(a, i, 1), cb = substr(b, j, 1);
+			let na = '', nb = '';
+
+			while (i < length(a) && match(substr(a, i, 1), /[0-9]/)) {
+				na += substr(a, i, 1);
+				i++;
+			}
+
+			while (j < length(b) && match(substr(b, j, 1), /[0-9]/)) {
+				nb += substr(b, j, 1);
+				j++;
+			}
+
+			if (na != '' && nb != '') {
+				let d = +na - +nb;
+				if (d != 0)
+					return d;
+				continue;
+			}
+
+			if (ca != cb)
+				return (ca > cb) ? 1 : -1;
+
+			i++;
+			j++;
+		}
+
+		return length(a) - length(b);
+	}
+
+	function node_title(node) {
+		// raw (untranslated) title, used for data-title and icon matching,
+		// exactly like the legacy Lua theme did
+		return entityencode(striptags(node?.title ? `${node.title}` : ''), true);
+	}
+
+	function node_title_i18n(node) {
+		// translated title, used for display text
+		return entityencode(striptags(node?.title ? `${_(node.title)}` : ''), true);
+	}
+
+	function node_url(...segments) {
+		return entityencode(dispatcher.build_url(...segments), true);
+	}
+
+	/* ordered list of visible child names, mirrors ui.menu.getChildren():
+	   skip unsatisfied/untitled nodes, follow alias/rewrite targets */
+	function children_names(node) {
+		let names = [];
+
+		for (let name, spec in node?.children) {
+			if (!spec?.satisfied || !spec?.title)
+				continue;
+
+			// alias/rewrite nodes merge the target's children
+			if (type(spec.action) == 'object' &&
+			    (spec.action.type == 'alias' || spec.action.type == 'rewrite') &&
+			    spec.action.path != null) {
+				let target = menu;
+
+				for (let s in split(spec.action.path, '/'))
+					target = target?.children?.[s];
+
+				if (target) {
+					let sub = children_names(target);
+
+					if (length(sub) > 0) {
+						push(names, { name: name, order: spec.order ?? 1000, children: sub, node: target });
+						continue;
+					}
+				}
+			}
+
+			push(names, { name: name, order: spec.order ?? 1000, children: null, node: spec });
+		}
+
+		sort(names, (a, b) => (a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name));
+
+		return names;
+	}
+
+	/* is `path` equal to (or a prefix of) the current request path? */
+	function path_selected(path) {
+		if (length(path) > length(request_path))
+			return false;
+
+		for (let i, s in path)
+			if (request_path[i] != s)
+				return false;
+
+		return true;
+	}
+
+	/* ---- level >= 3 tab menus ("level3Menu"), mirrors render_tabmenu_asJson ---- */
+	function render_tabmenu_json(prefix, node, level) {
+		let names = children_names(node);
+		let html = '';
+		let selected_name = null;
+
+		if (level >= 3 && length(names)) {
+			html += `var level${level}Menu=[`;
+
+			for (let i, e in names) {
+				let active = path_selected([...split(prefix, '/'), e.name]);
+
+				if (active)
+					selected_name = e.name;
+
+				html += `{`;
+				html += `"name":"${e.name}",`;
+				html += `"active":${active ? 'true' : 'false'},`;
+				html += `"href":"${node_url(...split(prefix, '/'), e.name)}",`;
+				html += `"title":"${node_title_i18n(e.node)}"`;
+				html += `}`;
+
+				if (i < length(names) - 1)
+					html += ',';
+			}
+
+			html += '];';
+		}
+		else {
+			for (let e in names)
+				if (path_selected([...split(prefix, '/'), e.name]))
+					selected_name = e.name;
+		}
+
+		if (selected_name != null) {
+			let sub = filter(children_names(node), e => e.name == selected_name)[0];
+			html += render_tabmenu_json(`${prefix}/${selected_name}`, sub.node, level + 1);
+		}
+
+		return html;
+	}
+
+	/* ---- top menu + second level, mirrors render_topmenu_asJson ----
+	   The legacy theme iterated the children of the *category* node
+	   (e.g. "admin"), not the tree root, so URLs are build_url(cat, name). */
+	function render_topmenu_json() {
+		let html = 'var topMenu = {"menus":[';
+		let first = true;
+		let category = length(request_path) ? request_path[0] : first_category();
+		let cattree = menu.children?.[category] ?? menu;
+		let prefix = category;
+
+		for (let e in children_names(cattree)) {
+			let sub_names = e.children ?? children_names(e.node);
+
+			if (!first)
+				html += ',';
+			first = false;
+
+			html += '{';
+			html += `"data-title":"${node_title(e.node)}",`;
+
+			if (length(sub_names) > 0) {
+				html += '"subs": [';
+
+				for (let i, se in sub_names) {
+					html += `{`;
+					html += `"data-title":"${node_title(se.node)}",`;
+					html += `"href":"${node_url(prefix, e.name, se.name)}",`;
+					html += `"title":"${node_title_i18n(se.node)}"`;
+					html += `}`;
+
+					if (i < length(sub_names) - 1)
+						html += ',';
+				}
+
+				html += ']';
+			}
+			else {
+				html += `"href":"${node_url(prefix, e.name)}",`;
+			}
+
+			html += `"title":"${node_title_i18n(e.node)}"`;
+			html += '}';
+		}
+
+		html += ']}';
+
+		return html;
+	}
+
+	function lookup_node(path) {
+		let node = menu;
+
+		for (let s in path) {
+			node = node?.children?.[s];
+
+			if (!node)
+				return null;
+		}
+
+		return node;
+	}
+
+	// top menu entries
+	let topmenu_out = render_topmenu_json();
+
+	// tab menus below the dispatched category
+	let tabmenu_html = '';
+
+	if (length(request_path) >= 1 && menu.children?.[request_path[0]]) {
+		let cat = menu.children[request_path[0]];
+
+		tabmenu_html = render_tabmenu_json(request_path[0], cat, 1);
+	}
+
+	// unsaved changes count (server side, for the initial badge)
+	let ucichanges = 0;
+
+	if (ctx.authsession) {
+		let changes = uci.changes() ?? {};
+
+		for (let config, ops in changes)
+			ucichanges += length(ops);
+	}
+
+	// AdGuard Home detection, mirrors old detectAdGuardHome()
+	let adguard_js = '';
+
+	if (ctx.authsession) {
+		let lan_ip = null;
+
+		let p = popen("uci -q get network.lan.ipaddr 2>/dev/null | head -n1");
+
+		if (p) {
+			lan_ip = trim(p.read('all') ?? '');
+			p.close();
+		}
+
+		if (lan_ip && match(lan_ip, /^\d{1,3}(\.\d{1,3}){3}$/)) {
+			let adguard_url = `http://${lan_ip}:3000`;
+			let check = popen(`wget --server-response --spider -T 2 -t 1 '${adguard_url}' 2>&1 | awk '/HTTP\\// {print $2; exit}'`);
+
+			if (check) {
+				let code = trim(check.read('all') ?? '');
+				check.close();
+
+				if (length(code) > 0)
+					adguard_js = `const RouterHost="${lan_ip}", AdGuardReady = true, AdGuardUrl = "${adguard_url}";`;
+			}
+		}
+	}
+
+	const ver = version;
+-%}
+
+<!DOCTYPE html>
+<html lang="{{ dispatcher.lang }}">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>{{ striptags(`${hostname}${dispatched?.title ? ` - ${_(dispatched.title)}` : ''}`) }} - LuCI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A theme customized for Homelede, also applicable to other OpenWrt distributions" name="description" />
+    <meta content="xiaoqingfengatgm@gmail.com" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+	<meta name="application-name" content="{{ hostname }} - LuCI">
+	<meta name="apple-mobile-web-app-title" content="{{ hostname }} - LuCI">
+	<meta name="format-detection" content="telephone=no, email=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="full-screen" content="yes">
+	<meta name="x5-page-mode" content="app">
+	<meta name="browsermode" content="application">
+	<meta name="theme-color" content="#0099CC">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="msapplication-TileColor" content="#0099CC">
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{{ media }}/assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="{{ media }}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ media }}/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+
+    <link href="{{ media }}/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+
+    <!-- icons -->
+    <link href="{{ media }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+	<link href="{{ media }}/assets/css/ng.css" rel="stylesheet" type="text/css" />
+
+	{% if (node?.css): %}
+	<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
+	{% endif %}
+	{% if (css): %}
+	<style title="text/css">{{ css }}</style>
+	{% endif %}
+
+	<script src="{{ resource }}/cbi.js"></script>
+	<script src="{{ dispatcher.build_url('admin/translations', dispatcher.lang) }}"></script>
+	<!-- Vendor js -->
+	<script src="{{ media }}/assets/js/vendor.min.js"></script>
+	<script src="{{ media }}/assets/js/vue.global.prod.js"></script>
+	<script src="{{ media }}/assets/js/lottie.min.js"></script>
+
+	<script>
+	{{ topmenu_out }}
+
+	const menuIconDef = [
+		{
+			"data-title": "Status",
+			"icon": "fe-activity",
+		},
+		{
+			"data-title": "System",
+			"icon": "fe-settings",
+		},
+		{
+			"data-title": "Docker",
+			"icon": "fe-disc",
+
+		},
+		{
+			"data-title": "Services",
+			"icon": "fe-codepen",
+		},
+		{
+			"data-title": "NAS",
+			"icon": "fe-cloud-snow",
+		},
+		{
+			"data-title": "Control",
+			"icon": "dripicons-toggles",
+		},
+		{
+			"data-title": "VPN",
+			"icon": "dripicons-link",
+		},
+		{
+			"data-title": "dns",
+			"icon": "mdi mdi-dns",
+		},
+		{
+			"data-title": "Network",
+			"icon": "fe-globe",
+		},
+		{
+			"data-title": "Statistics",
+
+			"icon": "dripicons-graph-pie",
+		},
+		{
+			"data-title": "Bandwidth Monitor",
+			"icon": "dripicons-camcorder",
+		}
+	];
+	const iconMap = new Map();
+	for(let i = 0; i < menuIconDef.length; i++) {
+    	let item = menuIconDef[i]
+		iconMap.set(item["data-title"], item["icon"])
+	}
+
+	{{ tabmenu_html }}
+
+	{{ adguard_js }}
+
+	topMenu.menus = topMenu.menus.filter(item => item["data-title"] !== "Logout" && item["data-title"] !== "Log out");
+
+	topMenu.menus.forEach(function(item,index,self){
+		let title = item["data-title"]
+		let icon = iconMap.get(title)
+		if (icon != undefined) {
+			item["icon"] = icon
+		}
+	});
+
+	if(typeof(AdGuardReady)!="undefined" && AdGuardReady)
+	{
+		topMenu.menus.forEach(menu => {
+			if(menu["data-title"]=="dns") {
+				menu["subs"].push(
+					{
+						"data-title": "AdGuardHome",
+						"href": AdGuardUrl,
+						"title": "AdGuardHome"
+					}
+				)
+			}
+		});
+	}
+
+	var luciLocation = {{ ctx.path ?? [] }};
+	var selectedMenu = null;
+	function findSelectedMenu() {
+		let searchPattern = '/' + luciLocation[0] + '/' + luciLocation[1] + '/' + luciLocation[2];
+		for(var item of topMenu.menus) {
+			if(Object.hasOwn(item, 'subs'))
+			{
+				let found = false;
+				for(var it of item.subs)
+				{
+					if(it["href"] && it["href"].indexOf(searchPattern)!=-1)
+					{
+						selectedMenu = it["href"];
+						found = true;
+						break;
+					}
+				}
+				if(found)
+				{
+					break;
+				}
+			}
+		}
+	}
+	findSelectedMenu();
+
+	{% let unsaved_js = (ucichanges > 0) ? '{"count":' + ucichanges + '}' : "null"; %}
+	var unsavedChanges = {{ unsaved_js }};
+	</script>
+</head>
+<!-- body start -->
+
+<body class="lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"
+    data-layout='{"mode": "dark", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "dark", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
+	<!-- App js-->
+	<script src="{{ media }}/assets/js/app.min.js"></script>
+	<div id="loading_cover" class="loadingCover">
+		<div id="lottie" style="width: 500px; height: 500px;"></div>
+		<script>
+			var animation = lottie.loadAnimation({
+				container: document.getElementById('lottie'), // the DOM element
+				renderer: 'svg',
+				loop: true,
+				autoplay: true,
+				path: '{{ media }}/assets/js/loading.json'
+			});
+		</script>
+	</div>
+
+	<!-- Begin page -->
+    <div id="wrapper">
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <div class="container-fluid">
+                <ul class="list-unstyled topnav-menu float-end mb-0">
+
+					<li class="dropdown d-none d-lg-inline-block" id="xhr_poll_status">
+                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="autoRefresh"
+                            href="#" title="{{ _('Automatic refresh') }}">
+                            <i id="xhr_poll_status_off" class="fas fa-toggle-off noti-icon"></i>
+							<i id="xhr_poll_status_on" class="fas fa-toggle-on noti-icon text-info" style="display:none"></i>
+                        </a>
+                    </li>
+
+					<script>
+						$('[data-toggle="autoRefresh"]').on("click", function (t) {
+							t.preventDefault(),
+							(typeof(L) != "undefined" && L.Poll && L.Poll.active) ? L.Poll.stop() : (typeof(L) != "undefined" && L.Poll && L.Poll.start())
+						})
+
+						document.addEventListener('poll-start', function() {
+							$("#xhr_poll_status_on").show()
+							$("#xhr_poll_status_off").hide()
+						});
+						document.addEventListener('poll-stop', function() {
+							$("#xhr_poll_status_off").show()
+							$("#xhr_poll_status_on").hide()
+						});
+					</script>
+
+                    <li class="dropdown d-none d-lg-inline-block">
+                        <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen"
+                            href="#">
+                            <i class="fe-maximize noti-icon"></i>
+                        </a>
+                    </li>
+
+					<script>
+						function t() {
+							document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement || (console.log("pressed"), i("body").removeClass("fullscreen-enable"))
+						}
+						$('[data-toggle="fullscreen"]').on("click", function (t) {
+							t.preventDefault(),
+							$("body").toggleClass("fullscreen-enable"),
+							document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement ? document.cancelFullScreen ? document.cancelFullScreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitCancelFullScreen && document.webkitCancelFullScreen() : document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen() : document.documentElement.mozRequestFullScreen ? document.documentElement.mozRequestFullScreen() : document.documentElement.webkitRequestFullscreen && document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+						}),
+						document.addEventListener("fullscreenchange", t),
+						document.addEventListener("webkitfullscreenchange", t),
+						document.addEventListener("mozfullscreenchange", t)
+					</script>
+
+                    <li id="unchangedIndicator" class="dropdown notification-list topbar-dropdown hidden">
+                        <a class="nav-link dropdown-toggle waves-effect waves-light" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false" title="{{ _('There are unsaved configuration changes, click to view') }}">
+                            <i class="fe-bell noti-icon"></i>
+                            <span class="badge bg-danger rounded-circle noti-icon-badge">0</span>
+                        </a>
+                    </li>
+
+					<script>
+						if(unsavedChanges != null) {
+							function goToUnSaved (e) {
+								e.preventDefault();
+								/* modern LuCI renders unsaved changes through
+								   ui.js changes modal, fall back to URL jump */
+								if (typeof(L) != "undefined" && L.ui && L.ui.changes && L.ui.changes.display)
+									L.ui.changes.display();
+							}
+							changesCount = unsavedChanges["count"]
+							$("#unchangedIndicator > a > span").text(changesCount)
+							$("#unchangedIndicator > a").click(function(e){goToUnSaved(e)})
+							$("#unchangedIndicator > a > i").click(function(e){goToUnSaved(e)})
+							$("#unchangedIndicator > a > span").click(function(e){goToUnSaved(e)})
+							$("#unchangedIndicator").show()
+						}
+					</script>
+
+                    <li class="dropdown notification-list topbar-dropdown">
+                        <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light"
+                            data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false"
+                            aria-expanded="false">
+                            <img src="{{ media }}/assets/images/users/root.jpg" alt="user-image" class="rounded-circle">
+                            <span class="pro-user-name ms-1">
+                                {{ ctx.authuser ?? 'ROOT' }} <i class="mdi mdi-chevron-down"></i>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
+                            <a href="{{ dispatcher.build_url('admin/logout') }}" class="dropdown-item notify-item">
+                                <i class="fe-log-out"></i>
+                                <span>{{ _('Logout') }}</span>
+                            </a>
+
+                        </div>
+                    </li>
+
+                </ul>
+
+                <!-- LOGO -->
+                <div class="logo-box">
+                    <a href="{{ dispatcher.build_url() }}" class="logo logo-dark text-center">
+                        <span class="logo-sm">
+                            <img src="{{ media }}/assets/images/Homelede2023-logo-sm.png" alt="" height="30">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="{{ media }}/assets/images/Homelede2023-logo-light.png" alt="" height="50">
+                        </span>
+                    </a>
+
+                    <a href="{{ dispatcher.build_url() }}" class="logo logo-light text-center">
+                        <span class="logo-sm">
+                            <img src="{{ media }}/assets/images/Homelede2023-logo-sm.png" alt="" height="30">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="{{ media }}/assets/images/Homelede2023-logo-light.png" alt="" height="50">
+                        </span>
+                    </a>
+                </div>
+
+                <ul class="list-unstyled topnav-menu topnav-menu-left m-0 Line">
+                    <li>
+                        <button class="button-menu-mobile waves-effect waves-light">
+                            <i class="fe-menu"></i>
+                        </button>
+						<script>
+							$(".button-menu-mobile").on("click", function (t) {
+								let body = $("body")
+								t.preventDefault();
+								var e = body.attr("data-sidebar-size");
+								993 <= $(window).width() ?
+								"condensed" === e ? body.attr("data-sidebar-size","default") : body.attr("data-sidebar-size","condensed") :
+								(body.attr("data-sidebar-size","default"), body.toggleClass("sidebar-enable"))
+							})
+						</script>
+                    </li>
+
+                    <li>
+                        <!-- Mobile menu toggle (Horizontal Layout)-->
+                        <a class="navbar-toggle nav-link" data-bs-toggle="collapse"
+                            data-bs-target="#topnav-menu-content">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </li>
+                    <li class="dropdown d-none d-xl-block">
+                        <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
+                            role="button" aria-haspopup="false" aria-expanded="false">
+                            {{ _('固件资源') }}
+                            <i class="mdi mdi-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <!-- item-->
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki/HomeLede%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83" target="_blank" class="dropdown-item">
+                                <i class="fe-briefcase me-1"></i>
+                                <span>{{ _('版本下载') }}</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki" class="dropdown-item" target="_blank">
+                                <i class="fe-user me-1"></i>
+                                <span>Wiki</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki/HomeLede-%E9%87%8A%E6%94%BE%E8%AF%B4%E6%98%8E" class="dropdown-item" target="_blank">
+                                <i class="fe-bar-chart-line- me-1"></i>
+                                <span>{{ _('更新记录') }}</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="https://drive.google.com/open?id=1iUDsgh1y5qouP48V61aTsswi3IekscKk" class="dropdown-item" target="_blank">
+                                <i class="fe-settings me-1"></i>
+                                <span>{{ _('谷歌网盘') }}</span>
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <!-- item-->
+                            <a href="https://t.me/t_homelede" class="dropdown-item" target="_blank">
+                                <i class="fe-headphones me-1"></i>
+                                <span>{{ _('交流群') }}</span>
+                            </a>
+
+                        </div>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end Topbar -->
+
+		<!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu">
+
+            <div class="h-100" id="homelede" v-cloak>
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <ul id="side-menu">
+                        <template v-for="(menu, index) in menus" :key="menu.index">
+                            <li>
+                                <a :href="menu.href" :data-title="menu['data-title']">
+                                    <i v-if="menu.icon !=null" :class="menu.icon"></i>
+                                    <span> {{ "{{menu.title}}" }} </span>
+                                    <span v-if="menu.subs !=null" class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" v-if="menu.subs !=null" :id="menu['data-title']">
+                                    <ul class="nav-second-level">
+                                        <li v-for="subMenu in menu.subs">
+                                            <a :href="subMenu.href" :data-title="subMenu['data-title']">{{ "{{subMenu.title}}" }}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+
+                </div>
+                <!-- End Sidebar -->
+
+                <div class="clearfix"></div>
+            </div>
+			<script>
+				if (typeof(topMenu) != "undefined") {
+					var processedMenus = [];
+					var totalIdx = 0;
+
+					topMenu.menus.forEach(function(item,index,self){
+						let level = 1;
+						let cache = {};
+						cache["data-title"] = item["data-title"];
+						cache["href"] = item["href"];
+						cache["title"] = item["title"];
+						cache["level"] = level;
+						cache["index"] = totalIdx++;
+						processedMenus.push(cache)
+
+						if(Object.hasOwn(item, 'subs'))
+						{
+							level = 2;
+							item.subs.forEach(function(it,i,s){
+								let sub = {};
+								sub["data-title"] = it["data-title"];
+								sub["href"] = it["href"];
+								sub["title"] = it["title"];
+								sub["level"] = level;
+								sub["index"] = totalIdx++;
+								processedMenus.push(sub)
+							});
+						}
+					});
+
+					const vm = Vue.createApp({
+						data() {
+							return topMenu;
+						}
+					}).mount('#homelede');
+				}
+			</script>
+            <!-- Sidebar -left -->
+
+        </div>
+        <!-- Left Sidebar End -->
+<script>
+if (typeof(topMenu) != "undefined") {
+	jQuery(function()
+	{
+		jQuery("#side-menu > li").each(function(){
+			var $this = jQuery(this);
+			var subContainer = $this.children("div");
+			var a = $this.children("a")
+			var arrow = a.children("span.menu-arrow")
+			let hasSub = $this.find("ul.nav-second-level").length > 0;
+			if(hasSub)
+			{
+				a.click(function(){
+					if(!a.next().is(':visible'))
+					{
+						arrow.css("transform", "rotate(90deg)");
+					}
+					else
+					{
+						arrow.css("transform", "");
+					}
+					a.toggleClass("collapsed")
+					subContainer.slideToggle(400);
+				});
+			}
+		});
+
+		$("#side-menu a").each(function () {
+			var t = window.location.href.split(/[?#]/)[0];
+			const base = "/cgi-bin/luci"
+			const baseIdx = t.indexOf(base)
+			const funcPath = t.slice(baseIdx + base.length)
+			const parts = funcPath.split("/");
+			const extractedParts = parts.slice(0, 4);
+			const menuRegistedFuncPath = extractedParts.join("/");
+			const currentPath = t.slice(0,baseIdx) + base + menuRegistedFuncPath
+			if (this.href == currentPath) {
+				$(this).addClass("active"),
+					$(this).parent().addClass("menuitem-active"),
+					$(this).parent().parent().parent().addClass("show"),
+					$(this).parent().parent().parent().parent().addClass("menuitem-active");
+				var e = $(this).parent().parent().parent().parent().parent().parent();
+				"sidebar-menu" !== e.attr("id") && e.addClass("show"),
+					$(this).parent().parent().parent().parent().parent().parent().parent().addClass("menuitem-active");
+				var i = $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent();
+				"wrapper" !== i.attr("id") && i.addClass("show");
+				var a = $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent();
+				a.is("body") || a.addClass("menuitem-active")
+			}
+		})
+
+		if(typeof luciLocation != "undefined")
+		{
+			new SimpleBar($("#homelede")[0]);
+		}
+	})
+}
+</script>
+		<!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+					{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
+					<div class="alert-message warning">
+							<h4>{{ _('No password set!') }}</h4>
+							<p>{{ _('There is no password set on this router. Please configure a root password to protect the web interface and enable SSH.') }}</p>
+							{% if (dispatcher.lookup("admin/system/admin")): %}
+							<div class="right"><a class="btn" href="{{ dispatcher.build_url("admin/system/admin") }}">{{ _('Go to password configuration...') }}</a></div>
+							{% endif %}
+					</div>
+					{% endif %}
+
+					<noscript>
+						<div class="alert-message warning">
+							<h4>{{ _('JavaScript required!') }}</h4>
+							<p>{{ _('You must enable JavaScript in your browser or LuCI will not work properly.') }}</p>
+						</div>
+					</noscript>
+
+					<!-- start page title -->
+					<div class="row">
+						<div class="col-12">
+							<div id="homelede_page_desc_popup" class="toast fade hide" role="alert" aria-live="assertive" aria-atomic="true" data-bs-toggle="toast">
+								<div class="toast-header">
+									<img src="{{ media }}/assets/images/Homelede2023-logo-sm.png" alt="brand-logo" height="12" class="me-1">
+									<strong class="me-auto">PAGETITLE</strong>
+									<small></small>
+									<button type="button" class="btn-close ms-2" data-bs-dismiss="toast" aria-label="Close"></button>
+								</div>
+								<div class="toast-body">
+									PAGEDESC
+								</div>
+							</div>
+							<div class="page-title-box">
+								<div>
+									<span id="homelede_page_title" class="page-title mx-1" style="font-size:1.25rem">{{ _('Loading...') }}</span>
+									<span id="homelede_page_desc"></span>
+								</div>
+								<div>
+									<ol id="homelede_breadcrumb" class="breadcrumb m-0">
+									</ol>
+									<script>
+										var PageLevel2Title
+										function buildBreadCrumb() {
+											let level1,level2,level3
+											let level2Url,level3Url
+											let searchPattern = '/' + luciLocation[0] + '/' + luciLocation[1]+ '/' + luciLocation[2];
+											for(var item of topMenu.menus) {
+												if(Object.hasOwn(item, 'subs'))
+												{
+													let found = false;
+													for(var it of item.subs)
+													{
+														if(it["href"] && it["href"].indexOf(searchPattern)!=-1)
+														{
+															level1 = item["title"]
+											level2 = it["title"]
+											PageLevel2Title = level2
+											level2Url = it["href"]
+											if(luciLocation.length==4 && typeof(level3Menu)!="undefined") {
+												searchPattern = searchPattern + "/" + luciLocation[3];
+												for(var l3m of level3Menu) {
+													if(l3m["href"] && l3m["href"].indexOf(searchPattern)!=-1)
+													{
+														level3 = l3m["title"]
+														level3Url = l3m["href"]
+														break
+													}
+												}
+											}
+											found = true;
+											break;
+										}
+									}
+													if(found)
+													{
+														break;
+													}
+												}
+											}
+											let breadCrumb = $("#homelede_breadcrumb")
+											breadCrumb.append('<li class="breadcrumb-item"><a href="/cgi-bin/luci/">Homelede</a></li>')
+											if(typeof(level1)!="undefined")
+											{
+												breadCrumb.append('<li class="breadcrumb-item"><a href="javascript: void(0);">' + level1 + '</a></li>')
+											}
+											if(typeof(level2)!="undefined")
+											{
+												if(typeof(level3)!="undefined") {
+													breadCrumb.append('<li class="breadcrumb-item"><a href="' + level2Url + '">' + level2 + '</a></li>')
+													breadCrumb.append('<li class="breadcrumb-item active"><a href="' + level3Url + '">' + level3 + '</a></li>')
+												} else {
+													breadCrumb.append('<li class="breadcrumb-item active"><a href="' + level2Url + '">' + level2 + '</a></li>')
+												}
+											}
+
+										}
+										buildBreadCrumb();
+									</script>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- end page title -->
+					<div class="row">
+						<div class="col-12" id="thirdLevelMenuApp">
+							<div class="card-header">
+								<ul class="nav nav-pills card-header-pills mb-0">
+									<li class="nav-item" v-for="(line,index) in thirdLevelMenu" :key="line.name" @click="goToUrl($event)">
+										<a :href="line.href" data-bs-toggle="tab" aria-expanded="false" class="nav-link" :class="line.active?'active':''">
+											{{ "{{line.title}}" }}
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
