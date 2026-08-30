@@ -80,26 +80,92 @@
 					el.addClass('card-body');
 				});
 			}
+
+			/* "bare" modern views (crontab, processes, startup, ...) have
+			   no cbi-section markup at all - wrap their main content in a
+			   card so they get the same look the legacy server rendered
+			   CBI pages had */
+			function wrapBareView() {
+				/* anything already cardified (incl. our own col-12/card
+				   wrappers - matching them here again would nest a new
+				   card layer on every poll and grow the DOM forever) */
+				if (viewEl.querySelector('.cbi-section, .cbi-map .card') != null
+				    || viewEl.firstElementChild?.classList.contains('col-12'))
+					return;
+
+				let main = jQuery(viewEl).children().filter(function(i, e) {
+					return !e.matches('h2, .cbi-map-descr, .cbi-section-descr, .cbi-page-actions, script, .spinning, .col-12');
+				});
+
+				main.each(function(i, e) {
+					let el = jQuery(e);
+					if (el.closest('.card').length > 0)
+						return;
+					el.wrap('<div class="col-12"></div>');
+					el.wrap('<div class="card"></div>');
+					el.addClass('card-body');
+
+					/* renderPage only wraps table.cbi-section-table in
+					   .table-responsive - plain view tables need it too */
+					el.find('table').addBack('table').each(function(j, tb) {
+						if (jQuery(tb).closest('.table-responsive').length == 0)
+							jQuery(tb).wrap('<div class="table-responsive"></div>');
+					});
+				});
+			}
 			jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
 			jQuery("div.cbi-map > .cbi-section > h3:first-child").css('font-size', 'large');
 
 			wrapSections();
+			wrapBareView();
 			renderPage(t);
 
 			/* poll-driven views (e.g. dockerman/containers) rebuild their
 			   cbi-sections every few seconds, discarding our wrappers -
 			   re-wrap new bare sections and re-hide the rebuilt h2 after
-			   every mutation */
+			   every mutation.
+
+			   Throttled: views that insert large lists row by row
+			   (package-manager: thousands of <tr>) fire hundreds of
+			   mutations per second; an unthrottled full-DOM rescan on
+			   each one starves the main thread. Coalesce bursts into a
+			   single rescan at most every 250ms, and only schedule a new
+			   check while one is pending (no timer, so background-tab
+			   throttling merely delays, never deadlocks). */
+			let restylePending = false;
+			let restyleLast = 0;
+
 			function restylePollRefreshed() {
 				wrapSections();
+				wrapBareView();
 				jQuery("h2[name=content]").css('display', 'none');
 				jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
+			}
+
+			function restyleScheduled() {
+				restylePending = false;
+				restyleLast = Date.now();
+				restylePollRefreshed();
+			}
+
+			function scheduleRestyle() {
+				if (restylePending)
+					return;
+
+				let since = Date.now() - restyleLast;
+				if (since >= 250) {
+					restylePending = true;
+					Promise.resolve().then(restyleScheduled);
+				} else {
+					restylePending = true;
+					setTimeout(restyleScheduled, 250 - since);
+				}
 			}
 
 			if (obs) {
 				obs.disconnect();
 				obs = new MutationObserver(function() {
-					restylePollRefreshed();
+					scheduleRestyle();
 				});
 				obs.observe(viewEl, { childList: true, subtree: true });
 			}
