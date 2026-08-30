@@ -7,3 +7,32 @@
 div.cbi-progressbar{position:relative;min-width:170px;height:1.4rem;margin:1.4em 0 4px 0;background-color:#424e5a;border-radius:.25rem;overflow:hidden}
 div.cbi-progressbar>div{position:absolute;top:0;left:0;bottom:0;width:0%;border-radius:.25rem;background-color:#348cd4;transition:width .6s ease;background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-size:.75rem .75rem;animation:1s linear infinite progress-bar-stripes}
 div.cbi-progressbar::after{content:attr(title);position:absolute;left:0;top:0;bottom:0;right:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* LuCI 24.10 status widgets (view/status/include/15_ports.js, 30_network.js)
+   emit .ifacebox / .cbi-tooltip markup whose entire look is theme CSS
+   (bootstrap ships this in cascade.css; this theme only ever styled the
+   legacy Lua overview by id selectors). Style for the dark card look:
+
+   - tooltips: absolutely positioned off-screen, shown on hover
+     (bootstrap cascade.css parity) - without this they render inline
+     and blow up the port boxes to ~500px tall
+   - ifacebox: dark track boxes matching .card (#36404a @ .9), light
+     head bar, muted body text; strong labels readable (ng.css paints
+     all strong white which is invisible on the light head) */
+.cbi-tooltip{position:absolute;z-index:1000;left:-10000px;box-shadow:0 0 3px #444;border-radius:3px;background:#22282e;color:#c0cbd4;padding:2px 5px;white-space:pre;opacity:0;transition:opacity .25s ease-in}
+.cbi-tooltip-container:hover .cbi-tooltip:not(:empty){left:auto;opacity:1;transition:opacity .25s ease-in}
+
+div.ifacebox{background-color:rgba(54,64,74,.6);border:1px solid rgba(255,255,255,.08);border-radius:.25rem;overflow:hidden;align-self:start;min-width:100px}
+div.ifacebox .ifacebox-head{background:#3d4a56;color:#c0cbd4;padding:.35rem .5rem;font-size:.85rem;border-radius:0}
+div.ifacebox .ifacebox-body{color:#94a0ad;padding:.5rem;font-size:.85rem;line-height:1.5}
+div.ifacebox .ifacebox-head strong{color:#fff}
+div.ifacebox .ifacebox-body strong{color:#c0cbd4;font-weight:600}
+div.ifacebox img{filter:brightness(0) invert(1);opacity:.85;vertical-align:middle}
+div.ifacebox .zonebadge{border-radius:2px}
+
+/* device-info badges rendered inline inside widget boxes
+   (30_network.js upstream box) - subtle dark chip look; the
+   cbi-tooltip.ifacebadge variants keep their tooltip behavior
+   (same palette, so no special-casing needed) */
+.ifacebadge{display:inline-flex;align-items:center;gap:.25em;background:rgba(34,40,46,.85);border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:2px 6px;color:#c0cbd4;font-size:.8rem}
+.ifacebadge img{width:16px;height:16px}
