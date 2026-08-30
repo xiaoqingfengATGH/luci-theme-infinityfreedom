@@ -49,7 +49,17 @@
 		if (!viewEl || typeof(renderPage) == "undefined")
 			return;
 
+		/* declared before ngFullRender() so the synchronous path below
+		   cannot hit the temporal dead zone of a later `let` binding */
+		var obs = null;
+		let ngDone = false;
+
 		function ngFullRender() {
+			if (ngDone)
+				return;
+			ngDone = true;
+			obs?.disconnect();
+
 			let t = (typeof(luciLocation) != "undefined")
 				&& luciLocation.length == 3
 				&& luciLocation[1] == "status"
@@ -58,24 +68,51 @@
 			/* modern client rendered views use <div class="cbi-section">
 			   where legacy server rendered CBI used <fieldset> - apply the
 			   same card treatment before the legacy renderer runs */
-			jQuery("div.cbi-section:not(fieldset)").each(function(i, e) {
-				let el = jQuery(e);
-				if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
-					return;
-				let col = jQuery('<div class="col-12"></div>');
-				let card = jQuery('<div class="card"></div>');
-				el.wrap(col);
-				el.wrap(card);
-				el.addClass('card-body');
-			});
+			function wrapSections() {
+				jQuery("div.cbi-section:not(fieldset)").each(function(i, e) {
+					let el = jQuery(e);
+					if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
+						return;
+					let col = jQuery('<div class="col-12"></div>');
+					let card = jQuery('<div class="card"></div>');
+					el.wrap(col);
+					el.wrap(card);
+					el.addClass('card-body');
+				});
+			}
 			jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
 			jQuery("div.cbi-map > .cbi-section > h3:first-child").css('font-size', 'large');
 
+			wrapSections();
 			renderPage(t);
+
+			/* poll-driven views (e.g. dockerman/containers) rebuild their
+			   cbi-sections every few seconds, discarding our wrappers -
+			   re-wrap new bare sections and re-hide the rebuilt h2 after
+			   every mutation */
+			function restylePollRefreshed() {
+				wrapSections();
+				jQuery("h2[name=content]").css('display', 'none');
+				jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
+			}
+
+			if (obs) {
+				obs.disconnect();
+				obs = new MutationObserver(function() {
+					restylePollRefreshed();
+				});
+				obs.observe(viewEl, { childList: true, subtree: true });
+			}
 
 			/* legacy ngRender.js moves title/descr at load time which is
 			   too early for async views - redo it here */
 			let titleEle = jQuery("h2[name=content]");
+			/* modern client rendered views (LuCI >= 22.03 ucode views)
+			   emit <h2> without the legacy name="content" attribute -
+			   treat the first heading inside #view the same way */
+			if (titleEle.length == 0)
+				titleEle = jQuery(viewEl).find("h2").first();
+
 			if (titleEle.length > 0) {
 				jQuery("#homelede_page_title").html(titleEle[0].innerHTML);
 				jQuery("#homelede_page_desc_popup > div.toast-header > strong.me-auto").html(titleEle[0].innerHTML);
@@ -92,12 +129,20 @@
 		}
 
 		/* view.ut always renders a spinning "Loading view…" placeholder
-		   inside #view, so "has children" is not "has content" */
+		   inside #view, so "has children" is not "has content".
+		   Note: poll-driven widgets keep their own <em class="spinning">
+		   "collecting data" placeholders forever between polls, so we
+		   must not require the absence of ALL spinners - only look for
+		   actual view content markers instead. */
 		function hasRealContent() {
 			let v = document.getElementById('view');
 			if (!v || v.children.length == 0)
 				return false;
-			return !v.querySelector('.spinning') && v.textContent.indexOf('Loading view') < 0;
+			/* still the initial placeholder? */
+			if (v.children.length == 1 && v.firstElementChild.classList.contains('spinning'))
+				return false;
+			/* real view content markers (modern client views + legacy CBI) */
+			return !!(v.querySelector('.cbi-map, .cbi-section, .ifacebox, table, form, h2, ul, ol'));
 		}
 
 		/* synchronous (legacy server rendered) pages: DOM is ready now */
@@ -106,17 +151,22 @@
 			return;
 		}
 
-		/* async client rendered views */
-		let timer = null;
-		let obs = new MutationObserver(function() {
-			if (timer)
-				clearTimeout(timer);
-			timer = setTimeout(function() {
-				if (hasRealContent()) {
-					obs.disconnect();
-					ngFullRender();
-				}
-			}, 400);
+		/* async client rendered views: fires once L.setupDOM finished */
+		function ngMaybe() {
+			if (hasRealContent())
+				ngFullRender();
+		}
+
+		if (typeof(L) != "undefined" && L.env && !L.loaded)
+			document.addEventListener('luci-loaded', ngMaybe, { once: true });
+
+		/* belt and braces: watch #view mutations. View.render() fills #view
+		   in a single DOM.content() replacement, so a content marker seen
+		   in the (microtask) mutation callback means the full tree is in.
+		   No setTimeout debounce here: background tabs throttle timers to
+		   ~1/minute which would delay rendering until refocus. */
+		obs = new MutationObserver(function() {
+			ngMaybe();
 		});
 
 		obs.observe(viewEl, { childList: true, subtree: true });
