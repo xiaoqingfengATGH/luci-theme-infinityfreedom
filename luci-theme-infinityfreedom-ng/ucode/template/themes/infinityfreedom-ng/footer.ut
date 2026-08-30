@@ -44,7 +44,10 @@
 	     wait for it to settle, then render ONCE (renderPage() is not
 	     idempotent - re-running would nest the card wrappers) */
 	(function() {
-		let viewEl = document.getElementById('view');
+		/* full-template app pages (e.g. passwall2) render their CBI
+		   markup straight into the page with no #view container - fall
+		   back to the .cbi-map root so the bootstrap-ification runs */
+		let viewEl = document.getElementById('view') || document.querySelector('.cbi-map');
 
 		if (!viewEl || typeof(renderPage) == "undefined")
 			return;
@@ -71,7 +74,12 @@
 			function wrapSections() {
 				jQuery("div.cbi-section:not(fieldset)").each(function(i, e) {
 					let el = jQuery(e);
+					/* already wrapped, or a nested section inside a tab
+					   panel (1.2 keeps those inside the tab content area,
+					   not as separate cards) */
 					if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
+						return;
+					if (el.closest('.cbi-tabcontainer').length > 0)
 						return;
 					let col = jQuery('<div class="col-12"></div>');
 					let card = jQuery('<div class="card"></div>');
@@ -119,7 +127,16 @@
 			wrapSections();
 			wrapBareView();
 			styleModernButtons();
-			renderPage(t);
+			/* renderPage already ran at ngRender.js parse time over the
+			   full server DOM (no #view on full-template pages like
+			   passwall2 - that call wrapped the fieldsets, styled the
+			   inputs and the page actions). Calling it again here would
+			   nest the card wrappers; on #view pages the parse-time call
+			   was a no-op over the empty view, so this delayed call is
+			   the one that does the real work. */
+			if (viewEl.id == 'view')
+				renderPage(t);
+			styleTabmenus(viewEl);
 
 			/* poll-driven views (e.g. dockerman/containers) rebuild their
 			   cbi-sections every few seconds, discarding our wrappers -
@@ -135,6 +152,45 @@
 			   throttling merely delays, never deadlocks). */
 			let restylePending = false;
 			let restyleLast = 0;
+
+			function styleTabmenus(root) {
+				root = root || document;
+
+				/* cbi_init() builds ul.cbi-tabmenu via jQuery(document).ready,
+				   i.e. AFTER this script parsed and legacy renderPage() ran -
+				   bootstrap-ify tab bars here (idempotent: addClass on an
+				   already-styled bar is a no-op) */
+				jQuery(root).find("ul.cbi-tabmenu:not(.nav)").each(function(i, e) {
+					let ul = jQuery(e);
+					ul.addClass("nav nav-tabs nav-bordered");
+
+					let next = ul.next();
+					if (next.is("fieldset") || next.hasClass("cbi-section-node") || next.hasClass("cbi-section-node-tabbed"))
+						ul.addClass("mb-3");
+
+					ul.children("li").each(function(j, li) {
+						let l = jQuery(li);
+						l.addClass("nav-item");
+						let a = l.find("a");
+						if (l.hasClass("cbi-tab-disabled"))
+							a.addClass("nav-link");
+						else
+							a.addClass("nav-link active");
+					});
+				});
+
+				/* keep bootstrap active state in sync when cbi tabs are
+				   switched (cbi.js toggles cbi-tab classes; delegate so it
+				   survives any re-render) */
+				if (!root.__ngTabsDelegated) {
+					root.__ngTabsDelegated = true;
+					jQuery(root).on("click", "ul.nav-tabs > li.nav-item", function(ev) {
+						let ul = jQuery(this).closest("ul.nav-tabs");
+						ul.find("li.nav-item > a").removeClass("active");
+						jQuery(this).find("a").addClass("active");
+					});
+				}
+			}
 
 			/* modern client views render <button> elements instead of the
 			   legacy <input type=submit> - the legacy renderButtons() only
@@ -181,6 +237,7 @@
 			function restylePollRefreshed() {
 				wrapSections();
 				wrapBareView();
+				styleTabmenus(viewEl);
 				styleModernButtons();
 				jQuery("h2[name=content]").css('display', 'none');
 				jQuery("div.cbi-section > h3, div.cbi-section > h4").addClass('header-title mb-3');
@@ -206,13 +263,16 @@
 				}
 			}
 
-			if (obs) {
-				obs.disconnect();
-				obs = new MutationObserver(function() {
-					scheduleRestyle();
-				});
-				obs.observe(viewEl, { childList: true, subtree: true });
-			}
+			/* keep observing after the initial render: passwall2-style
+			   full-template pages have cbi_init() build their tab bars
+			   via jQuery(document).ready, i.e. after this script ran.
+			   obs is still null on the synchronous path (the assignment
+			   at the bottom never runs there) - hence the ?. */
+			obs?.disconnect();
+			obs = new MutationObserver(function() {
+				scheduleRestyle();
+			});
+			obs.observe(viewEl, { childList: true, subtree: true });
 
 			/* LuCI renders dialogs (ui.showModal) into #modal_overlay at
 			   body level, outside #view. ui.js creates that node during
@@ -265,7 +325,7 @@
 		   must not require the absence of ALL spinners - only look for
 		   actual view content markers instead. */
 		function hasRealContent() {
-			let v = document.getElementById('view');
+			let v = viewEl;
 			if (!v || v.children.length == 0)
 				return false;
 			/* still the initial placeholder? */
