@@ -36,3 +36,13 @@ div.ifacebox .zonebadge{border-radius:2px}
    (same palette, so no special-casing needed) */
 .ifacebadge{display:inline-flex;align-items:center;gap:.25em;background:rgba(34,40,46,.85);border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:2px 6px;color:#c0cbd4;font-size:.8rem}
 .ifacebadge img{width:16px;height:16px}
+
+/* Status-widget tables (view/status/include/*.js) emit table > tr > td
+   directly, without a tbody. bootstrap's cell padding rule
+   (.table > :not(caption) > * > *) needs the tbody layer and does not
+   match, so cells fall back to the UA default 1px padding - rows sit
+   cramped at 25px vs the legacy 50px. Restore bootstrap's own padding
+   value for these direct rows (scoped to the widget cards so real
+   .table markup elsewhere keeps its tbody-derived styling). */
+.cbi-section > div > table.table > tr > td,
+.cbi-section > div > table.table > tr > th{padding:.85rem .85rem;vertical-align:middle}
