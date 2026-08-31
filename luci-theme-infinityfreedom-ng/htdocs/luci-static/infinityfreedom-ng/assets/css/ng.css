@@ -237,3 +237,10 @@ tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
 body.Processeslogged-in #view table .cbi-section-actions{width:220px;min-width:220px;white-space:nowrap}
 body.Processeslogged-in #view table td.cbi-section-actions>div{display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
 body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
+/* system/logging log_size: form.js wraps the input in a block div and emits
+   the short KiB unit as the following .cbi-value-description, forcing the
+   unit onto a second line. Flatten only this widget wrapper and keep input +
+   unit as one no-wrap flex row; long help descriptions remain unchanged. */
+#view .cbi-value[data-name="log_size"]>.cbi-value-field{display:flex;align-items:center;flex-wrap:nowrap}
+#view .cbi-value[data-name="log_size"]>.cbi-value-field>div:first-child{display:contents}
+#view .cbi-value[data-name="log_size"]>.cbi-value-field>.cbi-value-description{margin-left:.25rem;white-space:nowrap}
