@@ -155,3 +155,53 @@ div.ifacebox .zonebadge{border-radius:2px}
 	border: 1px solid #424e5a;
 	border-radius: .2rem;
 }
+
+/* LuCI dialogs (ui.showModal / uci changelog etc.) render
+   div.modal.cbi-modal into body > #modal_overlay and toggle
+   body.modal-overlay-active - they NEVER add bootstrap's .show class,
+   so the stock .modal{display:none} keeps every dialog invisible.
+   The legacy LuCI bootstrap theme treats .modal as a plain visible box
+   styled by #modal_overlay rules; mirror that approach here. */
+#modal_overlay {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: -10000px;
+	background: rgba(0, 0, 0, .7);
+	z-index: 9990;
+	visibility: hidden;
+	opacity: 0;
+	overflow: auto;
+	transition: opacity .15s linear;
+}
+
+body.modal-overlay-active #modal_overlay {
+	left: 0;
+	right: 0;
+	visibility: visible;
+	opacity: 1;
+}
+
+body.modal-overlay-active {
+	overflow: hidden;
+}
+
+#modal_overlay > .modal {
+	display: block;
+	position: relative;
+	top: auto;
+	left: auto;
+	width: 90%;
+	max-width: 900px;
+	min-height: 32px;
+	height: auto;
+	margin: 5em auto;
+	border-radius: .3rem;
+	background: #37424c;
+	border: 1px solid #424e5a;
+	box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .5);
+	padding: 1rem 1.25rem;
+	overflow: visible;
+	z-index: auto;
+	color: #a9b7c6;
+}
