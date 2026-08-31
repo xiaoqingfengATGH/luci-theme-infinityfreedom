@@ -205,3 +205,11 @@ body.modal-overlay-active {
 	z-index: auto;
 	color: #a9b7c6;
 }
+
+/* LuCI empty-table rows carry tr.placeholder ('尚无任何配置' etc.), an
+   entirely different semantic from bootstrap 5's .placeholder loading
+   skeleton (bg:currentcolor, opacity .5, display:inline-block) which
+   paints the row as an unreadable color block and breaks table layout.
+   Reset to a normal muted empty-state row. */
+tr.placeholder,.tr.placeholder{display:table-row;background-color:transparent;opacity:1;cursor:default}
+tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
