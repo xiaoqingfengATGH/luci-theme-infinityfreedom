@@ -45,7 +45,7 @@ div.ifacebox .zonebadge{border-radius:2px}
    value for these direct rows (scoped to the widget cards so real
    .table markup elsewhere keeps its tbody-derived styling). */
 .cbi-section > div > table.table > tr > td,
-.cbi-section > div > table.table > tr > th{padding:.85rem .85rem;vertical-align:middle}
+.cbi-section > div > table.table > tr > th{padding:.85rem .85rem;vertical-align:middle;border-bottom:1px solid #424e5a}
 /* widget tables have no tbody, so bootstrap's `.table > :not(caption) > * > *`
    cell rule overreaches one level deeper and pads the td's element children
    (progressbars, spans) as if they were cells - reset that. */
