@@ -230,3 +230,10 @@ tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
 #scrollDownButton::before{content:"↓";font-size:1rem;font-weight:700;line-height:1}
 #scrollUpButton::before{content:"↑";font-size:1rem;font-weight:700;line-height:1}
 #scrollDownButton:active,#scrollUpButton:active{transform:translateY(1px);box-shadow:0 1px 3px rgba(0,0,0,.28)}
+/* Process list: auto table layout lets the command column consume nearly all
+   available width, collapsing the actions column to ~110px and stacking its
+   three buttons. Reserve enough space for the action group and keep its
+   buttons on one flex row; the command column remains the flexible column. */
+body.Processeslogged-in #view table .cbi-section-actions{width:220px;min-width:220px;white-space:nowrap}
+body.Processeslogged-in #view table td.cbi-section-actions>div{display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
+body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
