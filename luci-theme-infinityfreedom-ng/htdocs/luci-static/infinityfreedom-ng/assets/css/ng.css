@@ -218,3 +218,15 @@ tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
    positive top margin, leaving it visibly above the adjacent Chinese label.
    Center it in the line box and nudge by .1em so both bottom edges align. */
 #view label + input.cbi-input-checkbox.form-check-input{vertical-align:middle;margin-top:0;transform:translateY(calc(.1em - 1px))}
+/* Log navigation actions: the view emits both as generic
+   cbi-button-neutral controls, which maps to the pale secondary button and
+   looks unstyled on the dark log card. Give each direction a distinct theme
+   action color and an arrow cue without affecting other neutral buttons. */
+#scrollDownButton,#scrollUpButton{display:inline-flex;align-items:center;gap:.45rem;padding:.45rem .9rem;color:#fff;border:0;border-radius:.25rem;font-weight:500;box-shadow:0 2px 6px rgba(0,0,0,.22);transition:background-color .15s ease,box-shadow .15s ease,transform .1s ease}
+#scrollDownButton{background-color:#348cd4}
+#scrollDownButton:hover,#scrollDownButton:focus{color:#fff;background-color:#2c77b4;box-shadow:0 3px 9px rgba(52,140,212,.35)}
+#scrollUpButton{background-color:#8892d6}
+#scrollUpButton:hover,#scrollUpButton:focus{color:#fff;background-color:#747cb6;box-shadow:0 3px 9px rgba(136,146,214,.35)}
+#scrollDownButton::before{content:"↓";font-size:1rem;font-weight:700;line-height:1}
+#scrollUpButton::before{content:"↑";font-size:1rem;font-weight:700;line-height:1}
+#scrollDownButton:active,#scrollUpButton:active{transform:translateY(1px);box-shadow:0 1px 3px rgba(0,0,0,.28)}
