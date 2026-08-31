@@ -4,7 +4,7 @@
    cascade.css; this theme never had one - the legacy Lua overview used
    inline styles + #memtotal-style id rules). Match the legacy memory bar:
    dark track, striped blue fill, centered white value text. */
-div.cbi-progressbar{position:relative;min-width:170px;height:1.4rem;margin:1.4em 0 4px 0;background-color:#424e5a;border-radius:.25rem;overflow:hidden}
+div.cbi-progressbar{position:relative;display:inline-block;vertical-align:middle;min-width:170px;height:22px;margin:0;background-color:#424e5a;border-radius:.25rem;overflow:hidden}
 div.cbi-progressbar>div{position:absolute;top:0;left:0;bottom:0;width:0%;border-radius:.25rem;background-color:#348cd4;transition:width .6s ease;background-image:linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);background-size:.75rem .75rem;animation:1s linear infinite progress-bar-stripes}
 div.cbi-progressbar::after{content:attr(title);position:absolute;left:0;top:0;bottom:0;right:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
@@ -46,6 +46,11 @@ div.ifacebox .zonebadge{border-radius:2px}
    .table markup elsewhere keeps its tbody-derived styling). */
 .cbi-section > div > table.table > tr > td,
 .cbi-section > div > table.table > tr > th{padding:.85rem .85rem;vertical-align:middle}
+/* widget tables have no tbody, so bootstrap's `.table > :not(caption) > * > *`
+   cell rule overreaches one level deeper and pads the td's element children
+   (progressbars, spans) as if they were cells - reset that. */
+.cbi-section > div > table.table > tr > td > *,
+.cbi-section > div > table.table > tr > th > *{padding:0}
 
 /* cbi tab panels (form.js renders one div[data-tab] per tab, the
    active one flagged data-tab-active="true"). Without these rules
