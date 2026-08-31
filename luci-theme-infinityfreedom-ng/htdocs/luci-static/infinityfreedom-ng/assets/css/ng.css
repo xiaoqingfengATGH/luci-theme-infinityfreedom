@@ -213,3 +213,8 @@ body.modal-overlay-active {
    Reset to a normal muted empty-state row. */
 tr.placeholder,.tr.placeholder{display:table-row;background-color:transparent;opacity:1;cursor:default}
 tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
+/* Inline filter rows in status/logs place a label immediately before a
+   checkbox. Bootstrap aligns .form-check-input to the line top with a
+   positive top margin, leaving it visibly above the adjacent Chinese label.
+   Center it in the line box and nudge by .1em so both bottom edges align. */
+#view label + input.cbi-input-checkbox.form-check-input{vertical-align:middle;margin-top:0;transform:translateY(.1em)}
