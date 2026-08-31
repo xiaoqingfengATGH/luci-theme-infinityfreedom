@@ -120,6 +120,26 @@
 				    || viewEl.firstElementChild?.classList.contains('col-12'))
 					return;
 
+				/* Bare views may use ui.tabs directly (status/iptables):
+				   #view contains a generated ul.cbi-tabmenu immediately followed
+				   by one plain div whose direct children are [data-tab] panes.
+				   ui.tabs.switchTab() resolves panes strictly through
+				   menu.nextElementSibling.childNodes. Wrapping menu and group as
+				   separate cards breaks that contract: the tab highlight changes
+				   but data-tab-active/content never does. Keep both as adjacent
+				   siblings inside one shared card-body. */
+				jQuery(viewEl).children('ul.cbi-tabmenu').each(function(i, e) {
+					let menu = jQuery(e);
+					let group = menu.next();
+					if (group.length == 0 || group.children('[data-tab]').length == 0)
+						return;
+					let target = menu.add(group);
+					target.wrapAll('<div class="card-body"></div>');
+					let body = menu.parent();
+					body.wrap('<div class="card"></div>');
+					body.parent().wrap('<div class="col-12"></div>');
+				});
+
 				let main = jQuery(viewEl).children().filter(function(i, e) {
 					return !e.matches('h2, .cbi-map-descr, .cbi-section-descr, .cbi-page-actions, script, .spinning, .col-12');
 				});
