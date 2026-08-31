@@ -260,7 +260,9 @@
 			   the checkboxes form.js emits without any class (legacy
 			   server markup had cbi-input-checkbox) and the LuCI
 			   dropdown widgets (div.cbi-dropdown) which need a dark
-			   variant to be visible. Idempotent by class checks. */
+			   variant to be visible. Idempotent by class checks.
+			   Called with #modal_overlay as root by the dialog watcher
+			   below - dialogs build their DOM after ngRender ran. */
 			function styleModernFormControls(root) {
 				root = root || viewEl;
 
@@ -328,6 +330,7 @@
 				ov.__ngWatched = true;
 				new MutationObserver(function() {
 					styleModernButtons(ov);
+					styleModernFormControls(ov);
 				}).observe(ov, { childList: true, subtree: true });
 			}
 

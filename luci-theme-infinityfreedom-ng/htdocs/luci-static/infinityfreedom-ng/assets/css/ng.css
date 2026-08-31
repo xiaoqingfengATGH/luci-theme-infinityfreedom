@@ -105,3 +105,53 @@ div.ifacebox .zonebadge{border-radius:2px}
 .cbi-dynlist > .add-item{display:flex}
 .cbi-dynlist > .add-item > input,.cbi-dynlist > .add-item > button{flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cbi-dynlist > .add-item > .cbi-input-text.drag-over,.cbi-dynlist > .add-item > .cbi-button-add.drag-over{border-top:1px solid #c0cbd4}
+
+/* LuCI 24.10 bare-view form controls (status/logs, network/diagnostics, ...):
+   these views place labels and controls inline in the document flow, but
+   bootstrap .form-select/.form-control are display:block width:100% which
+   blows each control up to a full row. Controls dropped into .table cells
+   (views emit table>tr>td without tbody, so the control itself sits at the
+   4th level) additionally lose their bg to the .table > :not(caption) > * > *
+   cell rule (0,1,1 beats .form-control 0,1,0). Mirror the standard bootstrap
+   theme sizing (inline, 210px..400px) and re-assert the dark control bg;
+   the #view prefix wins every specificity fight. CBI structures keep their
+   full-width grid look via the :not() exclusions. */
+#view select.form-select:not(.cbi-value *):not(.cbi-section-table *):not(.cbi-dropdown *):not([multiple]),
+#view input.form-control:not(.cbi-value *):not(.cbi-section-table *):not(.cbi-dropdown *):not(.cbi-dynlist *) {
+	display: inline-block;
+	width: auto;
+	min-width: 210px;
+	max-width: 400px;
+	background-color: #3b4651;
+}
+/* views also emit number inputs carrying only the cbi-input base class
+   (status/logs logMaxRows): no bootstrap class at all -> UA white box */
+#view input.cbi-input[type="number"]:not(.cbi-value *):not(.cbi-section-table *) {
+	display: inline-block;
+	width: auto;
+	min-width: 210px;
+	padding: .45rem .9rem;
+	font-size: .8125rem;
+	line-height: 1.5;
+	color: #94a0ad;
+	background-color: #3b4651;
+	border: 1px solid #424e5a;
+	border-radius: .2rem;
+}
+
+/* same family: date/time inputs also arrive with only the cbi-input base
+   class in some views (dockerman/container.js); date inputs default to a
+   wider UA box, keep them inline and dark */
+#view input.cbi-input[type="date"],
+#view input.cbi-input[type="time"] {
+	display: inline-block;
+	width: auto;
+	min-width: 210px;
+	padding: .45rem .9rem;
+	font-size: .8125rem;
+	line-height: 1.5;
+	color: #94a0ad;
+	background-color: #3b4651;
+	border: 1px solid #424e5a;
+	border-radius: .2rem;
+}
