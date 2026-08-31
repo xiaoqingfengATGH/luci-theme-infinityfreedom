@@ -289,6 +289,13 @@
 				jQuery(root).find('select.cbi-input-select:not(.form-select), select:not([class])').addClass('form-select');
 				jQuery(root).find('input.cbi-input-text:not(.form-control), input[type=text]:not(.form-control):not(.create-item-input)').addClass('form-control');
 				jQuery(root).find('input.cbi-input-password:not(.form-control)').addClass('form-control');
+
+				/* The password visibility toggle is emitted as a generic neutral
+				   button containing only an asterisk. Keep its existing click
+				   handler, but mark the node for a dedicated input-group style. */
+				jQuery(root).find('.control-group > input.cbi-input-password + button')
+					.addClass('ng-password-toggle');
+
 				jQuery(root).find('textarea:not(.form-control)').addClass('form-control');
 				jQuery(root).find('input[type=checkbox]:not(.form-check-input):not([class])').addClass('form-check-input');
 

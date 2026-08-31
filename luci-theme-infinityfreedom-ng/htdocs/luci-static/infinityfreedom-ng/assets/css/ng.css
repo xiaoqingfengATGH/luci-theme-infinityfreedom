@@ -244,3 +244,16 @@ body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;
 #view .cbi-value[data-name="log_size"]>.cbi-value-field{display:flex;align-items:center;flex-wrap:nowrap}
 #view .cbi-value[data-name="log_size"]>.cbi-value-field>div:first-child{display:contents}
 #view .cbi-value[data-name="log_size"]>.cbi-value-field>.cbi-value-description{margin-left:.25rem;white-space:nowrap}
+/* Password visibility control: join the neutral asterisk button to the dark
+   password input as one compact input group. The eye is drawn in CSS, so it
+   follows theme colors without an external icon asset. input[type=text]
+   reflects LuCI's existing visible-password state. */
+#view .control-group:has(>input.cbi-input-password){display:flex;align-items:stretch;width:480px;max-width:100%}
+#view .control-group:has(>input.cbi-input-password)>input.cbi-input-password{flex:1 1 auto;width:1%;margin:0!important;border-top-right-radius:0;border-bottom-right-radius:0}
+#view button.ng-password-toggle{all:unset;box-sizing:border-box;position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 44px;width:44px;height:36px;cursor:pointer;color:#acbfd2;background:#475461;border:1px solid #526170;border-left:0;border-radius:0 4px 4px 0;transition:color .15s ease,background-color .15s ease,border-color .15s ease,box-shadow .15s ease}
+#view button.ng-password-toggle::before{content:"";box-sizing:border-box;width:17px;height:17px;border:2px solid currentColor;border-radius:75% 15%;transform:rotate(45deg)}
+#view button.ng-password-toggle::after{content:"";position:absolute;width:5px;height:5px;background:currentColor;border-radius:50%}
+#view button.ng-password-toggle:hover{color:#fff;background:#526170;border-color:#607184}
+#view button.ng-password-toggle:focus-visible{outline:0;box-shadow:0 0 0 .18rem rgba(136,146,214,.28);z-index:1}
+#view button.ng-password-toggle:active{color:#fff;background:#8892d6;transform:translateY(1px)}
+@media(max-width:575.98px){#view .control-group:has(>input.cbi-input-password){width:100%}}
