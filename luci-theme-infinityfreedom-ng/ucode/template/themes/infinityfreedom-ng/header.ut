@@ -809,7 +809,9 @@ if (typeof(topMenu) != "undefined") {
         <div class="content-page">
             <div class="content">
                 <!-- Start Content-->
-                <div class="container-fluid">
+                <!-- luci.js View.handleSave/handleReset 用 getElementById('maincontent') 收集 .cbi-map。
+                     ucode 移植丢失此锚点 → JS 视图(接入规则/设置)保存按钮抛 null 异常，补回。 -->
+                <div class="container-fluid" id="maincontent">
 
 					{% if (getuid() == 0 && getspnam('root')?.pwdp === ''): %}
 					<div class="alert-message warning">

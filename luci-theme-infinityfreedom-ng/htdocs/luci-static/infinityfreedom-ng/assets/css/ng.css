@@ -257,3 +257,14 @@ body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;
 #view button.ng-password-toggle:focus-visible{outline:0;box-shadow:0 0 0 .18rem rgba(136,146,214,.28);z-index:1}
 #view button.ng-password-toggle:active{color:#fff;background:#8892d6;transform:translateY(1px)}
 @media(max-width:575.98px){#view .control-group:has(>input.cbi-input-password){width:100%}}
+
+/* ---- LuCI cbi descr 兼容层（上游 ng 主题未移植，导致 cbi-section-descr /
+   cbi-map-descr 渲染为无样式裸文本）——配色取主题弱化色系 ---- */
+.cbi-section-descr,
+.cbi-map-descr{margin-bottom:.75rem;padding:.5rem .75rem;color:#94a0ad;font-size:.85rem;line-height:1.6;border-left:3px solid #348cd4;border-radius:0 .25rem .25rem 0;background:rgba(52,140,212,.08)}
+.cbi-section-descr a,
+.cbi-map-descr a{color:#5c9fd6;text-decoration:none;border-bottom:1px dotted #5c9fd6}
+.cbi-section-descr a:hover,
+.cbi-map-descr a:hover{color:#8892d6;border-bottom-style:solid}
+.cbi-section-descr code,
+.cbi-map-descr code{font-family:var(--ng-font-monospace);color:#c0cbd4;background:rgba(255,255,255,.06);padding:.1rem .3rem;border-radius:2px}
