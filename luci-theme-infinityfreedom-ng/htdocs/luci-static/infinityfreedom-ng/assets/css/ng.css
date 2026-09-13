@@ -275,9 +275,8 @@ body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;
    the generic .cbi-dropdown rule forces padding:0/min-width:210px on it.
    Restore .btn geometry so it matches sibling buttons. Placed last so
    same-specificity rules above cannot re-override. */
-.cbi-dropdown.btn,.cbi-dropdown.cbi-button{min-width:0;width:auto;padding:7.2px 14.4px !important;font-weight:400;line-height:1.5;height:auto}
+.cbi-dropdown.btn,.cbi-dropdown.cbi-button{min-width:0;width:auto;padding:7.2px 0 7.2px 14.4px !important;font-weight:400;line-height:1.5;height:auto}
 .cbi-dropdown.btn > ul,.cbi-dropdown.cbi-button > ul{line-height:1.5}
-.cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{line-height:1.5}
 .cbi-dropdown.btn > ul > li,.cbi-dropdown.cbi-button > ul > li{min-height:0;padding:0 .25em;color:inherit;line-height:inherit;font-size:inherit}
-.cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{padding:0 .5em;margin-left:.5em;border-left:1px solid rgba(255,255,255,.35)}
+.cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{line-height:1.5;padding:0 .5em;margin-left:.5em;border-left:1px solid rgba(255,255,255,.35)}
 .cbi-dropdown.btn > .more,.cbi-dropdown.cbi-button > .more{display:none}
