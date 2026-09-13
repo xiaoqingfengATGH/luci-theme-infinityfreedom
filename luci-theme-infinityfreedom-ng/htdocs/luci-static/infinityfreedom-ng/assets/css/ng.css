@@ -63,6 +63,7 @@ div.ifacebox .zonebadge{border-radius:2px}
    dynamic list (div.cbi-dynlist). The theme has no rules for them
    (legacy views used native <select>), so they render as transparent
    stacked blocks. Ported from bootstrap cascade.css, dark palette. */
+
 .cbi-dropdown{display:inline-flex !important;cursor:pointer;height:auto;position:relative;padding:0 !important;min-width:210px;max-width:400px;width:auto}
 .cbi-dropdown:not(.btn):not(.cbi-button){background:linear-gradient(#3b4651 0%,#333d47 100%);border:1px solid #424e5a;border-radius:3px;color:#c0cbd4;font-size:13px;min-height:30px}
 .cbi-dropdown img{max-height:1.6em;width:auto}
@@ -268,3 +269,15 @@ body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;
 .cbi-map-descr a:hover{color:#8892d6;border-bottom-style:solid}
 .cbi-section-descr code,
 .cbi-map-descr code{font-family:var(--ng-font-monospace);color:#c0cbd4;background:rgba(255,255,255,.06);padding:.1rem .3rem;border-radius:2px}
+
+/* Button-style cbi-dropdown (e.g. Save & Apply): LuCI renders it with
+   btn/cbi-button classes, so the :not(.btn) form rules never hit it and
+   the generic .cbi-dropdown rule forces padding:0/min-width:210px on it.
+   Restore .btn geometry so it matches sibling buttons. Placed last so
+   same-specificity rules above cannot re-override. */
+.cbi-dropdown.btn,.cbi-dropdown.cbi-button{min-width:0;width:auto;padding:7.2px 14.4px !important;font-weight:400;line-height:1.5;height:auto}
+.cbi-dropdown.btn > ul,.cbi-dropdown.cbi-button > ul{line-height:1.5}
+.cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{line-height:1.5}
+.cbi-dropdown.btn > ul > li,.cbi-dropdown.cbi-button > ul > li{min-height:0;padding:0 .25em;color:inherit;line-height:inherit;font-size:inherit}
+.cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{padding:0 .5em;margin-left:.5em;border-left:1px solid rgba(255,255,255,.35)}
+.cbi-dropdown.btn > .more,.cbi-dropdown.cbi-button > .more{display:none}
