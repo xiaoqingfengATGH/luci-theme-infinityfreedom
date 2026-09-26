@@ -1,0 +1,382 @@
+/*
+ * HomeLede overview (status/overview) - status-first layout.
+ *
+ * Part of luci-theme-infinityfreedom-ng. Loaded by assets/js/ngOverview.js
+ * only on /admin/status/overview, so nothing here leaks into other pages.
+ *
+ * Colour comes from the theme's own bootstrap-dark variables (--bs-*) so the
+ * block follows a theme switch to light/dark instead of hard-coding greys.
+ */
+
+.ngov {
+	--ngov-card: var(--bs-gray-200, #36404a);
+	--ngov-card2: #3d4854;
+	--ngov-line: var(--bs-gray-300, #424e5a);
+	--ngov-fg: var(--bs-gray-600, #cedeef);
+	--ngov-fg2: #a8b5c1;
+	--ngov-fg3: #8b98a5;
+	--ngov-ok: var(--bs-success, #78c350);
+	--ngov-warn: var(--bs-warning, #ff9800);
+	--ngov-crit: var(--bs-danger, #f7531f);
+	--ngov-info: var(--bs-info, #45bbe0);
+	--ngov-primary: var(--bs-primary, #348cd4);
+	--ngov-mono: var(--bs-font-monospace, monospace);
+
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-bottom: 16px;
+	color: var(--ngov-fg);
+}
+
+/* ------------------------------------------------------------------ dots ---- */
+/* A status is a dot + text, never a full bar. A saturated bar reads as
+ * "100%" even when it encodes a boolean. */
+.ngov .ngov-dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	flex: 0 0 auto;
+	display: inline-block;
+	background: var(--ngov-fg3);
+}
+
+.ngov .ngov-dot.sm { width: 7px; height: 7px; }
+.ngov .ngov-dot.g { background: var(--ngov-ok); box-shadow: 0 0 0 3px rgba(120, 195, 80, .18); }
+.ngov .ngov-dot.w { background: var(--ngov-warn); box-shadow: 0 0 0 3px rgba(255, 152, 0, .18); }
+.ngov .ngov-dot.r { background: var(--ngov-crit); box-shadow: 0 0 0 3px rgba(247, 83, 31, .18); }
+.ngov .ngov-dot.b { background: var(--ngov-primary); box-shadow: 0 0 0 3px rgba(52, 140, 212, .18); }
+.ngov .ngov-dot.m { background: var(--ngov-fg3); box-shadow: 0 0 0 3px rgba(139, 152, 165, .18); }
+.ngov .ngov-dot.sm.g,
+.ngov .ngov-dot.sm.w,
+.ngov .ngov-dot.sm.r,
+.ngov .ngov-dot.sm.b,
+.ngov .ngov-dot.sm.m { box-shadow: none; }
+
+/* ------------------------------------------------------------------ hero ---- */
+.ngov-hero {
+	background: linear-gradient(100deg, rgba(120, 195, 80, .14), var(--ngov-card) 45%);
+	border: 1px solid var(--ngov-line);
+	border-left: 3px solid var(--ngov-ok);
+	border-radius: 8px;
+	padding: 15px 20px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	flex-wrap: wrap;
+}
+
+.ngov-hero.degraded {
+	background: linear-gradient(100deg, rgba(255, 152, 0, .14), var(--ngov-card) 45%);
+	border-left-color: var(--ngov-warn);
+}
+
+.ngov-hero.critical {
+	background: linear-gradient(100deg, rgba(247, 83, 31, .14), var(--ngov-card) 45%);
+	border-left-color: var(--ngov-crit);
+}
+
+.ngov-hero-badge { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.ngov-hero-title { font-size: 1.3rem; font-weight: 600; letter-spacing: .2px; }
+.ngov-hero-sub { color: var(--ngov-fg2); font-size: .8rem; }
+.ngov-hero-right { margin-left: auto; display: flex; gap: 26px; flex-wrap: wrap; }
+.ngov-kv { text-align: right; }
+.ngov-kv b { display: block; font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ngov-kv span { color: var(--ngov-fg3); font-size: .72rem; letter-spacing: .6px; }
+
+/* ------------------------------------------------------------------ KPIs ---- */
+.ngov-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+
+.ngov-kpi {
+	background: var(--ngov-card);
+	border: 1px solid var(--ngov-line);
+	border-radius: 8px;
+	padding: 13px 15px 0;
+	display: flex;
+	flex-direction: column;
+	min-height: 116px;
+	min-width: 0;
+}
+
+.ngov-kpi-h {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	color: var(--ngov-fg2);
+	font-size: .76rem;
+	letter-spacing: .3px;
+}
+
+.ngov-kpi-v {
+	font-size: 1.45rem;
+	font-weight: 600;
+	margin-top: 4px;
+	line-height: 1.2;
+	font-variant-numeric: tabular-nums;
+}
+
+.ngov-kpi-v small { font-size: .7rem; color: var(--ngov-fg3); font-weight: 400; margin-left: 3px; }
+
+/* Status text occupies the same slot as the numeric value so the five cards
+ * keep one baseline rhythm. */
+.ngov-kpi-v.state { font-size: 1.12rem; letter-spacing: .5px; padding-top: 4px; }
+.ngov-kpi-v.state.g { color: #8fd166; }
+.ngov-kpi-v.state.w { color: #ffb74d; }
+.ngov-kpi-v.state.r { color: #ff7a4d; }
+.ngov-kpi-v.state.m { color: var(--ngov-fg2); }
+
+.ngov-kpi-f {
+	color: var(--ngov-fg3);
+	font-size: .71rem;
+	margin-top: 3px;
+	flex: 0 0 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Ratio track: only ever used for "how much of X is consumed". */
+.ngov-bar { height: 4px; background: #4b5865; border-radius: 2px; margin-bottom: 14px; overflow: hidden; }
+.ngov-bar > i { display: block; height: 100%; border-radius: 2px; min-width: 6px; background: var(--ngov-primary); transition: width .6s ease; }
+.ngov-bar > i.w { background: var(--ngov-warn); }
+.ngov-bar > i.r { background: var(--ngov-crit); }
+.ngov-bar > i.g { background: var(--ngov-ok); }
+
+/* Status footer: dot + wording. Deliberately not a track. */
+.ngov-foot {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	margin: auto -15px 0;
+	padding: 9px 15px;
+	border-top: 1px solid var(--ngov-line);
+	color: var(--ngov-fg3);
+	font-size: .71rem;
+	min-width: 0;
+}
+
+.ngov-foot .txt { margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* ----------------------------------------------------------------- cards ---- */
+.ngov-cols { display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; align-items: start; }
+
+.ngov-card { background: var(--ngov-card); border: 1px solid var(--ngov-line); border-radius: 8px; overflow: hidden; }
+
+.ngov-card-h {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	padding: 12px 16px;
+	border-bottom: 1px solid var(--ngov-line);
+	background: rgba(255, 255, 255, .02);
+	flex-wrap: wrap;
+}
+
+.ngov-card-h h3 { font-size: .92rem; font-weight: 600; letter-spacing: .2px; margin: 0; }
+.ngov-card-h .cnt { color: var(--ngov-fg2); font-size: .73rem; background: #4b5865; border-radius: 9px; padding: 1px 8px; }
+.ngov-card-h .act { margin-left: auto; display: flex; gap: 12px; align-items: center; }
+.ngov-card-b { padding: 14px 16px; }
+
+.ngov-link { color: var(--ngov-fg2); font-size: .75rem; cursor: pointer; text-decoration: none; background: none; border: 0; padding: 0; }
+.ngov-link:hover { color: #6cb3e8; text-decoration: none; }
+
+/* --------------------------------------------------------------- devices ---- */
+.ngov-nettop { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px; }
+.ngov-mini { background: var(--ngov-card2); border: 1px solid var(--ngov-line); border-radius: 6px; padding: 9px 12px; min-width: 0; }
+.ngov-mini span { display: block; color: var(--ngov-fg3); font-size: .7rem; letter-spacing: .3px; }
+.ngov-mini b { font-size: .92rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* per-network group header row inside the devices table: LAN/GUEST/... on
+ * the left, subnet + bridge annotation + port online count on the right */
+.ngov-netrow td { padding: 10px 0 4px; border-bottom: 0 !important; }
+.ngov-netrow:hover { background: none !important; }
+.ngov-net-h {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 6px 10px;
+	background: var(--ngov-card2);
+	border: 1px solid var(--ngov-line);
+	border-radius: 6px;
+	min-width: 0;
+}
+.ngov-net-name {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	color: var(--ngov-fg);
+	font-size: .74rem;
+	font-weight: 600;
+	letter-spacing: .6px;
+	white-space: nowrap;
+}
+.ngov-net-meta {
+	color: var(--ngov-fg3);
+	font-size: .7rem;
+	font-family: var(--ngov-mono);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-left: auto;
+}
+
+/* LAN / WAN / WiFi summary rows in the connectivity card. Three aligned
+ * columns: label, dot+state, monospace detail. */
+.ngov-conns { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+.ngov-conn { display: grid; grid-template-columns: 52px minmax(88px, auto) 1fr; gap: 10px; align-items: center; padding: 7px 10px; border-radius: 6px; background: var(--ngov-card2); border: 1px solid var(--ngov-line); }
+.ngov-conn-l { color: var(--ngov-fg2); font-size: .74rem; font-weight: 600; letter-spacing: .4px; }
+.ngov-conn-s { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--ngov-fg); white-space: nowrap; }
+.ngov-conn-d { color: var(--ngov-fg3); font-size: .72rem; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.ngov table { width: 100%; border-collapse: collapse; margin: 0; }
+.ngov th {
+	text-align: left;
+	color: var(--ngov-fg3);
+	font-size: .7rem;
+	font-weight: 500;
+	letter-spacing: .5px;
+	padding: 0 8px 8px 0;
+	border-bottom: 1px solid var(--ngov-line);
+	background: none;
+}
+.ngov td { padding: 9px 8px 9px 0; border-bottom: 1px solid rgba(66, 78, 90, .55); font-size: .84rem; vertical-align: middle; }
+.ngov tbody tr:last-child td { border-bottom: 0; }
+.ngov tbody tr:hover { background: rgba(255, 255, 255, .025); }
+
+.ngov-dev { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.ngov-avatar {
+	width: 26px;
+	height: 26px;
+	border-radius: 6px;
+	background: #4b5865;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: .68rem;
+	color: var(--ngov-fg2);
+	flex: 0 0 auto;
+	text-transform: uppercase;
+}
+.ngov-dev b { font-weight: 500; }
+.ngov-dev em { font-style: normal; display: block; color: var(--ngov-fg3); font-size: .7rem; }
+.ngov-mono { font-family: var(--ngov-mono); font-size: .78rem; color: var(--ngov-fg2); }
+
+.ngov-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: .72rem;
+	padding: 2px 9px;
+	border-radius: 11px;
+	white-space: nowrap;
+	background: rgba(139, 152, 165, .2);
+	color: #adb8c3;
+}
+.ngov-pill i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+.ngov-pill.g { background: rgba(120, 195, 80, .16); color: #8fd166; }
+.ngov-pill.w { background: rgba(255, 152, 0, .16); color: #ffb74d; }
+.ngov-pill.r { background: rgba(247, 83, 31, .16); color: #ff7a4d; }
+.ngov-pill.b { background: rgba(52, 140, 212, .16); color: #6cb3e8; }
+
+.ngov-empty { color: var(--ngov-fg3); font-size: .76rem; }
+
+/* ------------------------------------------------------------------ apps ---- */
+.ngov-apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+
+.ngov-app {
+	background: var(--ngov-card2);
+	border: 1px solid var(--ngov-line);
+	border-left: 3px solid var(--ngov-fg3);
+	border-radius: 6px;
+	padding: 9px 11px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	min-width: 0;
+}
+/* enabled=0 is a normal state, not a fault: grey edge, never red. */
+.ngov-app.on { border-left-color: var(--ngov-ok); }
+.ngov-app.off { border-left-color: var(--ngov-crit); }
+.ngov-app.dis { border-left-color: var(--ngov-fg3); opacity: .78; }
+.ngov-app.maybe { border-left-color: var(--ngov-warn); }
+
+.ngov-app-info { min-width: 0; flex: 1; }
+.ngov-app-info b { display: block; font-weight: 500; font-size: .84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ngov-app-info em { font-style: normal; color: var(--ngov-fg3); font-size: .69rem; font-family: var(--ngov-mono); }
+
+.ngov-iconbtn {
+	background: #4b5865;
+	border: 1px solid #5f6e7c;
+	color: var(--ngov-fg);
+	border-radius: 5px;
+	width: 29px;
+	height: 29px;
+	cursor: pointer;
+	font-size: .9rem;
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+.ngov-iconbtn:hover:not(:disabled) { border-color: var(--ngov-primary); color: #6cb3e8; background: #526070; }
+.ngov-iconbtn:disabled { opacity: .5; cursor: default; }
+
+.ngov-app-note { grid-column: 1 / -1; color: var(--ngov-fg3); font-size: .71rem; padding: 2px 0 0 2px; }
+
+/* ----------------------------------------------------------------- disks ---- */
+.ngov-disk { display: flex; flex-direction: column; gap: 11px; }
+.ngov-drow { display: grid; grid-template-columns: 132px minmax(60px, 1fr) 66px 96px; gap: 12px; align-items: center; }
+.ngov-drow .mp { font-family: var(--ngov-mono); font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ngov-drow .mp em { font-style: normal; display: block; font-family: inherit; font-weight: 400; color: var(--ngov-fg3); font-size: .68rem; }
+.ngov-track { height: 8px; background: #4b5865; border-radius: 4px; overflow: hidden; }
+.ngov-track > i { display: block; height: 100%; background: var(--ngov-primary); border-radius: 4px; min-width: 6px; }
+.ngov-track > i.w { background: var(--ngov-warn); }
+.ngov-track > i.r { background: var(--ngov-crit); }
+/* Read-only image: a squashfs is 100% by construction, so drawing a full bar
+ * would raise a false alarm on every single page load. Neutral hatch instead. */
+.ngov-track.ro { background: repeating-linear-gradient(45deg, #4b5865, #4b5865 4px, #5a6673 4px, #5a6673 8px); }
+.ngov-drow .pct { text-align: right; font-variant-numeric: tabular-nums; font-size: .8rem; }
+.ngov-drow .av { text-align: right; color: var(--ngov-fg3); font-size: .76rem; font-variant-numeric: tabular-nums; }
+.ngov-dfoot { color: var(--ngov-fg3); font-size: .71rem; margin-top: 3px; padding-top: 9px; border-top: 1px solid var(--ngov-line); }
+
+/* ------------------------------------------------- collapsed system block ---- */
+.ngov-rest { background: var(--ngov-card); border: 1px solid var(--ngov-line); border-radius: 8px; }
+.ngov-rest > summary {
+	cursor: pointer;
+	list-style: none;
+	padding: 12px 16px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	font-size: .9rem;
+	font-weight: 600;
+	color: var(--ngov-fg);
+}
+.ngov-rest > summary::-webkit-details-marker { display: none; }
+.ngov-rest > summary::after { content: '\25be'; margin-left: auto; color: var(--ngov-fg3); transition: transform .2s; }
+.ngov-rest[open] > summary::after { transform: rotate(180deg); }
+.ngov-rest > summary .hint { color: var(--ngov-fg3); font-weight: 400; font-size: .76rem; margin-left: 6px; }
+.ngov-rest-body { padding: 0 0 4px; }
+
+/* the original LuCI sections keep their own theme styling - only the card
+ * wrapper is neutralised so they read as one grouped drawer, not five peers */
+.ngov-rest-body > .col-12 { padding: 0; }
+.ngov-rest-body > .col-12 > .card { border: 0; border-top: 1px solid var(--ngov-line); border-radius: 0; margin-bottom: 0; }
+
+/* --------------------------------------------------------- responsiveness -- */
+@media (max-width: 1100px) {
+	.ngov-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+	.ngov-cols { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+	.ngov-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.ngov-apps { grid-template-columns: 1fr; }
+	.ngov-nettop { grid-template-columns: 1fr; }
+	.ngov-drow { grid-template-columns: 110px minmax(40px, 1fr) 52px; }
+	.ngov-drow .av { display: none; }
+	.ngov-hero-right { margin-left: 0; gap: 18px; }
+	.ngov-conn { grid-template-columns: 44px 1fr; }
+	.ngov-conn-d { display: none; }
+}

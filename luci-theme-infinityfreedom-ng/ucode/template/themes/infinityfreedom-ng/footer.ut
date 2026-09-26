@@ -14,6 +14,11 @@
 
        </div> <!-- content -->
 	   <script src="{{ media }}/assets/js/ngRender.js"></script>
+{% if (ctx.path?.[1] == 'status' && ctx.path?.[2] == 'overview'): %}
+	   <!-- status-first overview relayout; only meaningful on the overview page -->
+	   <link rel="stylesheet" type="text/css" href="{{ media }}/assets/css/ngOverview.css" />
+	   <script src="{{ media }}/assets/js/ngOverview.js"></script>
+{% endif %}
         <!-- Footer Start -->
         <footer class="footer">
             <div class="container-fluid">
@@ -389,6 +394,13 @@
 				jQuery("#homelede_page_desc_popup > div.toast-body").html(d.html());
 				d.css("display", "none");
 			}
+
+			/* the page is fully bootstrap-ified now - let page-specific
+			   enhancers (e.g. ngOverview.js) do their work on the final DOM
+			   instead of racing the async view render */
+			document.dispatchEvent(new CustomEvent('ng-page-rendered', {
+				detail: { path: (typeof(luciLocation) != "undefined") ? luciLocation : [] }
+			}));
 		}
 
 		/* view.ut always renders a spinning "Loading view…" placeholder
