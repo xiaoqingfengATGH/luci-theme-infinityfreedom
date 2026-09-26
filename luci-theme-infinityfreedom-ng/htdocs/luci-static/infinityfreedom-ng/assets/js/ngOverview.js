@@ -1528,7 +1528,7 @@
 			E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/network/dhcp' }, [ 'DHCP 租约 →' ])
 		];
 
-		return card('网络接入设备', String(d.peerTotal) + ' 台', actions, body);
+		return card('LAN 接入设备', String(d.peerTotal) + ' 台', actions, body);
 	}
 
 	/* Side-router variant of the WAN card: no WAN interface exists, so the
@@ -1947,6 +1947,35 @@
 		/* WAN/upstream LEFT, devices RIGHT (user layout decision) */
 		state.slots.cols.appendChild(d.sideRouter ? renderUpstream(d) : renderWan(d));
 		state.slots.cols.appendChild(renderDevices(d));
+
+		/* Equal heights: cap the devices card at the WAN/upstream card's
+		 * height and let its table scroll internally. The neighbor card in
+		 * the same grid row is the natural cap - a fixed max-height would
+		 * ignore text scaling. Below the 1100px breakpoint the cards stack,
+		 * and a height cap there would just waste space. */
+		var cards = state.slots.cols.querySelectorAll(':scope > .ngov-card');
+		var ref = cards[0], dev = cards[1];
+		var table = dev ? dev.querySelector('table') : null;
+
+		if (ref && dev && table && window.innerWidth > 1100) {
+			var refH = ref.getBoundingClientRect().height;
+			/* fixed chrome of the devices card = everything except the
+			 * table itself, measured as a box difference so paddings and
+			 * margins are all included */
+			var reserved = dev.getBoundingClientRect().height
+				- table.getBoundingClientRect().height;
+
+			if (reserved >= 0) {
+				var wrap = document.createElement('div');
+
+				wrap.className = 'ngov-devscroll';
+				wrap.style.maxHeight = Math.max(120, Math.round(refH - reserved)) + 'px';
+				wrap.style.overflowY = 'auto';
+				table.parentNode.insertBefore(wrap, table);
+				wrap.appendChild(table);
+				dev.style.maxHeight = Math.round(refH) + 'px';
+			}
+		}
 
 		clear(state.slots.apps);
 		state.slots.apps.appendChild(renderApps(d));
