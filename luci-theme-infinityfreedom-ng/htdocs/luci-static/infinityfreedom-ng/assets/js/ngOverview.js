@@ -930,6 +930,7 @@
 			 * everything. */
 			showApps: (hsCfg.show_apps !== false),
 			showWol: (hsCfg.show_wol !== false),
+			showStorage: (hsCfg.show_storage !== false),
 			apps: apps,
 			/* Wake-on-LAN targets live in the stock luci-wol package; the
 			 * backend merges in neighbour-table presence so the card can
@@ -1019,14 +1020,18 @@
 			else if (d.memPct >= d.hsCfg.warn) { reasons.push('内存占用偏高 ' + d.memPct + '%'); bump('degraded'); }
 		}
 
-		for (var i = 0; i < d.diskRows.length; i++) {
-			var r = d.diskRows[i];
-			if (r.readonly || r.use_pct == null)
-				continue;
+		/* Skipped when the storage card is hidden: the banner would otherwise
+		 * flag space the page no longer reports, leaving the reason
+		 * unexplainable - same rule as the app block below. */
+		if (d.showStorage)
+			for (var i = 0; i < d.diskRows.length; i++) {
+				var r = d.diskRows[i];
+				if (r.readonly || r.use_pct == null)
+					continue;
 
-			if (r.use_pct >= d.hsCfg.crit) { reasons.push(r.target + ' 空间告急 ' + r.use_pct + '%'); bump('critical'); }
-			else if (r.use_pct >= d.hsCfg.warn) { reasons.push(r.target + ' 空间偏紧 ' + r.use_pct + '%'); bump('degraded'); }
-		}
+				if (r.use_pct >= d.hsCfg.crit) { reasons.push(r.target + ' 空间告急 ' + r.use_pct + '%'); bump('critical'); }
+				else if (r.use_pct >= d.hsCfg.warn) { reasons.push(r.target + ' 空间偏紧 ' + r.use_pct + '%'); bump('degraded'); }
+			}
 
 		/* A stopped service matters; a disabled one is a deliberate choice.
 		 * Skipped when the user hid the app block: the banner would
@@ -2592,7 +2597,13 @@
 		}
 
 		clear(state.slots.storage);
-		state.slots.storage.appendChild(renderStorage(d));
+		if (d.showStorage) {
+			state.slots.storage.style.display = null;
+			state.slots.storage.appendChild(renderStorage(d));
+		}
+		else {
+			state.slots.storage.style.display = 'none';
+		}
 	}
 
 	/* ------------------------------------------------------------- poll ----- */
