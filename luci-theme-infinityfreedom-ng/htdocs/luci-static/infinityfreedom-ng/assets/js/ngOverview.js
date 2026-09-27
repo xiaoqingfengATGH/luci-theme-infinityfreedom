@@ -2011,7 +2011,7 @@
 		var body = E('div', { 'class': 'ngov-rest-body' });
 		var det = E('details', { 'class': 'ngov-rest' }, [
 			E('summary', {}, [
-				'系统详情与全部原始信息',
+				'经典信息视图',
 				E('span', { 'class': 'hint' }, [ '型号 / 固件 / 网络 / 内存 / 存储' ])
 			]),
 			body
