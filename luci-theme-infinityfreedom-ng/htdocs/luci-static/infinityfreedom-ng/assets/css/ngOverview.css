@@ -389,6 +389,42 @@
 
 .ngov-app-note { grid-column: 1 / -1; color: var(--ngov-fg3); font-size: .71rem; padding: 2px 0 0 2px; }
 
+/* ------------------------------------------------------------------ wol ---- */
+.ngov-wol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+
+.ngov-wolrow {
+	background: var(--ngov-card2);
+	border: 1px solid var(--ngov-line);
+	border-radius: 6px;
+	padding: 9px 11px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	min-width: 0;
+}
+
+.ngov-wol-info { min-width: 0; flex: 1; }
+.ngov-wol-info b { display: block; font-weight: 500; font-size: .84rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ngov-wol-info em { font-style: normal; color: var(--ngov-fg3); font-size: .69rem; font-family: var(--ngov-mono); }
+
+.ngov-wolbtn {
+	background: #4b5865;
+	border: 1px solid #5f6e7c;
+	color: var(--ngov-fg);
+	border-radius: 5px;
+	width: 29px;
+	height: 29px;
+	cursor: pointer;
+	font-size: .9rem;
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+}
+.ngov-wolbtn:hover:not(:disabled) { border-color: var(--ngov-primary); color: #6cb3e8; background: #526070; }
+.ngov-wolbtn:disabled { opacity: .5; cursor: default; }
+
 /* ----------------------------------------------------------------- disks ---- */
 .ngov-disk { display: flex; flex-direction: column; gap: 11px; }
 .ngov-drow { display: grid; grid-template-columns: 132px minmax(60px, 1fr) 66px 96px; gap: 12px; align-items: center; }
@@ -438,6 +474,7 @@
 @media (max-width: 720px) {
 	.ngov-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 	.ngov-apps { grid-template-columns: 1fr; }
+	.ngov-wol { grid-template-columns: 1fr; }
 	.ngov-nettop { grid-template-columns: 1fr; }
 	.ngov-drow { grid-template-columns: 110px minmax(40px, 1fr) 52px; }
 	.ngov-drow .av { display: none; }

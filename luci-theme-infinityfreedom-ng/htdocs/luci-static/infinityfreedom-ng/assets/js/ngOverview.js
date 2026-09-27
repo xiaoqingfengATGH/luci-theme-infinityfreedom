@@ -292,6 +292,8 @@
 				sysTime:    d('luci', 'getUnixtime', null, {}),
 				hsStatus:   d('luci.homestatus', 'status', null, {}),
 				hsRestart:  d('luci.homestatus', 'restart_app', [ 'payload' ], {}),
+				hsWol:      d('luci.homestatus', 'wol_targets', null, {}),
+				hsWake:     d('luci.homestatus', 'wake', [ 'payload' ], {}),
 				wifiDevs:   d('iwinfo', 'devices', null, {}),
 				wifiAssoc:  d('iwinfo', 'assoclist', [ 'device' ], {})
 			};
@@ -326,7 +328,8 @@
 				soft(a.hsStatus(), null),
 				wifiData(a),
 				conntrackCount(),
-				soft(a.sysTime(), null)
+				soft(a.sysTime(), null),
+				soft(a.hsWol(), null)
 			]);
 		}).then(function(v) {
 			var ifaces = (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [];
@@ -353,7 +356,7 @@
 						mounts: (v[4] && Array.isArray(v[4].result)) ? v[4].result : [],
 						ifaces: (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [],
 						leases: v[6], hints: v[7], selfDevs: v[8], hs: v[9],
-						wifi: v[10], ct: v[11], systime: v[12],
+						wifi: v[10], ct: v[11], systime: v[12], wol: v[13],
 						devs: devs || {}, dev: dev, wanDevice: wanDev
 					});
 				});
@@ -917,7 +920,19 @@
 			ct: raw.ct,
 			hs: raw.hs,
 			hsCfg: { warn: warn, crit: crit },
+			/* Block visibility toggles, read from the same homestatus
+			 * `config` payload the thresholds come from. Default true so
+			 * an older backend (or an absent option) still shows
+			 * everything. */
+			showApps: (hsCfg.show_apps !== false),
+			showWol: (hsCfg.show_wol !== false),
 			apps: apps,
+			/* Wake-on-LAN targets live in the stock luci-wol package; the
+			 * backend merges in neighbour-table presence so the card can
+			 * show online/offline without a second lookup. */
+			wol: (raw.wol && Array.isArray(raw.wol.targets)) ? raw.wol.targets : [],
+			wolErr: (raw.wol && raw.wol.read_error) ? raw.wol.read_error : null,
+			wolOk: !!(raw.wol && raw.wol.ok === true && raw.wol.etherwake !== false),
 			counts: { running: running, stopped: stopped, disabled: disabled, total: apps.length },
 			diskRows: diskRows(raw.hs),
 			overlay: ov,
@@ -1009,8 +1024,11 @@
 			else if (r.use_pct >= d.hsCfg.warn) { reasons.push(r.target + ' 空间偏紧 ' + r.use_pct + '%'); bump('degraded'); }
 		}
 
-		/* A stopped service matters; a disabled one is a deliberate choice. */
-		if (d.counts.stopped > 0) {
+		/* A stopped service matters; a disabled one is a deliberate choice.
+		 * Skipped when the user hid the app block: the banner would
+		 * otherwise flag services the page no longer lists, leaving the
+		 * reason unexplainable. */
+		if (d.showApps && d.counts.stopped > 0) {
 			reasons.push(d.counts.stopped + ' 个关键服务未运行');
 			bump('degraded');
 		}
@@ -2047,6 +2065,101 @@
 		], body);
 	}
 
+	function renderWol(d) {
+		var body = E('div', { 'class': 'ngov-card-b' });
+		var grid = E('div', { 'class': 'ngov-wol' });
+
+		if (d.wolErr != null) {
+			/* Distinct from "no targets": the config exists but could not be
+			 * read. Saying "未配置" here would be a lie. */
+			grid.appendChild(E('div', { 'class': 'ngov-empty' }, [
+				'唤醒目标读取失败：' + d.wolErr
+			]));
+		}
+		else if (!d.wolOk) {
+			grid.appendChild(E('div', { 'class': 'ngov-empty' }, [
+				'后端不可用：请确认 luci-app-homestatus 已安装且 etherwake 存在。'
+			]));
+		}
+		else if (!d.wol.length) {
+			grid.appendChild(E('div', { 'class': 'ngov-empty' }, [
+				'未配置唤醒目标。在「唤醒设置」中添加名称与 MAC 地址。'
+			]));
+		}
+
+		for (var i = 0; i < d.wol.length; i++) {
+			(function(t) {
+				var online = (t.online === true);
+				var bad = (t.mac == null);
+
+				var btn = E('button', {
+					'class': 'ngov-wolbtn',
+					'title': bad ? '此条目的 MAC 无效' : ('唤醒 ' + t.name),
+					'disabled': bad ? 'disabled' : null
+				}, [ '\u23fb' ]);
+
+				if (!bad) {
+					btn.addEventListener('click', function() {
+						if (btn.disabled)
+							return;
+
+						btn.disabled = true;
+						btn.textContent = '\u22ef';
+
+						L.resolveDefault(api.hsWake({ id: t.id }), null).then(function(r) {
+							btn.textContent = (r != null && r.ok === true) ? '\u2713' : '\u2717';
+
+							if (r == null || r.ok !== true) {
+								window.alert('唤醒 ' + t.name + ' 失败：' +
+									((r && (r.message || r.error)) || '未知错误'));
+							}
+
+							/* repaint so the presence dot reflects the machine
+							 * coming up on the next neighbour-table refresh */
+							window.setTimeout(function() {
+								btn.textContent = '\u23fb';
+								btn.disabled = false;
+								refresh();
+							}, 1500);
+						});
+					});
+				}
+
+				grid.appendChild(E('div', { 'class': 'ngov-wolrow' }, [
+					dot(online ? 'g' : '', true),
+					E('div', { 'class': 'ngov-wol-info' }, [
+						E('b', {}, [ t.name || t.mac || '—' ]),
+						E('em', {}, [
+							(t.mac || '—') + (t.ip ? (' · ' + t.ip) : '')
+						])
+					]),
+					btn
+				]));
+			})(d.wol[i]);
+		}
+
+		body.appendChild(grid);
+
+		if (d.wol.length)
+			body.appendChild(E('div', { 'class': 'ngov-app-note' }, [
+				'圆点表示该 MAC 目前是否出现在邻居表中。唤醒包只能唤回已开启 WOL 且网卡已通电的主机。'
+			]));
+
+		var up = 0;
+
+		for (var k = 0; k < d.wol.length; k++)
+			if (d.wol[k].online === true)
+				up++;
+
+		var cnt = d.wol.length
+			? (d.wol.length + ' 台' + (up ? ' · ' + up + ' 在线' : ''))
+			: '0 台';
+
+		return card('网络唤醒', cnt, [
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/status/homestatus' }, [ '唤醒设置 →' ])
+		], body);
+	}
+
 	function renderStorage(d) {
 		var body = E('div', { 'class': 'ngov-card-b' });
 		var list = E('div', { 'class': 'ngov-disk' });
@@ -2177,6 +2290,31 @@
 			if (n.classList && n.classList.contains('spinning'))
 				continue;
 
+			/* A section switched off via the display toggles renders an
+			 * empty placeholder in place of its content. The stock markup
+			 * nests it as
+			 *   .col-12 > .card > .cbi-section > .cbi-title + div > .hs-block-off
+			 * so matching the placeholder alone is not enough - the
+			 * wrapper must be dropped too, or the drawer keeps a card
+			 * with a heading and nothing under it.
+			 *
+			 * Decide on a clone: strip the title (which carries the
+			 * heading and its Hide toggle) and the placeholder itself,
+			 * then look at what is left. Nothing but empty divs means
+			 * there is no content and the wrapper goes. */
+			if (n.querySelector && n.querySelector('.hs-block-off')) {
+				var probe = n.cloneNode(true);
+				var pt = probe.querySelector('.cbi-title');
+				if (pt)
+					pt.parentNode.removeChild(pt);
+				var po = probe.querySelector('.hs-block-off');
+				if (po)
+					po.parentNode.removeChild(po);
+
+				if (!probe.textContent.trim() && !probe.querySelector('table'))
+					continue;
+			}
+
 			nodes.push(n);
 		}
 
@@ -2185,6 +2323,56 @@
 			nodes.push(inc);
 
 		return nodes;
+	}
+
+	/* A section that was moved into the drawer before it finished rendering
+	 * can still produce a titlted-but-empty card afterwards: the stock
+	 * include renders asynchronously, so at mount time the container may be
+	 * empty and only later receive the "switched off" placeholder. Sweep the
+	 * drawer whenever its contents change and drop any child left with
+	 * nothing but a heading. */
+	function pruneDrawer(body) {
+		var kids = Array.prototype.slice.call(body.children);
+
+		for (var i = 0; i < kids.length; i++) {
+			var n = kids[i];
+
+			if (!n.querySelector || !n.querySelector('.hs-block-off'))
+				continue;
+
+			var probe = n.cloneNode(true);
+			var pt = probe.querySelector('.cbi-title');
+			if (pt)
+				pt.parentNode.removeChild(pt);
+			var po = probe.querySelector('.hs-block-off');
+			if (po)
+				po.parentNode.removeChild(po);
+
+			if (!probe.textContent.trim() && !probe.querySelector('table'))
+				n.parentNode.removeChild(n);
+		}
+
+		return body.children.length;
+	}
+
+	function watchDrawer(body) {
+		if (typeof MutationObserver == 'undefined')
+			return;
+
+		var timer = null;
+
+		new MutationObserver(function() {
+			if (timer)
+				window.clearTimeout(timer);
+
+			/* debounce: the poll replaces several nodes in one tick */
+			timer = window.setTimeout(function() {
+				timer = null;
+				pruneDrawer(body);
+			}, 400);
+		}).observe(body, { childList: true, subtree: true });
+
+		pruneDrawer(body);
 	}
 
 	function mount() {
@@ -2207,12 +2395,14 @@
 		state.slots.kpis = E('div');
 		state.slots.cols = E('div', { 'class': 'ngov-cols' });
 		state.slots.apps = E('div');
+		state.slots.wol = E('div');
 		state.slots.storage = E('div');
 
 		root.appendChild(state.slots.hero);
 		root.appendChild(state.slots.kpis);
 		root.appendChild(state.slots.cols);
 		root.appendChild(state.slots.apps);
+		root.appendChild(state.slots.wol);
 		root.appendChild(state.slots.storage);
 
 		var drawer = makeDrawer();
@@ -2234,6 +2424,9 @@
 
 		if (!drawer.body.children.length)
 			drawer.det.style.display = 'none';
+
+		/* the stock includes render on their own schedule - keep sweeping */
+		watchDrawer(drawer.body);
 
 		state.root = root;
 		state.mounted = true;
@@ -2282,8 +2475,26 @@
 			}
 		}
 
+		/* The two optional blocks. Hidden via display:none rather than
+		 * simply left empty: the root is a flex column with a gap, so an
+		 * empty wrapper would still claim a gap slot. */
 		clear(state.slots.apps);
-		state.slots.apps.appendChild(renderApps(d));
+		if (d.showApps) {
+			state.slots.apps.style.display = null;
+			state.slots.apps.appendChild(renderApps(d));
+		}
+		else {
+			state.slots.apps.style.display = 'none';
+		}
+
+		clear(state.slots.wol);
+		if (d.showWol) {
+			state.slots.wol.style.display = null;
+			state.slots.wol.appendChild(renderWol(d));
+		}
+		else {
+			state.slots.wol.style.display = 'none';
+		}
 
 		clear(state.slots.storage);
 		state.slots.storage.appendChild(renderStorage(d));
