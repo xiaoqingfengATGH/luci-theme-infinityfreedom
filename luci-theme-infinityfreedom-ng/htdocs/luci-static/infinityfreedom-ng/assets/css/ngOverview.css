@@ -426,19 +426,80 @@
 .ngov-wolbtn:disabled { opacity: .5; cursor: default; }
 
 /* ----------------------------------------------------------------- disks ---- */
-.ngov-disk { display: flex; flex-direction: column; gap: 11px; }
-.ngov-drow { display: grid; grid-template-columns: 132px minmax(60px, 1fr) 66px 96px; gap: 12px; align-items: center; }
-.ngov-drow .mp { font-family: var(--ngov-mono); font-size: .78rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ngov-drow .mp em { font-style: normal; display: block; font-family: inherit; font-weight: 400; color: var(--ngov-fg3); font-size: .68rem; }
-.ngov-track { height: 8px; background: #4b5865; border-radius: 4px; overflow: hidden; }
+/* Storage table - mirrors the classic 磁盘容量 block: the physical disk is
+ * named above it, one row per mount point, unmounted partitions as dim rows. */
+.ngov-dhead {
+	display: flex;
+	align-items: baseline;
+	gap: 7px;
+	margin-bottom: 9px;
+	font-size: .8rem;
+}
+.ngov-dhead .nm { font-weight: 600; }
+.ngov-dhead .dv { font-family: var(--ngov-mono); font-size: .72rem; color: var(--ngov-fg3); }
+.ngov-dhead .sz { margin-left: auto; color: var(--ngov-fg3); font-size: .74rem; font-variant-numeric: tabular-nums; }
+
+.ngov-dtable { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.ngov-dtable th {
+	font-weight: 500;
+	font-size: .68rem;
+	color: var(--ngov-fg3);
+	text-align: left;
+	padding: 0 10px 7px 0;
+	border-bottom: 1px solid var(--ngov-line);
+	white-space: nowrap;
+}
+.ngov-dtable td {
+	padding: 8px 10px 8px 0;
+	border-bottom: 1px solid var(--ngov-line);
+	vertical-align: middle;
+}
+.ngov-dtable tbody tr:last-child td { border-bottom: 0; }
+.ngov-dtable td.mp { padding-right: 14px; }
+.ngov-dtable td.mp .t {
+	font-family: var(--ngov-mono);
+	font-size: .78rem;
+	font-weight: 600;
+	white-space: nowrap;
+}
+.ngov-dtable td.mp em {
+	font-style: normal;
+	display: block;
+	font-size: .68rem;
+	font-weight: 400;
+	color: var(--ngov-fg3);
+}
+.ngov-dtable td.dev {
+	font-size: .72rem;
+	color: var(--ngov-fg2);
+	white-space: nowrap;
+}
+.ngov-dtable td.bar, .ngov-dtable th.bar { width: 26%; min-width: 70px; }
+.ngov-dtable td.ngov-pct, .ngov-dtable th.ngov-pct {
+	text-align: right;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+	padding-right: 16px;
+}
+.ngov-dtable td.ngov-pct.crit { color: #ff7a4d; font-weight: 600; }
+.ngov-dtable td.ngov-pct.warn { color: #ffb74d; font-weight: 600; }
+.ngov-dtable td.av, .ngov-dtable th.av {
+	text-align: right;
+	color: var(--ngov-fg3);
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+.ngov-dtable tr.ro > td { opacity: .78; }
+.ngov-dtable tr.dim > td { opacity: .6; }
+.ngov-dtable td.span { color: var(--ngov-fg3); font-size: .74rem; }
+
+.ngov-track { height: 8px; background: #4b5865; border-radius: 4px; overflow: hidden; min-width: 40px; }
 .ngov-track > i { display: block; height: 100%; background: var(--ngov-primary); border-radius: 4px; min-width: 6px; }
 .ngov-track > i.w { background: var(--ngov-warn); }
 .ngov-track > i.r { background: var(--ngov-crit); }
 /* Read-only image: a squashfs is 100% by construction, so drawing a full bar
  * would raise a false alarm on every single page load. Neutral hatch instead. */
 .ngov-track.ro { background: repeating-linear-gradient(45deg, #4b5865, #4b5865 4px, #5a6673 4px, #5a6673 8px); }
-.ngov-drow .pct { text-align: right; font-variant-numeric: tabular-nums; font-size: .8rem; }
-.ngov-drow .av { text-align: right; color: var(--ngov-fg3); font-size: .76rem; font-variant-numeric: tabular-nums; }
 .ngov-dfoot { color: var(--ngov-fg3); font-size: .71rem; margin-top: 3px; padding-top: 9px; border-top: 1px solid var(--ngov-line); }
 
 /* ------------------------------------------------- collapsed system block ---- */
@@ -476,8 +537,11 @@
 	.ngov-apps { grid-template-columns: 1fr; }
 	.ngov-wol { grid-template-columns: 1fr; }
 	.ngov-nettop { grid-template-columns: 1fr; }
-	.ngov-drow { grid-template-columns: 110px minmax(40px, 1fr) 52px; }
-	.ngov-drow .av { display: none; }
+	/* The storage table keeps 挂载点 and the bar; the device chain and the
+	 * free-space column are the first to go when there is no room. */
+	.ngov-dtable th.dev, .ngov-dtable td.dev,
+	.ngov-dtable th.av, .ngov-dtable td.av { display: none; }
+	.ngov-dtable td.bar, .ngov-dtable th.bar { width: 34%; }
 	.ngov-hero-right { margin-left: 0; gap: 18px; }
 	.ngov-conn { grid-template-columns: 44px 1fr; }
 	.ngov-conn-d { display: none; }

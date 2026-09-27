@@ -440,7 +440,7 @@
 		var rows = [];
 		var seen = {};
 
-		function pushMount(m, fstype, readonly, devName) {
+		function pushMount(m, fstype, readonly, devName, partName) {
 			if (m == null || m.target == null)
 				return;
 
@@ -455,6 +455,10 @@
 				readonly: readonly === true,
 				alias: m.alias || null,
 				dev: devName || null,
+				/* A loop volume (loop0) is backed by a partition (sda2); the
+				 * device chain shown in the table is "loop0 → sda2". Keep the
+				 * parent so the chain survives the flattening. */
+				part: partName || null,
 				bytes_total: m.bytes_total,
 				bytes_used: m.bytes_used,
 				bytes_avail: m.bytes_avail,
@@ -473,12 +477,12 @@
 				var p = d.partitions[j];
 
 				for (var k = 0; k < (p.mounts || []).length; k++)
-					pushMount(p.mounts[k], p.fstype, p.readonly, p.name);
+					pushMount(p.mounts[k], p.fstype, p.readonly, p.name, null);
 
 				for (var l = 0; l < (p.volumes || []).length; l++) {
 					var vol = p.volumes[l];
 					for (var n = 0; n < (vol.mounts || []).length; n++)
-						pushMount(vol.mounts[n], vol.fstype, false, vol.name);
+						pushMount(vol.mounts[n], vol.fstype, false, vol.name, p.name);
 				}
 			}
 		}
@@ -2159,91 +2163,183 @@
 		], body);
 	}
 
+	/* 存储 card - same display logic as the classic 磁盘容量 block: a real
+	 * table with 挂载点 / 设备·类型 / 容量与已用 / 使用率 / 剩余, the physical
+	 * disk named above it, and unmounted partitions listed as their own dim
+	 * rows instead of being folded into a footer sentence. */
 	function renderStorage(d) {
 		var body = E('div', { 'class': 'ngov-card-b' });
-		var list = E('div', { 'class': 'ngov-disk' });
-
 		var rows = d.diskRows;
+
+		var disks = (d.hs && Array.isArray(d.hs.disks)) ? d.hs.disks : [];
+
+		/* loop0 → sda2 · f2fs  for a volume;  sda1 · vfat  for a plain
+		 * partition mount. This is the column the card used to drop. */
+		function chain(r) {
+			var bits = [];
+
+			if (r.dev != null && r.part != null && r.dev != r.part)
+				bits.push(r.dev + ' → ' + r.part);
+			else if (r.part != null)
+				bits.push(r.part);
+			else if (r.dev != null)
+				bits.push(r.dev);
+
+			if (r.fstype != null)
+				bits.push(r.fstype);
+
+			return bits.length ? bits.join(' · ') : '—';
+		}
+
+		function barCell(r) {
+			/* A read-only firmware image is 100% full by construction;
+			 * colouring it with the critical threshold would cry wolf on
+			 * every load. Neutral hatch + an explicit badge instead. */
+			if (r.readonly) {
+				return E('div', {
+					'class': 'ngov-track ro',
+					'title': '只读固件镜像 · 恒 100%，不代表已用尽'
+				});
+			}
+
+			var p = r.use_pct;
+			var cls = (p == null) ? '' : (p >= d.hsCfg.crit ? 'r' : (p >= d.hsCfg.warn ? 'w' : ''));
+
+			return E('div', {
+				'class': 'ngov-track',
+				'title': (p == null) ? ''
+					: (fmtBytes(r.bytes_used) + ' / ' + fmtBytes(r.bytes_total) + '（' + p + '%）')
+			}, (p == null) ? [] : [
+				E('i', { 'class': cls, 'style': 'width:' + Math.max(2, Math.min(100, p)) + '%' })
+			]);
+		}
+
+		var trs = [];
 
 		for (var i = 0; i < rows.length; i++) {
 			var r = rows[i];
+			var p = r.use_pct;
 
-			var sub = r.alias || [ r.dev, r.fstype ].filter(function(x) { return x; }).join(' · ');
+			var pctCls = 'ngov-pct';
 
-			var track, pctCell, availCell;
-
-			if (r.readonly) {
-				/* squashfs is 100% full by construction - a saturated bar here
-				 * would raise a false alarm on every page load. */
-				track = E('div', { 'class': 'ngov-track ro' });
-				pctCell = E('div', { 'class': 'pct' }, [ pill('', '只读') ]);
-				availCell = E('div', { 'class': 'av' }, [ '固件镜像' ]);
-			}
-			else {
-				var p = r.use_pct;
-				var cls = (p == null) ? '' : (p >= d.hsCfg.crit ? 'r' : (p >= d.hsCfg.warn ? 'w' : ''));
-
-				track = E('div', { 'class': 'ngov-track' }, p == null ? [] : [
-					E('i', { 'class': cls, 'style': 'width:' + Math.max(2, Math.min(100, p)) + '%' })
-				]);
-				pctCell = E('div', { 'class': 'pct' }, [ p == null ? '—' : (p + '%') ]);
-				availCell = E('div', { 'class': 'av' }, [
-					r.bytes_avail == null ? '—' : ('可用 ' + fmtBytes(r.bytes_avail))
-				]);
+			if (!r.readonly && p != null) {
+				if (p >= d.hsCfg.crit) pctCls += ' crit';
+				else if (p >= d.hsCfg.warn) pctCls += ' warn';
 			}
 
-			list.appendChild(E('div', { 'class': 'ngov-drow', 'style': r.readonly ? 'opacity:.72' : null }, [
-				E('div', { 'class': 'mp' }, [
-					r.target,
-					sub ? E('em', {}, [ sub ]) : null
+			/* LuCI's E() stringifies a null child into a literal "null" text
+			 * node, so build the children list conditionally instead of
+			 * passing a ternary that can yield null. */
+			var mpKids = [ E('span', { 'class': 't' }, [ r.target ]) ];
+
+			if (r.alias)
+				mpKids.push(E('em', {}, [ r.alias ]));
+
+			trs.push(E('tr', { 'class': r.readonly ? 'ro' : null }, [
+				E('td', { 'class': 'mp' }, mpKids),
+				E('td', { 'class': 'dev' }, [ chain(r) ]),
+				E('td', { 'class': 'bar' }, [ barCell(r) ]),
+				E('td', { 'class': pctCls }, [
+					r.readonly ? pill('', '只读') : (p == null ? '—' : p + '%')
 				]),
-				track,
-				pctCell,
-				availCell
+				E('td', { 'class': 'av' }, [
+					r.readonly ? '固件镜像'
+						: (r.bytes_avail == null ? '—' : ('可用 ' + fmtBytes(r.bytes_avail)))
+				])
 			]));
 		}
 
-		if (!rows.length)
-			list.appendChild(E('div', { 'class': 'ngov-empty' }, [ '未发现挂载点。' ]));
-
-		body.appendChild(list);
-
-		/* footer: what is not on the bar - unmounted partitions, disk totals */
-		var disks = (d.hs && Array.isArray(d.hs.disks)) ? d.hs.disks : [];
-		var bits = [];
-		var unmounted = [];
-		var totalBytes = 0;
+		/* Unmounted partitions belong on the table as dim rows: they are
+		 * storage the user may still want to see, but they carry no usage. */
+		var nUnmounted = 0;
 
 		for (var di = 0; di < disks.length; di++) {
 			var dk = disks[di];
 			if (dk == null || dk.error != null)
 				continue;
 
-			if (dk.bytes)
-				totalBytes += dk.bytes;
-
 			for (var pi = 0; pi < (dk.partitions || []).length; pi++) {
 				var pt = dk.partitions[pi];
-				if (pt.unmounted && !(pt.volumes || []).length)
-					unmounted.push(pt.name + '（' + fmtBytes(pt.bytes) + '）');
+
+				if (!pt.unmounted || (pt.volumes || []).length)
+					continue;
+
+				nUnmounted++;
+
+				trs.push(E('tr', { 'class': 'ro dim' }, [
+					E('td', { 'class': 'mp' }, [ E('span', { 'class': 't' }, [ '—' ]) ]),
+					E('td', { 'class': 'dev' }, [
+						pt.name + ' · ' + (pt.fstype != null ? pt.fstype : '无文件系统')
+					]),
+					E('td', { 'class': 'span', 'colspan': 3 }, [
+						fmtBytes(pt.bytes) + ' · 未挂载'
+					])
+				]));
 			}
 		}
 
-		if (unmounted.length)
-			bits.push('未挂载分区 ' + unmounted.join('、'));
+		if (!trs.length)
+			body.appendChild(E('div', { 'class': 'ngov-empty' }, [ '未发现挂载点。' ]));
+		else
+			body.appendChild(E('table', { 'class': 'ngov-dtable' }, [
+				E('thead', {}, E('tr', {}, [
+					E('th', {}, [ '挂载点' ]),
+					E('th', {}, [ '设备 / 类型' ]),
+					E('th', { 'class': 'bar' }, [ '容量与已用' ]),
+					E('th', { 'class': 'ngov-pct' }, [ '使用率' ]),
+					E('th', { 'class': 'av' }, [ '剩余' ])
+				])),
+				E('tbody', {}, trs)
+			]));
+
+		/* Name the physical disk above the table, the way the classic block
+		 * did - the card previously never said which device this all is. */
+		var head = null;
+
+		if (disks.length && disks[0] != null && disks[0].error == null) {
+			head = E('div', { 'class': 'ngov-dhead' }, [
+				E('span', { 'class': 'nm' }, [ disks[0].model || disks[0].name ]),
+				E('span', { 'class': 'dv' }, [ '(' + disks[0].name + ')' ]),
+				E('span', { 'class': 'sz' }, [ fmtBytes(disks[0].bytes) ])
+			]);
+		}
+
+		if (head)
+			body.insertBefore(head, body.firstChild);
+
+		var nMounts = rows.length;
+		var nVol = 0;
+		var nReadonly = 0;
+		var totalBytes = 0;
+
+		for (var vi = 0; vi < disks.length; vi++) {
+			var dk2 = disks[vi];
+			if (dk2 == null || dk2.error != null)
+				continue;
+
+			if (dk2.bytes)
+				totalBytes += dk2.bytes;
+
+			for (var pj = 0; pj < (dk2.partitions || []).length; pj++) {
+				var pt2 = dk2.partitions[pj] || {};
+				nVol += (pt2.volumes || []).length;
+				if (pt2.readonly) nReadonly++;
+			}
+		}
+
+		/* footer: the totals the table cannot express as a column */
+		var bits = [];
+
+		if (nReadonly || nUnmounted)
+			bits.push((nReadonly ? nReadonly + ' 个只读镜像' : '') +
+				(nReadonly && nUnmounted ? ' · ' : '') +
+				(nUnmounted ? nUnmounted + ' 个未挂载分区' : ''));
 
 		if (totalBytes)
 			bits.push('磁盘总容量 ' + fmtBytes(totalBytes));
 
 		if (bits.length)
 			body.appendChild(E('div', { 'class': 'ngov-dfoot' }, [ bits.join(' · ') ]));
-
-		var nMounts = rows.length;
-		var nVol = 0;
-
-		for (var vi = 0; vi < disks.length; vi++)
-			for (var pj = 0; pj < ((disks[vi] || {}).partitions || []).length; pj++)
-				nVol += ((disks[vi].partitions[pj] || {}).volumes || []).length;
 
 		/* luci-app-diskman is optional: link only when its page exists in
 		 * the live menu tree (soft() failure => {} => link hidden) */
