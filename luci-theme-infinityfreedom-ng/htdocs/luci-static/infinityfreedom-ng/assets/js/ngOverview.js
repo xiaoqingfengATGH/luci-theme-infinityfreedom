@@ -260,6 +260,7 @@
 				leases:     d('luci-rpc', 'getDHCPLeases', null, {}),
 				hostHints:  d('luci-rpc', 'getHostHints', null, {}),
 				netDevs:    d('luci-rpc', 'getNetworkDevices', null, {}),
+				menuTree:   d('luci-rpc', 'getMenuTree', null, {}),
 				hsStatus:   d('luci.homestatus', 'status', null, {}),
 				hsRestart:  d('luci.homestatus', 'restart_app', [ 'payload' ], {}),
 				wifiDevs:   d('iwinfo', 'devices', null, {}),
@@ -312,13 +313,19 @@
 			return soft(a.devAll(), {}).then(function(devs) {
 				var dev = (devs && wanDev && devs[wanDev]) ? devs[wanDev] : null;
 
-				return normalize({
-					board: v[0], info: v[1], cpu: v[2], cpuinfo: v[3],
-					mounts: (v[4] && Array.isArray(v[4].result)) ? v[4].result : [],
-					ifaces: (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [],
-					leases: v[6], hints: v[7], selfDevs: v[8], hs: v[9],
-					wifi: v[10], ct: v[11],
-					devs: devs || {}, dev: dev, wanDevice: wanDev
+				/* menu tree drives optional deep-links (e.g. luci-app-diskman
+				 * on builds that ship it) - fetch best-effort */
+				return soft(a.menuTree(), {}).then(function(mt) {
+					state.menuTree = mt || {};
+
+					return normalize({
+						board: v[0], info: v[1], cpu: v[2], cpuinfo: v[3],
+						mounts: (v[4] && Array.isArray(v[4].result)) ? v[4].result : [],
+						ifaces: (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [],
+						leases: v[6], hints: v[7], selfDevs: v[8], hs: v[9],
+						wifi: v[10], ct: v[11],
+						devs: devs || {}, dev: dev, wanDevice: wanDev
+					});
 				});
 			});
 		});
@@ -1671,7 +1678,7 @@
 		}
 
 		var actions = [
-			E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/network/dhcp' }, [ 'DHCP 租约 →' ])
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/network/dhcp' }, [ 'DHCP 租约 →' ])
 		];
 
 		return card('LAN 接入设备', String(d.peerTotal) + ' 台', actions, body);
@@ -1713,7 +1720,7 @@
 		}))));
 
 		return card('上游网关', null, [
-			E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/network/network' }, [ '网络设置 →' ])
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/network/network' }, [ '网络设置 →' ])
 		], body);
 	}
 
@@ -1802,7 +1809,7 @@
 		}))));
 
 		return card('WAN 出口', d.wanList.length > 1 ? (d.wanList.length + ' 条线路') : null, [
-			E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/network/network' }, [ '详情 →' ])
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/network/network' }, [ '详情 →' ])
 		], body);
 	}
 
@@ -1891,7 +1898,9 @@
 			: '0 项';
 
 		return card('关键应用', cnt, [
-			E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/services/homestatus' }, [ '监视设置 →' ])
+			/* homestatus registers its own page under admin/status/ (menu.d),
+			 * not admin/services/ */
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/status/homestatus' }, [ '监视设置 →' ])
 		], body);
 	}
 
@@ -1981,8 +1990,15 @@
 			for (var pj = 0; pj < ((disks[vi] || {}).partitions || []).length; pj++)
 				nVol += ((disks[vi].partitions[pj] || {}).volumes || []).length;
 
+		/* luci-app-diskman is optional: link only when its page exists in
+		 * the live menu tree (soft() failure => {} => link hidden) */
+		var hasDiskman = !!(state.menuTree && state.menuTree['admin/system/diskman']);
+		var acts = hasDiskman
+			? [ E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/system/diskman' }, [ '完整视图 →' ]) ]
+			: [];
+
 		return card('存储', disks.length + ' 块磁盘 · ' + nMounts + ' 个挂载点' + (nVol ? ' · ' + nVol + ' 个数据卷' : ''),
-			[ E('a', { 'class': 'ngov-link', 'href': L.env.cgi_base + '/admin/system/diskman' }, [ '完整视图 →' ]) ],
+			acts,
 			body);
 	}
 
