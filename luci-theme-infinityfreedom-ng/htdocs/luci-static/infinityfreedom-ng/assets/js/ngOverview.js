@@ -60,7 +60,10 @@
 		slots: {},
 		timer: null,
 		busy: false,
-		lastError: null
+		lastError: null,
+		/* system-info popover open across the 5s repaint (re-anchored to
+		 * the fresh button in renderHero) */
+		sysOpen: false
 	};
 
 	/* ------------------------------------------------------------ helpers --- */
@@ -95,6 +98,31 @@
 		out.push(m + '分');
 
 		return out.join(' ');
+	}
+
+	/* router epoch -> admin-readable wall clock. The epoch is absolute, so
+	 * formatting in the browser shows the router's time as long as admin
+	 * browser and router share a timezone (the normal single-LAN case). */
+	function fmtLocalTime(epoch) {
+		if (epoch == null || isNaN(epoch))
+			return null;
+
+		var dt = new Date(epoch * 1000);
+
+		function p(n) { return (n < 10 ? '0' : '') + n; }
+
+		return dt.getFullYear() + '-' + p(dt.getMonth() + 1) + '-' + p(dt.getDate())
+			+ ' ' + p(dt.getHours()) + ':' + p(dt.getMinutes()) + ':' + p(dt.getSeconds());
+	}
+
+	/* "HomeLede " + "24.10.5" -> "HomeLede 24.10.5" (revision rides along
+	 * as the dim second line, e.g. "v2024.08.03 based on OpenWrt R26.05.20") */
+	function fwLine(board) {
+		var s = ((board && board.description) || '') + ' ' + ((board && board.version) || '');
+
+		s = s.replace(/\s+/g, ' ').trim();
+
+		return s || null;
 	}
 
 	function pct(used, total) {
@@ -261,6 +289,7 @@
 				hostHints:  d('luci-rpc', 'getHostHints', null, {}),
 				netDevs:    d('luci-rpc', 'getNetworkDevices', null, {}),
 				menuTree:   d('luci-rpc', 'getMenuTree', null, {}),
+				sysTime:    d('luci', 'getUnixtime', null, {}),
 				hsStatus:   d('luci.homestatus', 'status', null, {}),
 				hsRestart:  d('luci.homestatus', 'restart_app', [ 'payload' ], {}),
 				wifiDevs:   d('iwinfo', 'devices', null, {}),
@@ -296,7 +325,8 @@
 				soft(a.netDevs(), {}),
 				soft(a.hsStatus(), null),
 				wifiData(a),
-				conntrackCount()
+				conntrackCount(),
+				soft(a.sysTime(), null)
 			]);
 		}).then(function(v) {
 			var ifaces = (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [];
@@ -323,7 +353,7 @@
 						mounts: (v[4] && Array.isArray(v[4].result)) ? v[4].result : [],
 						ifaces: (v[5] && Array.isArray(v[5].interface)) ? v[5].interface : [],
 						leases: v[6], hints: v[7], selfDevs: v[8], hs: v[9],
-						wifi: v[10], ct: v[11],
+						wifi: v[10], ct: v[11], systime: v[12],
 						devs: devs || {}, dev: dev, wanDevice: wanDev
 					});
 				});
@@ -892,7 +922,12 @@
 			diskRows: diskRows(raw.hs),
 			overlay: ov,
 			speed: speed,
-			wanDevice: raw.wanDevice || (wan ? (wan.l3_device || wan.device) : null)
+			wanDevice: raw.wanDevice || (wan ? (wan.l3_device || wan.device) : null),
+			/* router-side clock, used by the system info popover (a browser
+			 * Date would show the ADMIN machine's time, not the router's).
+			 * luci getUnixtime answers { result: <epoch> } via rpc.js. */
+			unixtime: (raw.systime && raw.systime.result != null) ? raw.systime.result : null,
+			hostname: board.hostname || null
 		};
 	}
 
@@ -1009,7 +1044,20 @@
 			[ fmtUptime(d.uptime), '运行时间' ]
 		];
 
-		return E('div', { 'class': 'ngov-hero' + (h.level != 'ok' ? (h.level == 'critical' ? ' critical' : ' degraded') : '') }, [
+		var heroRight = E('div', { 'class': 'ngov-hero-right' }, right.map(function(kv) {
+			return E('div', { 'class': 'ngov-kv' }, [
+				E('b', {}, [ kv[0] ]),
+				E('span', {}, [ kv[1] ])
+			]);
+		}));
+
+		heroRight.appendChild(E('button', {
+			'class': 'ngov-sysbtn',
+			'type': 'button',
+			'click': function(ev) { toggleSysPop(ev.currentTarget, d); }
+		}, [ '系统信息' ]));
+
+		var hero = E('div', { 'class': 'ngov-hero' + (h.level != 'ok' ? (h.level == 'critical' ? ' critical' : ' degraded') : '') }, [
 			E('div', { 'class': 'ngov-hero-badge' }, [
 				dot(h.level == 'critical' ? 'r' : (h.level == 'degraded' ? 'w' : 'g')),
 				E('div', {}, [
@@ -1017,13 +1065,82 @@
 					E('div', { 'class': 'ngov-hero-sub' }, [ sub ])
 				])
 			]),
-			E('div', { 'class': 'ngov-hero-right' }, right.map(function(kv) {
-				return E('div', { 'class': 'ngov-kv' }, [
-					E('b', {}, [ kv[0] ]),
-					E('span', {}, [ kv[1] ])
-				]);
-			}))
+			heroRight
 		]);
+
+		/* the popover must survive the 5s repaint: re-anchor it to the
+		 * fresh button each render while it is open (the clock inside
+		 * stays live, since it is rebuilt from this render's unixtime) */
+		if (state.sysOpen)
+			buildSysPop(heroRight.lastChild, d);
+
+		return hero;
+	}
+
+	/* --- system info popover: 型号/架构/目标平台/固件版本/内核版本/本地时间 ---
+	 * Deliberately NOT always-visible: it is static identity data, worthless
+	 * in the 5s refresh loop, but must be one click away when wanted. */
+	function sysRows(d) {
+		var b = d.board || {};
+		var rel = b.release || {};
+
+		return [
+			[ '型号',     b.model || '—' ],
+			[ '架构',     b.system || '—' ],
+			[ '目标平台', rel.target || '—' ],
+			[ '固件版本', fwLine(rel) || '—' ],
+			[ '内核版本', b.kernel ? ('Linux ' + b.kernel) : '—' ],
+			[ '本地时间', fmtLocalTime(d.unixtime) || '—' ]
+		];
+	}
+
+	function toggleSysPop(btn, d) {
+		/* user click path: toggle by state flag, not by DOM probe (the
+		 * trigger click bubbles up to document). */
+		state.sysOpen = !state.sysOpen;
+
+		if (!state.sysOpen)
+			return;
+
+		buildSysPop(btn, d);
+	}
+
+	function buildSysPop(btn, d) {
+		var pop = E('div', { 'class': 'ngov-syspop', 'id': 'ngov-syspop' }, [
+			E('div', { 'class': 'ngov-syspop-h' }, [
+				E('b', {}, [ '系统信息' ]),
+				(d.hostname ? E('span', { 'class': 'txt' }, [ d.hostname ]) : null),
+				E('button', {
+					'class': 'ngov-syspop-x',
+					'type': 'button',
+					'aria-label': '关闭',
+					'click': function() { state.sysOpen = false; }
+				}, [ '×' ])
+			]),
+			E('table', {}, E('tbody', {}, sysRows(d).map(function(r) {
+				return E('tr', {}, [
+					E('td', {}, [ r[0] ]),
+					E('td', { 'class': 'ngov-mono' }, [ r[1] ])
+				]);
+			})))
+		]);
+
+		btn.appendChild(pop);
+	}
+
+	function sysPopOutside(ev) {
+		/* clicks anywhere outside the popover close it; the popover lives
+		 * INSIDE the trigger button, so pop.contains(btn-click) is false -
+		 * the trigger must count as inside here or the open click itself
+		 * (which bubbles to document) would instantly close it */
+		if (!state.sysOpen)
+			return;
+
+		var pop = document.getElementById('ngov-syspop');
+		var t = ev.target;
+
+		if (pop && !pop.contains(t) && !(t.closest && t.closest('.ngov-sysbtn')))
+			state.sysOpen = false;
 	}
 
 	function kpiCard(title, valueNode, subText, footDot, footText, footRight, barPct, barCls) {
@@ -2191,6 +2308,10 @@
 	function start() {
 		if (!mount())
 			return;
+
+		/* click-outside closes the system-info popover (registered once;
+		 * the handler itself is a no-op while state.sysOpen is false) */
+		document.addEventListener('click', sysPopOutside);
 
 		gather().then(function(norm) {
 			state.lastNorm = norm;

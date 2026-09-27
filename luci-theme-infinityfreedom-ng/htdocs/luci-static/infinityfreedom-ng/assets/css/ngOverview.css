@@ -79,10 +79,69 @@
 .ngov-hero-badge { display: flex; align-items: center; gap: 11px; min-width: 0; }
 .ngov-hero-title { font-size: 1.3rem; font-weight: 600; letter-spacing: .2px; }
 .ngov-hero-sub { color: var(--ngov-fg2); font-size: .8rem; }
-.ngov-hero-right { margin-left: auto; display: flex; gap: 26px; flex-wrap: wrap; }
+.ngov-hero-right { margin-left: auto; display: flex; gap: 26px; flex-wrap: wrap; align-items: center; position: relative; }
 .ngov-kv { text-align: right; }
 .ngov-kv b { display: block; font-size: 1.05rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .ngov-kv span { color: var(--ngov-fg3); font-size: .72rem; letter-spacing: .6px; }
+
+/* system-info trigger + popover: identity data lives one click away,
+ * never in the always-visible layer */
+.ngov-sysbtn {
+	border: 1px solid var(--border);
+	background: transparent;
+	color: var(--ngov-fg3);
+	font-size: .72rem;
+	letter-spacing: .6px;
+	padding: 4px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: color .15s, border-color .15s;
+}
+
+.ngov-sysbtn:hover,
+.ngov-sysbtn:focus-visible { color: var(--ngov-fg); border-color: var(--accent); outline: none; }
+
+.ngov-syspop {
+	position: absolute;
+	top: calc(100% + 10px);
+	right: 0;
+	z-index: 50;
+	min-width: 300px;
+	max-width: min(420px, 90vw);
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	box-shadow: 0 10px 28px rgba(0, 0, 0, .25);
+	padding: 10px 14px 12px;
+	text-align: left;
+}
+
+.ngov-syspop-h {
+	display: flex;
+	align-items: baseline;
+	gap: 10px;
+	padding: 4px 0 8px;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: 6px;
+}
+
+.ngov-syspop-h .txt { color: var(--ngov-fg3); font-size: .72rem; }
+.ngov-syspop-h .ngov-syspop-x {
+	margin-left: auto;
+	border: 0;
+	background: transparent;
+	color: var(--ngov-fg3);
+	font-size: .95rem;
+	line-height: 1;
+	padding: 2px 4px;
+	cursor: pointer;
+}
+
+.ngov-syspop-h .ngov-syspop-x:hover { color: var(--ngov-fg); }
+
+.ngov-syspop table { width: 100%; border-collapse: collapse; }
+.ngov-syspop td { padding: 4px 0; vertical-align: top; font-size: .78rem; }
+.ngov-syspop td:first-child { color: var(--ngov-fg3); white-space: nowrap; padding-right: 16px; }
 
 /* ------------------------------------------------------------------ KPIs ---- */
 .ngov-kpis { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
