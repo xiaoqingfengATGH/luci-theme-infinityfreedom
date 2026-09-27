@@ -2059,9 +2059,8 @@
 			: '0 项';
 
 		return card('关键应用', cnt, [
-			/* homestatus registers its own page under admin/status/ (menu.d),
-			 * not admin/services/ */
-			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/status/homestatus' }, [ '监视设置 →' ])
+			/* homestatus registers its own page under admin/system/ (menu.d) */
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/system/homestatus' }, [ '定制驾驶舱 →' ])
 		], body);
 	}
 
@@ -2083,7 +2082,7 @@
 		}
 		else if (!d.wol.length) {
 			grid.appendChild(E('div', { 'class': 'ngov-empty' }, [
-				'未配置唤醒目标。在「唤醒设置」中添加名称与 MAC 地址。'
+				'未配置唤醒目标。在「定制驾驶舱」中添加名称与 MAC 地址。'
 			]));
 		}
 
@@ -2156,7 +2155,7 @@
 			: '0 台';
 
 		return card('网络唤醒', cnt, [
-			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/status/homestatus' }, [ '唤醒设置 →' ])
+			E('a', { 'class': 'ngov-link', 'href': L.env.scriptname + '/admin/system/homestatus' }, [ '定制驾驶舱 →' ])
 		], body);
 	}
 
