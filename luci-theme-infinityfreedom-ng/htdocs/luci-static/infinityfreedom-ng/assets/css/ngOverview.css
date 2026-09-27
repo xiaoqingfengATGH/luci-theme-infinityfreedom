@@ -87,7 +87,7 @@
 /* system-info trigger + popover: identity data lives one click away,
  * never in the always-visible layer */
 .ngov-sysbtn {
-	border: 1px solid var(--border);
+	border: 1px solid var(--ngov-line);
 	background: transparent;
 	color: var(--ngov-fg3);
 	font-size: .72rem;
@@ -99,8 +99,11 @@
 }
 
 .ngov-sysbtn:hover,
-.ngov-sysbtn:focus-visible { color: var(--ngov-fg); border-color: var(--accent); outline: none; }
+.ngov-sysbtn:focus-visible { color: var(--ngov-fg); border-color: var(--ngov-primary); outline: none; }
 
+/* The popover must be an OPAQUE surface: --card/--border are not defined by
+ * this theme (they resolve to nothing -> transparent panel, unreadable text
+ * over the hero). Use the ngov scales, which are real opaque colours. */
 .ngov-syspop {
 	position: absolute;
 	top: calc(100% + 10px);
@@ -108,12 +111,15 @@
 	z-index: 50;
 	min-width: 300px;
 	max-width: min(420px, 90vw);
-	background: var(--card);
-	border: 1px solid var(--border);
+	background: var(--ngov-card2);
+	background-image: none;
+	border: 1px solid var(--ngov-line);
 	border-radius: 10px;
-	box-shadow: 0 10px 28px rgba(0, 0, 0, .25);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, .45);
 	padding: 10px 14px 12px;
 	text-align: left;
+	opacity: 1;
+	backdrop-filter: none;
 }
 
 .ngov-syspop-h {
@@ -121,7 +127,7 @@
 	align-items: baseline;
 	gap: 10px;
 	padding: 4px 0 8px;
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid var(--ngov-line);
 	margin-bottom: 6px;
 }
 
