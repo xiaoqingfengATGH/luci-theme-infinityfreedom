@@ -1198,9 +1198,10 @@
 			path = via ? ('经 ' + via) : '无可用出口';
 		}
 
-		var footRight = d.sideRouter
-			? (d.lanNet || null)
-			: (d.wanList.length > 1 ? (d.wanList.length + ' 条线路') : null);
+		/* No line count here: "2 条线路" invites "what counts as a line?"
+		 * (wan + wan6 read as two). Per-line detail belongs to the WAN card
+		 * below; the KPI only names the carrying path. */
+		var footRight = d.sideRouter ? (d.lanNet || null) : null;
 		var v, cls, footTxt, footCls;
 
 		if (probe.pending) {
