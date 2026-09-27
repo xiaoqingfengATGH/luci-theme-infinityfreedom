@@ -1054,6 +1054,8 @@
 		heroRight.appendChild(E('button', {
 			'class': 'ngov-sysbtn',
 			'type': 'button',
+			'aria-haspopup': 'true',
+			'aria-expanded': state.sysOpen ? 'true' : 'false',
 			'click': function(ev) { toggleSysPop(ev.currentTarget, d); }
 		}, [ '系统信息' ]));
 
@@ -1068,9 +1070,13 @@
 			heroRight
 		]);
 
-		/* the popover must survive the 5s repaint: re-anchor it to the
+		/* The popover must survive the 5s repaint: re-anchor it to the
 		 * fresh button each render while it is open (the clock inside
-		 * stays live, since it is rebuilt from this render's unixtime) */
+		 * stays live, since it is rebuilt from this render's unixtime).
+		 * It hangs off heroRight, NOT off the button: a popover inside
+		 * the trigger would make every click in it a click on the
+		 * trigger too (bubbling), so closing it would immediately
+		 * reopen it. */
 		if (state.sysOpen)
 			buildSysPop(heroRight.lastChild, d);
 
@@ -1094,15 +1100,22 @@
 		];
 	}
 
-	function toggleSysPop(btn, d) {
-		/* user click path: toggle by state flag, not by DOM probe (the
-		 * trigger click bubbles up to document). */
-		state.sysOpen = !state.sysOpen;
-
-		if (!state.sysOpen)
+	/* All open/close decisions funnel through here: flip the flag and repaint
+	 * from the last snapshot, so the DOM always matches state. Relying on the
+	 * next 5s poll to redraw made a closed popover linger, and toggling the
+	 * flag alone could not close anything. */
+	function setSysOpen(open) {
+		if (state.sysOpen === open)
 			return;
 
-		buildSysPop(btn, d);
+		state.sysOpen = open;
+
+		if (state.mounted && state.lastNorm)
+			render(state.lastNorm);
+	}
+
+	function toggleSysPop(btn, d) {
+		setSysOpen(!state.sysOpen);
 	}
 
 	function buildSysPop(btn, d) {
@@ -1114,7 +1127,14 @@
 					'class': 'ngov-syspop-x',
 					'type': 'button',
 					'aria-label': '关闭',
-					'click': function() { state.sysOpen = false; }
+					'click': function(ev) {
+						/* stop the click reaching the trigger beneath the
+						 * popover, which would toggle it straight back */
+						if (ev && ev.stopPropagation)
+							ev.stopPropagation();
+
+						setSysOpen(false);
+					}
 				}, [ '×' ])
 			]),
 			E('table', {}, E('tbody', {}, sysRows(d).map(function(r) {
@@ -1125,22 +1145,28 @@
 			})))
 		]);
 
-		btn.appendChild(pop);
+		/* sibling of the trigger, not a child: inside the button every
+		 * click here would also be a click on the trigger. The trigger
+		 * is statically positioned, so an absolutely positioned child
+		 * already resolved against this same .ngov-hero-right box - the
+		 * geometry does not move. */
+		btn.parentNode.appendChild(pop);
 	}
 
 	function sysPopOutside(ev) {
-		/* clicks anywhere outside the popover close it; the popover lives
-		 * INSIDE the trigger button, so pop.contains(btn-click) is false -
-		 * the trigger must count as inside here or the open click itself
-		 * (which bubbles to document) would instantly close it */
 		if (!state.sysOpen)
 			return;
 
 		var pop = document.getElementById('ngov-syspop');
 		var t = ev.target;
 
-		if (pop && !pop.contains(t) && !(t.closest && t.closest('.ngov-sysbtn')))
-			state.sysOpen = false;
+		if (pop && pop.contains(t))
+			return;
+
+		if (t.closest && t.closest('.ngov-sysbtn'))
+			return;
+
+		setSysOpen(false);
 	}
 
 	function kpiCard(title, valueNode, subText, footDot, footText, footRight, barPct, barCls) {
