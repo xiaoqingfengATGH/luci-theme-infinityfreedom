@@ -1059,56 +1059,198 @@
 		return { cls: 'g', text: '正常', dot: 'g' };
 	}
 
-	/* "互联网" KPI answers the user-level question: does traffic reach the
-	 * internet right now. It deliberately does NOT repeat the per-line WAN
-	 * details shown in the card below (that was the overlap the user called
-	 * out); the sub line only names the path (via which line / gateway). */
+	/* Browser-side reachability probe, TWO targets with distinct meaning:
+	 * - www.baidu.com  domestic path (direct egress); on failure a probe of
+	 *   the IP-literal https://223.5.5.5 tells DNS trouble (IP ok, name
+	 *   fails) from a dead exit (both fail).
+	 * - www.google.com overseas path - through the router this exercises
+	 *   the proxy chain (PassWall2), so "国内可达 · 海外不可达" reads as
+	 *   "proxy not working" rather than "offline".
+	 * A no-cors fetch resolves whenever ANY HTTP response arrives (status
+	 * unreadable, but network-level success is what we need) and rejects
+	 * on DNS/TCP/TLS failure. Both targets run in parallel; the KPI flips
+	 * when the round settles. Failure only degrades (one browser is a
+	 * single sample - a local proxy extension must not claim the router
+	 * is down); a down LINE stays the hard red. */
+	var probe = { pending: true, cn: null, intl: null };
+
+	function fetchProbe(url, ms) {
+		return new Promise(function(resolve) {
+			var done = false;
+			var ctl = (typeof AbortController == 'function') ? new AbortController() : null;
+			var opt = { mode: 'no-cors', cache: 'no-store' };
+
+			if (ctl)
+				opt.signal = ctl.signal;
+
+			var t = setTimeout(function() {
+				if (!done) {
+					done = true;
+					try { if (ctl) ctl.abort(); } catch (e) {}
+					resolve(false);
+				}
+			}, ms || 4000);
+
+			try {
+				fetch(url, opt).then(function() {
+					if (!done) { done = true; clearTimeout(t); resolve(true); }
+				}, function() {
+					if (!done) { done = true; clearTimeout(t); resolve(false); }
+				});
+			}
+			catch (e) {
+				if (!done) { done = true; clearTimeout(t); resolve(false); }
+			}
+		});
+	}
+
+	var probeBusy = false;
+
+	function internetProbe() {
+		if (probeBusy)
+			return;
+
+		probeBusy = true;
+
+		/* repaint from the last gathered data as soon as the round settles
+		 * so the KPI flips within one probe cycle, not the next poll */
+		function settle() {
+			probe.pending = false;
+			probeBusy = false;
+
+			if (state.mounted && state.lastNorm)
+				render(state.lastNorm);
+		}
+
+		var cnP = fetchProbe('https://www.baidu.com', 4500).then(function(ok) {
+			if (ok) {
+				probe.cn = true;
+				return;
+			}
+
+			/* domain failed: is it DNS or the exit? IP-literal answers. */
+			return fetchProbe('https://223.5.5.5', 4000).then(function(ipOk) {
+				probe.cn = ipOk ? 'dns' : false;
+			});
+		});
+		var intlP = fetchProbe('https://www.google.com', 5000).then(function(ok) {
+			probe.intl = !!ok;
+		});
+
+		Promise.all([ cnP, intlP ]).then(settle, settle);
+	}
+
+	/* "互联网" KPI answers the user-level question: can traffic actually
+	 * reach the internet right now. Line state alone (wan up + addressed)
+	 * only proves the exit is READY - an upstream outage or a captive
+	 * portal would still look green. So line state is combined with the
+	 * dual live probe (internetProbe): cn (baidu, 'dns' = IP ok/domain
+	 * fail, false = both failed) + intl (google). Verdict matrix:
+	 *   cn ok + intl ok       已接通   (green)
+	 *   cn ok + intl fail     已接通 · 海外不通  (green, proxy down hint)
+	 *   cn fail/dns + intl ok 出口异常 (amber - overseas works, so the
+	 *                          path exists but domestic direct is broken)
+	 *   all fail              疑似不通 (amber when line is ready - a local
+	 *                          proxy extension must not claim the router
+	 *                          is down; red only when the line itself is
+	 *                          down)
+	 * It deliberately does NOT repeat the per-line WAN details shown in
+	 * the card below (that was the overlap the user called out); the sub
+	 * line only names the path. */
 	function inetKpi(d) {
 		var up = !!d.inetUp;
 
+		if (d.sideRouter && d.gateway == null)
+			return kpiCard('互联网', stateValue('未配置', 'r'), '未配置上游网关', dot('r', true), '未配置上游', d.lanNet || null);
+
+		var path;
+
 		if (d.sideRouter) {
-			return kpiCard(
-				'互联网',
-				stateValue(d.gateway == null ? '未配置' : (up ? '已接通' : '不通'),
-					d.gateway == null ? 'r' : (up ? 'g' : 'r')),
-				d.gateway ? ('经主路由 ' + d.gateway) : '未配置上游网关',
-				dot(d.gateway == null ? 'r' : (up ? 'g' : 'r'), true),
-				d.gateway == null ? '未配置上游' : (up ? '网关应答正常' : '网关无 ARP 应答'),
-				d.lanNet || null
-			);
+			path = '经主路由 ' + d.gateway;
+		}
+		else {
+			/* name the exit actually carrying traffic */
+			var via = null;
+
+			if (up) {
+				var up4 = d.wanList.filter(function(w) {
+					var pr = String(w.proto || '').toLowerCase();
+					var v6 = /^(dhcpv6|6in4|6to4|6rd|pppoe6|native6)$/.test(pr) || /6$/.test(String(w.interface || ''));
+
+					return !v6 && w.up && w['ipv4-address'] && w['ipv4-address'].length;
+				});
+				var up6 = d.wanList.filter(function(w) {
+					var pr = String(w.proto || '').toLowerCase();
+					var v6 = /^(dhcpv6|6in4|6to4|6rd|pppoe6|native6)$/.test(pr) || /6$/.test(String(w.interface || ''));
+
+					return v6 && w.up;
+				});
+
+				if (up4.length)
+					via = up4[0].interface;
+				else if (up6.length)
+					via = up6[0].interface + ' (IPv6)';
+			}
+
+			path = via ? ('经 ' + via) : '无可用出口';
 		}
 
-		/* name the exit actually carrying traffic */
-		var via = null;
+		var footRight = d.sideRouter
+			? (d.lanNet || null)
+			: (d.wanList.length > 1 ? (d.wanList.length + ' 条线路') : null);
+		var v, cls, footTxt, footCls;
 
-		if (up) {
-			var up4 = d.wanList.filter(function(w) {
-				var pr = String(w.proto || '').toLowerCase();
-				var v6 = /^(dhcpv6|6in4|6to4|6rd|pppoe6|native6)$/.test(pr) || /6$/.test(String(w.interface || ''));
-
-				return !v6 && w.up && w['ipv4-address'] && w['ipv4-address'].length;
-			});
-			var up6 = d.wanList.filter(function(w) {
-				var pr = String(w.proto || '').toLowerCase();
-				var v6 = /^(dhcpv6|6in4|6to4|6rd|pppoe6|native6)$/.test(pr) || /6$/.test(String(w.interface || ''));
-
-				return v6 && w.up;
-			});
-
-			if (up4.length)
-				via = up4[0].interface;
-			else if (up6.length)
-				via = up6[0].interface + ' (IPv6)';
+		if (probe.pending) {
+			/* first round not settled: line semantics + 探测中 marker */
+			v = up ? '已接通' : '不通';
+			cls = up ? 'g' : 'r';
+			footTxt = (up ? '出口链路正常' : '所有出口均不可用') + ' · 探测中';
+			footCls = up ? 'g' : 'r';
+		}
+		else if (probe.cn === true && probe.intl !== false) {
+			/* both ok (intl null cannot happen after settle, defensive) */
+			v = '已接通';
+			cls = 'g';
+			footTxt = '国内 · 海外均可达';
+			footCls = 'g';
+		}
+		else if (probe.cn === true && probe.intl === false) {
+			v = '已接通';
+			cls = 'g';
+			footTxt = '国内可达 · 海外不可达（代理未生效？）';
+			footCls = 'w';
+			footRight = footRight || '海外受限';
+		}
+		else if (probe.intl === true) {
+			/* overseas ok but domestic direct broken: odd but real */
+			v = '出口异常';
+			cls = 'w';
+			footTxt = (probe.cn === 'dns') ? '海外可达 · 国内 DNS 异常' : '海外可达 · 国内直连异常';
+			footCls = 'w';
+		}
+		else {
+			/* everything failed */
+			if (probe.cn === 'dns') {
+				v = 'DNS 异常';
+				cls = 'w';
+				footTxt = '线路就绪 · 域名解析失败';
+				footCls = 'w';
+			}
+			else if (up) {
+				v = '疑似不通';
+				cls = 'w';
+				footTxt = '线路就绪 · 探测均未通过';
+				footCls = 'w';
+			}
+			else {
+				v = '不通';
+				cls = 'r';
+				footTxt = '所有出口均不可用';
+				footCls = 'r';
+			}
 		}
 
-		return kpiCard(
-			'互联网',
-			stateValue(up ? '已接通' : '不通', up ? 'g' : 'r'),
-			via ? ('经 ' + via) : '无可用出口',
-			dot(up ? 'g' : 'r', true),
-			up ? '出口链路正常' : '所有出口均不可用',
-			d.wanList.length > 1 ? (d.wanList.length + ' 条线路') : null
-		);
+		return kpiCard('互联网', stateValue(v, cls), path, dot(footCls, true), footTxt, footRight);
 	}
 
 	function renderKpis(d) {
@@ -1996,11 +2138,31 @@
 		state.busy = true;
 
 		gather().then(function(norm) {
+			state.lastNorm = norm;
 			render(norm);
 		}).catch(function() {
 			/* a transient ubus failure must not blank the page */
 		}).then(function() {
 			state.busy = false;
+		});
+	}
+
+	/* probe cadence: 30s, decoupled from the 5s render tick so the admin
+	 * browser does not pull a full page from the probe host every 5s. When
+	 * a probe settles, repaint immediately from the last known data instead
+	 * of waiting for the next poll. */
+	function scheduleProbe() {
+		if (state.probeTimer)
+			return;
+
+		state.probeTimer = window.setInterval(function() {
+			if (!document.hidden)
+				internetProbe();
+		}, 30000);
+
+		document.addEventListener('visibilitychange', function() {
+			if (!document.hidden)
+				internetProbe();
 		});
 	}
 
@@ -2011,6 +2173,7 @@
 			return;
 
 		gather().then(function(norm) {
+			state.lastNorm = norm;
 			render(norm);
 		}).then(function() {
 			if (state.timer)
@@ -2027,6 +2190,11 @@
 				if (!document.hidden)
 					refresh();
 			});
+
+			/* first probe runs right away, then every 30s; a settled probe
+			 * repaints the internet KPI from state.lastNorm immediately */
+			internetProbe();
+			scheduleProbe();
 		}).catch(function(e) {
 			if (window.console && console.error)
 				console.error('ngOverview: initial render failed', e);
