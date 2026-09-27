@@ -1145,15 +1145,18 @@
 	 * only proves the exit is READY - an upstream outage or a captive
 	 * portal would still look green. So line state is combined with the
 	 * dual live probe (internetProbe): cn (baidu, 'dns' = IP ok/domain
-	 * fail, false = both failed) + intl (google). Verdict matrix:
-	 *   cn ok + intl ok       已接通   (green)
-	 *   cn ok + intl fail     已接通 · 海外不通  (green, proxy down hint)
-	 *   cn fail/dns + intl ok 出口异常 (amber - overseas works, so the
-	 *                          path exists but domestic direct is broken)
-	 *   all fail              疑似不通 (amber when line is ready - a local
-	 *                          proxy extension must not claim the router
-	 *                          is down; red only when the line itself is
-	 *                          down)
+	 * fail, false = both failed) + intl (google). The VALUE reflects the
+	 * whole picture (user decision):
+	 *   cn ok + intl ok        已接通   green - both paths work
+	 *   exactly one path ok    部分接通 amber - foot names the broken side
+	 *                          (国内-only hints at the proxy chain, 海外-only
+	 *                          at the domestic direct exit/DNS)
+	 *   all probes fail        未接通   amber when the line is ready (one
+	 *                          browser is a single sample - a local proxy
+	 *                          extension must not claim the router down);
+	 *                          DNS 异常 when only the IP-literal answers;
+	 *                          不通 red ONLY when the line itself is down
+	 *                          (hard ubus evidence).
 	 * It deliberately does NOT repeat the per-line WAN details shown in
 	 * the card below (that was the overlap the user called out); the sub
 	 * line only names the path. */
@@ -1215,17 +1218,17 @@
 			footCls = 'g';
 		}
 		else if (probe.cn === true && probe.intl === false) {
-			v = '已接通';
-			cls = 'g';
-			footTxt = '国内可达 · 海外不可达（代理未生效？）';
+			/* domestic works, overseas dead: proxy chain suspect */
+			v = '部分接通';
+			cls = 'w';
+			footTxt = '仅国内可达 · 海外不可达（代理未生效？）';
 			footCls = 'w';
-			footRight = footRight || '海外受限';
 		}
 		else if (probe.intl === true) {
 			/* overseas ok but domestic direct broken: odd but real */
-			v = '出口异常';
+			v = '部分接通';
 			cls = 'w';
-			footTxt = (probe.cn === 'dns') ? '海外可达 · 国内 DNS 异常' : '海外可达 · 国内直连异常';
+			footTxt = (probe.cn === 'dns') ? '仅海外可达 · 国内 DNS 异常' : '仅海外可达 · 国内直连异常';
 			footCls = 'w';
 		}
 		else {
@@ -1237,7 +1240,7 @@
 				footCls = 'w';
 			}
 			else if (up) {
-				v = '疑似不通';
+				v = '未接通';
 				cls = 'w';
 				footTxt = '线路就绪 · 探测均未通过';
 				footCls = 'w';
