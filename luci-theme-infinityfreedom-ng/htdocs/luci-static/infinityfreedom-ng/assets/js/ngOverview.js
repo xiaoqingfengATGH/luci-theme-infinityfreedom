@@ -2267,7 +2267,7 @@
 		var det = E('details', { 'class': 'ngov-rest' }, [
 			E('summary', {}, [
 				'经典信息视图',
-				E('span', { 'class': 'hint' }, [ '型号 / 固件 / 网络 / 内存 / 存储' ])
+				E('span', { 'class': 'hint' }, [ '型号 / 固件 / 网络 / 内存' ])
 			]),
 			body
 		]);
