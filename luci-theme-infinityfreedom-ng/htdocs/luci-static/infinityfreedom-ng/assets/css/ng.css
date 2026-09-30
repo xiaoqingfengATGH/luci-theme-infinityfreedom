@@ -157,6 +157,32 @@ div.ifacebox .zonebadge{border-radius:2px}
 	border-radius: .2rem;
 }
 
+/* select.cbi-input-select arrives from the server WITHOUT bootstrap's
+   .form-select (the theme's ngRender adds it on jQuery-ready, and views
+   like passwall2 bake computed styles into <style> at PARSE time via
+   inline scripts that run before that — the baked rules then carry UA
+   defaults (white bg, gray border, 0 radius) and, being ID selectors,
+   permanently out-rank the .form-select added later. Only a window
+   resize (DevTools docking!) re-triggers the bake and "fixes" it.
+   Give the LuCI class the .form-select recipe directly in CSS so the
+   first bake already sees the themed values. Same values as
+   bootstrap-dark .form-select; the JS-added class stays a no-op. */
+select.cbi-input-select {
+	display: block;
+	width: 100%;
+	padding: .45rem 2.7rem .45rem .9rem;
+	font-size: .8125rem;
+	line-height: 1.5;
+	color: #94a0ad;
+	background-color: #3b4651;
+	border: 1px solid #424e5a;
+	border-radius: .25rem;
+}
+select.cbi-input-select[multiple] {
+	background-image: none;
+}
+
+
 /* LuCI dialogs (ui.showModal / uci changelog etc.) render
    div.modal.cbi-modal into body > #modal_overlay and toggle
    body.modal-overlay-active - they NEVER add bootstrap's .show class,
