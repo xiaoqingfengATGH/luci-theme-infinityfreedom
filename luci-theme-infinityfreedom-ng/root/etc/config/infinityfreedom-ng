@@ -35,12 +35,12 @@
 config menuorder
 	option path 'admin'
 	list order 'status'      # 状态
-	list order 'system'      # 系统
+	list order 'network'     # 网络
+	list order 'vpn'         # VPN
 	list order 'services'    # 服务
 	list order 'control'     # 管控
 	list order 'nas'         # 网络存储
-	list order 'vpn'         # VPN
-	list order 'network'     # 网络
+	list order 'system'      # 系统
 
 # ---- 状态 (admin/status) ----
 
@@ -49,11 +49,11 @@ config menuorder
 	list order 'overview'      # 驾驶舱
 	list order 'routesj'       # 路由
 	list order 'nftables'      # 防火墙
-	list order 'logs'          # 系统日志
 	list order 'processes'     # 进程
 	list order 'realtime'      # 实时信息
 	list order 'release_ram'   # 释放内存
 	list order 'mwan3'         # MultiWAN 管理器
+	list order 'logs'          # 系统日志
 
 # ---- 系统 (admin/system) ----
 
@@ -61,17 +61,33 @@ config menuorder
 	option path 'admin/system'
 	list order 'system'          # 系统
 	list order 'admin'           # 管理权
+	list order 'diskman'         # 磁盘管理
+	list order 'mounts'          # 挂载点
+	list order 'ttyd'            # 终端
 	list order 'homestatus'      # 定制驾驶舱
 	list order 'package-manager' # 软件包
+	list order 'filetransfer'    # 文件传输
 	list order 'startup'         # 启动项
 	list order 'crontab'         # 计划任务
-	list order 'mounts'          # 挂载点
-	list order 'diskman'         # 磁盘管理
 	list order 'flash'           # 备份与更新
 	list order 'autoreboot'      # 定时重启
-	list order 'filetransfer'    # 文件传输
 	list order 'reboot'          # 重启
-	list order 'ttyd'            # 终端
+
+config menurename
+ 	option path 'admin/system'
+ 	option title '系统设置'
+
+config menurename
+ 	option path 'admin/system/system'
+ 	option title '基础信息'
+
+config menurename
+ 	option path 'admin/system/admin'
+ 	option title '密码及远程访问'
+
+config menurename
+ 	option path 'admin/system/mounts'
+ 	option title '挂载磁盘'
 
 # ---- 服务 (admin/services) ----
 
@@ -110,6 +126,11 @@ config menuorder
 config menuorder
 	option path 'admin/vpn'
 	list order 'ipsec-server'  # IPSec VPN 服务器
+
+config menumove
+ 	option path 'admin/services/passwall2'
+ 	option target 'admin/vpn'
+ 	option order '10'
 
 # ---- 网络 (admin/network) ----
 
