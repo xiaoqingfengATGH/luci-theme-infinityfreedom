@@ -26,9 +26,45 @@
 	// full menu tree (ACL filtered for the current session)
 	const menu = dispatcher.menu_json(ctx.authacl ?? {}) ?? {};
 
+	/* ---- menu customization overrides, read once per request from
+	   /etc/config/infinityfreedom-ng:
+
+	     config menuorder
+	         option path 'admin'          # parent node path
+	         list order 'status'          # child node names, desired order
+	         list order 'system'
+	         ...                          # unlisted children keep default order
+
+	     config menurename
+	         option path 'admin/status'   # node path to rename
+	         option title '运行状态'       # display title (i18n bypassed)
+
+	   Node names are the last path segment of the menu URL, e.g.
+	   /cgi-bin/luci/admin/services/ddns-go -> 'ddns-go'. */
+	const menu_custom = { order: {}, title: {} };
+
+	if (ctx.authsession) {
+		uci.foreach('infinityfreedom-ng', 'menuorder', (s) => {
+			if (s?.path && type(s.order) == 'array')
+				menu_custom.order[join('/', filter(split(s.path, '/'), (x) => length(x) > 0))] = s.order;
+		});
+
+		uci.foreach('infinityfreedom-ng', 'menurename', (s) => {
+			if (s?.path && s?.title)
+				menu_custom.title[join('/', filter(split(s.path, '/'), (x) => length(x) > 0))] = s.title;
+		});
+	}
+
+	/* join two menu path segments, e.g. ('admin', 'status') -> 'admin/status' */
+	function join_path(parent, name) {
+		let p = parent ?? '';
+
+		return length(p) ? `${p}/${name}` : name;
+	}
+
 	/* first visible top level category (usually "admin") */
 	function first_category() {
-		for (let e in children_names(menu))
+		for (let e in children_names(menu, ''))
 			return e.name;
 
 		return 'admin';
@@ -75,9 +111,17 @@
 		return entityencode(striptags(node?.title ? `${node.title}` : ''), true);
 	}
 
-	function node_title_i18n(node) {
+	function node_title_i18n(node, path) {
 		// translated title, used for display text
-		return entityencode(striptags(node?.title ? `${_(node.title)}` : ''), true);
+		let title = entityencode(striptags(node?.title ? `${_(node.title)}` : ''), true);
+
+		/* user-defined rename (see menu_custom above), raw text as-is */
+		let override = menu_custom.title[path];
+
+		if (override != null && length(override) > 0)
+			title = entityencode(striptags(`${override}`), true);
+
+		return title;
 	}
 
 	function node_url(...segments) {
@@ -86,12 +130,14 @@
 
 	/* ordered list of visible child names, mirrors ui.menu.getChildren():
 	   skip unsatisfied/untitled nodes, follow alias/rewrite targets */
-	function children_names(node) {
+	function children_names(node, path) {
 		let names = [];
 
 		for (let name, spec in node?.children) {
 			if (!spec?.satisfied || !spec?.title)
 				continue;
+
+			let child_path = join_path(path, name);
 
 			// alias/rewrite nodes merge the target's children
 			if (type(spec.action) == 'object' &&
@@ -103,19 +149,44 @@
 					target = target?.children?.[s];
 
 				if (target) {
-					let sub = children_names(target);
+					let sub = children_names(target, child_path);
 
 					if (length(sub) > 0) {
-						push(names, { name: name, order: spec.order ?? 1000, children: sub, node: target });
+						push(names, { name: name, order: spec.order ?? 1000, children: sub, node: target, path: child_path });
 						continue;
 					}
 				}
 			}
 
-			push(names, { name: name, order: spec.order ?? 1000, children: null, node: spec });
+			push(names, { name: name, order: spec.order ?? 1000, children: null, node: spec, path: child_path });
 		}
 
 		sort(names, (a, b) => (a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name));
+
+		/* user-defined order override (see menu_custom above): listed
+		   children sort by their list position, unlisted ones keep the
+		   default order and follow after the listed ones */
+		let override = menu_custom.order[path ?? ''];
+
+		if (type(override) == 'array' && length(override) > 0) {
+			let rank = {};
+
+			for (let i, n in override)
+				if (!(n in rank))
+					rank[n] = i;
+
+			let listed = [], unlisted = [];
+
+			for (let e in names)
+				push((e.name in rank) ? listed : unlisted, e);
+
+			sort(listed, (a, b) => (rank[a.name] != rank[b.name]) ? rank[a.name] - rank[b.name] : ((a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name)));
+
+			for (let e in unlisted)
+				push(listed, e);
+
+			names = listed;
+		}
 
 		return names;
 	}
@@ -134,7 +205,7 @@
 
 	/* ---- level >= 3 tab menus ("level3Menu"), mirrors render_tabmenu_asJson ---- */
 	function render_tabmenu_json(prefix, node, level) {
-		let names = children_names(node);
+		let names = children_names(node, prefix);
 		let html = '';
 		let selected_name = null;
 
@@ -151,7 +222,7 @@
 				html += `"name":"${e.name}",`;
 				html += `"active":${active ? 'true' : 'false'},`;
 				html += `"href":"${node_url(...split(prefix, '/'), e.name)}",`;
-				html += `"title":"${node_title_i18n(e.node)}"`;
+				html += `"title":"${node_title_i18n(e.node, e.path)}"`;
 				html += `}`;
 
 				if (i < length(names) - 1)
@@ -167,7 +238,7 @@
 		}
 
 		if (selected_name != null) {
-			let sub = filter(children_names(node), e => e.name == selected_name)[0];
+			let sub = filter(children_names(node, prefix), e => e.name == selected_name)[0];
 			html += render_tabmenu_json(`${prefix}/${selected_name}`, sub.node, level + 1);
 		}
 
@@ -184,8 +255,8 @@
 		let cattree = menu.children?.[category] ?? menu;
 		let prefix = category;
 
-		for (let e in children_names(cattree)) {
-			let sub_names = e.children ?? children_names(e.node);
+		for (let e in children_names(cattree, category)) {
+			let sub_names = e.children ?? children_names(e.node, e.path);
 
 			if (!first)
 				html += ',';
@@ -201,7 +272,7 @@
 					html += `{`;
 					html += `"data-title":"${node_title(se.node)}",`;
 					html += `"href":"${node_url(prefix, e.name, se.name)}",`;
-					html += `"title":"${node_title_i18n(se.node)}"`;
+					html += `"title":"${node_title_i18n(se.node, se.path)}"`;
 					html += `}`;
 
 					if (i < length(sub_names) - 1)
@@ -214,7 +285,7 @@
 				html += `"href":"${node_url(prefix, e.name)}",`;
 			}
 
-			html += `"title":"${node_title_i18n(e.node)}"`;
+			html += `"title":"${node_title_i18n(e.node, e.path)}"`;
 			html += '}';
 		}
 

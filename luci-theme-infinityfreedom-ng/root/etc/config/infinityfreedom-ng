@@ -1,0 +1,38 @@
+# Menu customization for the InfinityFreedom-NG theme.
+#
+# Two section types control the sidebar rendered by header.ut:
+#
+#   config menuorder   - reorder children of a menu node
+#   config menurename  - rename a menu node (display title only)
+#
+# Node paths follow the menu URL after /cgi-bin/luci/, e.g.
+#   /cgi-bin/luci/admin/services/ddns-go  ->  path 'admin/services/ddns-go'
+# Level-1 sidebar entries are children of 'admin', so reorder them with
+# path 'admin'. Node names are the last path segment.
+#
+# Listed children sort by list position; unlisted ones keep their default
+# order and follow after the listed ones. Both section types are optional:
+# an empty or missing file leaves the menu untouched.
+
+# --- examples (uncomment and edit as needed) ---
+
+# config menuorder
+# 	option path 'admin'
+# 	list order 'status'
+# 	list order 'network'
+# 	list order 'system'
+# 	list order 'services'
+
+# config menuorder
+# 	option path 'admin/services'
+# 	list order 'passwall2'
+# 	list order 'ddns-go'
+# 	list order 'homeredirect'
+
+# config menurename
+# 	option path 'admin/services/homeredirect'
+# 	option title '端口转发'
+
+# config menurename
+# 	option path 'admin/status'
+# 	option title '运行状态'
