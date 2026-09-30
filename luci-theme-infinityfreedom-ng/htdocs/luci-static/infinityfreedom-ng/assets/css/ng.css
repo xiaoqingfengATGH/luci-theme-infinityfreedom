@@ -235,9 +235,9 @@ tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
    available width, collapsing the actions column to ~110px and stacking its
    three buttons. Reserve enough space for the action group and keep its
    buttons on one flex row; the command column remains the flexible column. */
-body.Processeslogged-in #view table .cbi-section-actions{width:220px;min-width:220px;white-space:nowrap}
-body.Processeslogged-in #view table td.cbi-section-actions>div{display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
-body.Processeslogged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
+body.logged-in #view table .cbi-section-actions{width:220px;min-width:220px;white-space:nowrap}
+body.logged-in #view table td.cbi-section-actions>div{display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
+body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
 /* system/logging log_size: form.js wraps the input in a block div and emits
    the short KiB unit as the following .cbi-value-description, forcing the
    unit onto a second line. Flatten only this widget wrapper and keep input +
