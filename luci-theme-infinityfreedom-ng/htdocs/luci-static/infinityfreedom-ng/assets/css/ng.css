@@ -182,6 +182,32 @@ select.cbi-input-select[multiple] {
 	background-image: none;
 }
 
+/* Hint-text recolor: LuCI apps (passwall2, vlmcsd, ...) hard-code red hint
+   and label text as inline style="color: red", <font color="red">, or local
+   .red/.dl-remove classes — pure saturated red clashes with the theme and
+   mixes two different semantics. Map by semantics onto the theme palette:
+   attention/labels/counters -> warning orange, failure/destructive ->
+   danger. An author !important beats a normal inline declaration, and
+   [style*=] matches the style attribute's literal text (passwall2 always
+   writes lowercase red / #FF8C00; verified router-wide). color:green
+   (footer checkmarks, vlmcsd running) is intentionally untouched. */
+[style*="color: red"],
+[style*="color:red"] {
+	color: #FF9800 !important;
+}
+[style*="color:#FF8C00"],
+[style*="color: #FF8C00"] {
+	color: #FF9800 !important;
+}
+font[color="red"] {
+	color: #FF9800 !important;
+}
+.red,
+.dl-remove {
+	color: #F7531F !important;
+}
+
+
 
 /* LuCI dialogs (ui.showModal / uci changelog etc.) render
    div.modal.cbi-modal into body > #modal_overlay and toggle
