@@ -1,9 +1,12 @@
 # Menu customization for the InfinityFreedom-NG theme.
 #
-# Two section types control the sidebar rendered by header.ut:
+# Four section types control the sidebar rendered by header.ut:
 #
 #   config menuorder   - reorder children of a menu node
 #   config menurename  - rename a menu node (display title only)
+#   config menugroup   - declare a new top level group, or restyle an
+#                        existing one (icon only)
+#   config menumove    - move a node into another group, keeping its URL
 #
 # Node paths follow the menu URL after /cgi-bin/luci/, e.g.
 #   /cgi-bin/luci/admin/services/ddns-go  ->  path 'admin/services/ddns-go'
@@ -22,6 +25,10 @@
 #   their group; add them to a list to pin their position.
 # - menurename overrides only the display title; icons/tab highlighting
 #   match on the original (data-title) text and stay unaffected.
+# - menumove targets must render as a group: the top level ('admin'),
+#   an existing group (e.g. 'admin/services'), or a path declared by a
+#   menugroup section. Moves into leaf pages are ignored (the entry
+#   would vanish from the two level sidebar).
 
 # ---- level 1 (children of 'admin') ----
 
@@ -128,3 +135,35 @@ config menuorder
 # config menurename
 # 	option path 'admin/services/homeredirect'
 # 	option title '端口转发'
+
+# ---- new groups + moves (uncomment and edit as needed) ----
+#
+# 1) declare a new group, icon required (classes from icons.min.css,
+#    e.g. fe-layers / fe-box / fe-grid / fe-folder / fe-briefcase,
+#    dripicons-* and mdi mdi-* families are available too):
+#
+# config menugroup
+# 	option path 'admin/mygroup'
+# 	option title '我的分组'
+# 	option icon 'fe-layers'
+#
+# 2) move existing entries into it (order optional, larger = later;
+#    unlisted moved entries sort after the group's real children).
+#    A moved entry keeps its URL and page behavior, only its sidebar
+#    position changes. An icon may be given per moved entry too.
+#
+# config menumove
+# 	option path 'admin/services/ddns-go'
+# 	option target 'admin/mygroup'
+# 	option order '10'
+#
+# config menumove
+# 	option path 'admin/services/homeredirect'
+# 	option target 'admin/mygroup'
+# 	option order '20'
+#
+# 3) an existing group can also be given a different icon:
+#
+# config menugroup
+# 	option path 'admin/services'
+# 	option icon 'fe-box'

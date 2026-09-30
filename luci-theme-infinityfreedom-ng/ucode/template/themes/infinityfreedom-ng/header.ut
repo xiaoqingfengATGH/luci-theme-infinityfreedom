@@ -11,7 +11,7 @@
 -#}
 
 {%
-	import { popen } from 'fs';
+	import { popen, basename } from 'fs';
 	import { getuid, getspnam } from 'luci.core';
 
 	const boardinfo = ubus.call('system', 'board');
@@ -27,32 +27,87 @@
 	const menu = dispatcher.menu_json(ctx.authacl ?? {}) ?? {};
 
 	/* ---- menu customization overrides, read once per request from
-	   /etc/config/infinityfreedom-ng:
+	   /etc/config/infinityfreedom-ng (see that file for examples):
 
-	     config menuorder
-	         option path 'admin'          # parent node path
-	         list order 'status'          # child node names, desired order
-	         list order 'system'
-	         ...                          # unlisted children keep default order
+	     menuorder   reorder the children of a node
+	     menurename  override a node's display title
+	     menugroup   declare a new group (title/icon) or override an
+	                 existing group's icon
+	     menumove    move a node into another group (existing or new),
+	                 keeping its real URL
 
-	     config menurename
-	         option path 'admin/status'   # node path to rename
-	         option title '运行状态'       # display title (i18n bypassed)
-
-	   Node names are the last path segment of the menu URL, e.g.
+	   Config paths are display paths; node names are the last path
+	   segment of the menu URL, e.g.
 	   /cgi-bin/luci/admin/services/ddns-go -> 'ddns-go'. */
-	const menu_custom = { order: {}, title: {} };
+	const menu_custom = { order: {}, title: {}, icon: {}, move: [], group: {}, group_list: [] };
+
+	/* normalize a node path: strip empty segments ('/a//b/' -> 'a/b') */
+	function norm_path(p) {
+		return join('/', filter(split(p ?? '', '/'), (x) => length(x) > 0));
+	}
 
 	if (ctx.authsession) {
 		uci.foreach('infinityfreedom-ng', 'menuorder', (s) => {
 			if (s?.path && type(s.order) == 'array')
-				menu_custom.order[join('/', filter(split(s.path, '/'), (x) => length(x) > 0))] = s.order;
+				menu_custom.order[norm_path(s.path)] = s.order;
 		});
 
 		uci.foreach('infinityfreedom-ng', 'menurename', (s) => {
 			if (s?.path && s?.title)
-				menu_custom.title[join('/', filter(split(s.path, '/'), (x) => length(x) > 0))] = s.title;
+				menu_custom.title[norm_path(s.path)] = s.title;
 		});
+
+		uci.foreach('infinityfreedom-ng', 'menugroup', (s) => {
+			if (!s?.path)
+				return;
+
+			let p = norm_path(s.path);
+			let def = { path: p, title: s?.title, icon: s?.icon };
+
+			if (s?.icon)
+				menu_custom.icon[p] = s.icon;
+
+			if (menu_custom.group[p] == null) {
+				menu_custom.group[p] = def;
+				push(menu_custom.group_list, def);
+			}
+			else {
+				menu_custom.group[p].title = def.title;
+				menu_custom.group[p].icon = def.icon;
+			}
+		});
+
+		uci.foreach('infinityfreedom-ng', 'menumove', (s) => {
+			if (!s?.path || !s?.target)
+				return;
+
+			let p = norm_path(s.path);
+
+			/* the first menumove section for a source path wins */
+			if (length(filter(menu_custom.move, (m) => m.path == p)) > 0)
+				return;
+
+			let mv = {
+				path: p,
+				target: norm_path(s.target),
+				order: (s?.order != null && match(`${s.order}`, /^[0-9]+$/)) ? int(s.order) : null
+			};
+
+			push(menu_custom.move, mv);
+
+			/* icon for the relocated entry, keyed by its new display path */
+			if (s?.icon)
+				menu_custom.icon[`${mv.target}/${basename(mv.path)}`] = s.icon;
+		});
+	}
+
+	/* first menumove section declared for a source path */
+	function menu_move_of(path) {
+		for (let mv in menu_custom.move)
+			if (mv.path == path)
+				return mv;
+
+		return null;
 	}
 
 	/* join two menu path segments, e.g. ('admin', 'status') -> 'admin/status' */
@@ -62,12 +117,83 @@
 		return length(p) ? `${p}/${name}` : name;
 	}
 
+	/* resolve a real node path ('admin/services/ddns-go') to its tree node */
+	function lookup_node(path) {
+		let node = menu;
+
+		for (let s in split(path, '/')) {
+			node = node?.children?.[s];
+
+			if (!node)
+				return null;
+		}
+
+		return node;
+	}
+
+	/* parent path of 'a/b/c' -> 'a/b' ('x' -> '') */
+	function parent_path(p) {
+		let segs = split(p ?? '', '/');
+
+		if (length(segs) < 2)
+			return '';
+
+		let last = segs[length(segs) - 1];
+
+		return substr(p, 0, length(p) - length(last) - 1);
+	}
+
 	/* first visible top level category (usually "admin") */
 	function first_category() {
-		for (let e in children_names(menu, ''))
-			return e.name;
+		for (let name, spec in menu?.children)
+			if (spec?.satisfied && spec?.title)
+				return name;
 
 		return 'admin';
+	}
+
+	/* a menumove section takes effect when its source node exists and is
+	   visible, and its target renders as a sidebar group: the top level
+	   category itself ('admin'), an existing child of it (e.g.
+	   'admin/services'), or a new path declared by a menugroup section.
+	   Moves anywhere else (e.g. into an existing leaf page, where the
+	   entry would vanish from the two level sidebar) are ignored. */
+	function move_valid(mv) {
+		let node = lookup_node(mv.path);
+		let cat = first_category();
+
+		/* sources must live inside the current category tree */
+		if (substr(mv.path, 0, length(cat) + 1) != `${cat}/`)
+			return false;
+
+		if (!node?.satisfied || !node?.title)
+			return false;
+
+		/* move into the current parent is a no-op */
+		if (parent_path(mv.path) == mv.target)
+			return false;
+
+		let tgt = lookup_node(mv.target);
+
+		if (tgt == null)
+			/* new path: only renders when a menugroup declares it, and
+			   only at first level (the sidebar shows two levels, deeper
+			   new groups would hide their entries) */
+			return parent_path(mv.target) == cat && length(menu_custom.group[mv.target]?.title ?? '') > 0;
+
+		/* targets must render as a visible group */
+		if (!tgt?.satisfied || !tgt?.title)
+			return false;
+
+		/* chained moves (into a group that is itself relocated) are
+		   not supported: the entry would vanish */
+		if (menu_move_of(mv.target) != null && mv.target != cat)
+			return false;
+
+		if (mv.target != cat && parent_path(mv.target) != cat)
+			return false;
+
+		return length(tgt?.children ?? []) > 0;
 	}
 
 	/* numeric-aware string comparison, mirrors L.naturalCompare() */
@@ -90,8 +216,10 @@
 
 			if (na != '' && nb != '') {
 				let d = +na - +nb;
+
 				if (d != 0)
 					return d;
+
 				continue;
 			}
 
@@ -105,21 +233,121 @@
 		return length(a) - length(b);
 	}
 
-	function node_title(node) {
-		// raw (untranslated) title, used for data-title and icon matching,
-		// exactly like the legacy Lua theme did
-		return entityencode(striptags(node?.title ? `${node.title}` : ''), true);
+	/* user-defined order override (see menu_custom above): listed
+	   children sort by their list position, unlisted ones keep the
+	   default order and follow after the listed ones */
+	function apply_order(names, path) {
+		let override = menu_custom.order[path ?? ''];
+
+		if (type(override) != 'array' || length(override) == 0)
+			return names;
+
+		let rank = {};
+
+		for (let i, n in override)
+			if (!(n in rank))
+				rank[n] = i;
+
+		let listed = [], unlisted = [];
+
+		for (let e in names)
+			push((e.name in rank) ? listed : unlisted, e);
+
+		sort(listed, (a, b) => (rank[a.name] != rank[b.name]) ? rank[a.name] - rank[b.name] : ((a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name)));
+
+		for (let e in unlisted)
+			push(listed, e);
+
+		return listed;
 	}
 
-	function node_title_i18n(node, path) {
+	/* entries moved into the group displayed at `path` by menumove
+	   sections, plus new sub groups declared by menugroup sections.
+	   `guard` is the real path of the group rendered at `path`: sources
+	   whose real parent is `guard` are already rendered inside that
+	   group, so they are not appended a second time. `exclude` holds
+	   names already taken by real children of the group. */
+	function merged_children(path, guard, exclude) {
+		let names = [];
+
+		for (let mv in menu_custom.move) {
+			if (mv.target != path || !move_valid(mv) || parent_path(mv.path) == guard)
+				continue;
+
+			let name = basename(mv.path);
+
+			push(names, {
+				name: name,
+				order: mv.order ?? 900,
+				children: null,
+				node: lookup_node(mv.path),
+				path: join_path(path, name),
+				real: mv.path
+			});
+		}
+
+		for (let gdef in menu_custom.group_list) {
+			if (parent_path(gdef.path) != path || length(gdef?.title ?? '') == 0)
+				continue;
+
+			/* new groups only render at first level: deeper ones would
+			   produce dead links (no page) and hide their entries */
+			if (length(split(path, '/')) != 1)
+				continue;
+
+			let name = basename(gdef.path);
+
+			if (length(filter(exclude, (n) => n == name)) > 0)
+				continue;
+
+			let sub = merged_children(gdef.path, gdef.path, []);
+
+			/* groups left empty render as dead links, skip them */
+			if (length(sub) == 0)
+				continue;
+
+			push(names, {
+				name: name,
+				order: 950,
+				children: sub,
+				node: null,
+				path: gdef.path,
+				real: gdef.path,
+				title: gdef.title,
+				icon: gdef.icon
+			});
+		}
+
+		sort(names, (a, b) => (a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name));
+
+		/* menuorder overrides also apply inside new groups; at first
+		   level the caller re-applies its own override, which is
+		   idempotent */
+		return apply_order(names, path);
+	}
+
+
+	function node_title(node, fallback) {
+		// raw (untranslated) title, used for data-title and icon matching,
+		// exactly like the legacy Lua theme did; `fallback` titles new
+		// menugroup sections which have no tree node of their own
+		let raw = node?.title ? `${node.title}` : (fallback ?? '');
+
+		return entityencode(striptags(raw), true);
+	}
+
+	function node_title_i18n(node, path, fallback) {
 		// translated title, used for display text
 		let title = entityencode(striptags(node?.title ? `${_(node.title)}` : ''), true);
 
-		/* user-defined rename (see menu_custom above), raw text as-is */
+		/* user-defined rename (see menu_custom above), raw text as-is;
+		   falls back to the menugroup title of new groups */
 		let override = menu_custom.title[path];
 
 		if (override != null && length(override) > 0)
 			title = entityencode(striptags(`${override}`), true);
+		else if (fallback != null && length(fallback) > 0)
+			title = entityencode(striptags(`${fallback}`), true);
 
 		return title;
 	}
@@ -129,15 +357,27 @@
 	}
 
 	/* ordered list of visible child names, mirrors ui.menu.getChildren():
-	   skip unsatisfied/untitled nodes, follow alias/rewrite targets */
-	function children_names(node, path) {
+	   skip unsatisfied/untitled nodes, follow alias/rewrite targets.
+	   `path` is the display path and `real` the true dispatcher path of
+	   `node` (they differ for nodes relocated by menumove sections);
+	   `keep_moved` disables menumove processing, used by the tab menu
+	   which follows the real request path. */
+	function children_names(node, path, real, keep_moved) {
 		let names = [];
 
 		for (let name, spec in node?.children) {
 			if (!spec?.satisfied || !spec?.title)
 				continue;
 
-			let child_path = join_path(path, name);
+			let child_real = join_path(real, name);
+
+			/* skip children relocated by a menumove section */
+			if (keep_moved != true) {
+				let mv = menu_move_of(child_real);
+
+				if (mv != null && mv.target != path && move_valid(mv))
+					continue;
+			}
 
 			// alias/rewrite nodes merge the target's children
 			if (type(spec.action) == 'object' &&
@@ -149,46 +389,30 @@
 					target = target?.children?.[s];
 
 				if (target) {
-					let sub = children_names(target, child_path);
+					let sub = children_names(target, join_path(path, name), spec.action.path, keep_moved);
 
 					if (length(sub) > 0) {
-						push(names, { name: name, order: spec.order ?? 1000, children: sub, node: target, path: child_path });
+						push(names, { name: name, order: spec.order ?? 1000, children: sub, node: target, path: join_path(path, name), real: child_real });
 						continue;
 					}
 				}
 			}
 
-			push(names, { name: name, order: spec.order ?? 1000, children: null, node: spec, path: child_path });
+			push(names, { name: name, order: spec.order ?? 1000, children: null, node: spec, path: join_path(path, name), real: child_real });
+		}
+
+		/* merge entries moved here by menumove sections and new groups
+		   declared by menugroup sections */
+		if (keep_moved != true) {
+			let taken = map(names, (e) => e.name);
+
+			for (let e in merged_children(path, real, taken))
+				push(names, e);
 		}
 
 		sort(names, (a, b) => (a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name));
 
-		/* user-defined order override (see menu_custom above): listed
-		   children sort by their list position, unlisted ones keep the
-		   default order and follow after the listed ones */
-		let override = menu_custom.order[path ?? ''];
-
-		if (type(override) == 'array' && length(override) > 0) {
-			let rank = {};
-
-			for (let i, n in override)
-				if (!(n in rank))
-					rank[n] = i;
-
-			let listed = [], unlisted = [];
-
-			for (let e in names)
-				push((e.name in rank) ? listed : unlisted, e);
-
-			sort(listed, (a, b) => (rank[a.name] != rank[b.name]) ? rank[a.name] - rank[b.name] : ((a.order != b.order) ? a.order - b.order : natural_cmp(a.name, b.name)));
-
-			for (let e in unlisted)
-				push(listed, e);
-
-			names = listed;
-		}
-
-		return names;
+		return apply_order(names, path);
 	}
 
 	/* is `path` equal to (or a prefix of) the current request path? */
@@ -203,9 +427,12 @@
 		return true;
 	}
 
-	/* ---- level >= 3 tab menus ("level3Menu"), mirrors render_tabmenu_asJson ---- */
-	function render_tabmenu_json(prefix, node, level) {
-		let names = children_names(node, prefix);
+	/* ---- level >= 3 tab menus ("level3Menu"), mirrors render_tabmenu_asJson.
+	   Tab menus follow the real request path, so menumove relocations are
+	   not applied here (the tabs of a moved app still render where the app
+	   really lives). */
+	function render_tabmenu_json(prefix, node, level, keep_moved) {
+		let names = children_names(node, prefix, prefix, keep_moved);
 		let html = '';
 		let selected_name = null;
 
@@ -238,8 +465,8 @@
 		}
 
 		if (selected_name != null) {
-			let sub = filter(children_names(node, prefix), e => e.name == selected_name)[0];
-			html += render_tabmenu_json(`${prefix}/${selected_name}`, sub.node, level + 1);
+			let sub = filter(children_names(node, prefix, prefix, keep_moved), e => e.name == selected_name)[0];
+			html += render_tabmenu_json(`${prefix}/${selected_name}`, sub.node, level + 1, keep_moved);
 		}
 
 		return html;
@@ -255,24 +482,24 @@
 		let cattree = menu.children?.[category] ?? menu;
 		let prefix = category;
 
-		for (let e in children_names(cattree, category)) {
-			let sub_names = e.children ?? children_names(e.node, e.path);
+		for (let e in children_names(cattree, category, category)) {
+			let sub_names = e.children ?? children_names(e.node, e.path, e.real);
 
 			if (!first)
 				html += ',';
 			first = false;
 
 			html += '{';
-			html += `"data-title":"${node_title(e.node)}",`;
+			html += `"data-title":"${node_title(e.node, e.title)}",`;
 
 			if (length(sub_names) > 0) {
 				html += '"subs": [';
 
 				for (let i, se in sub_names) {
 					html += `{`;
-					html += `"data-title":"${node_title(se.node)}",`;
-					html += `"href":"${node_url(prefix, e.name, se.name)}",`;
-					html += `"title":"${node_title_i18n(se.node, se.path)}"`;
+					html += `"data-title":"${node_title(se.node, se.title)}",`;
+					html += `"href":"${node_url(...split(se.real ?? se.path, '/'))}",`;
+					html += `"title":"${node_title_i18n(se.node, se.path, se.title)}"`;
 					html += `}`;
 
 					if (i < length(sub_names) - 1)
@@ -282,29 +509,23 @@
 				html += '],';   /* comma closes the subs member */
 			}
 			else {
-				html += `"href":"${node_url(prefix, e.name)}",`;
+				html += `"href":"${node_url(...split(e.real ?? e.path, '/'))}",`;
 			}
 
-			html += `"title":"${node_title_i18n(e.node, e.path)}"`;
+			/* server side icon override (menugroup/menumove sections), wins
+			   over the static menuIconDef list matched client side below */
+			let icon = menu_custom.icon[e.path];
+
+			if (icon != null && length(icon) > 0)
+				html += `"icon":"${entityencode(icon, true)}",`;
+
+			html += `"title":"${node_title_i18n(e.node, e.path, e.title)}"`;
 			html += '}';
 		}
 
 		html += ']}';
 
 		return html;
-	}
-
-	function lookup_node(path) {
-		let node = menu;
-
-		for (let s in path) {
-			node = node?.children?.[s];
-
-			if (!node)
-				return null;
-		}
-
-		return node;
 	}
 
 	// top menu entries
@@ -316,7 +537,7 @@
 	if (length(request_path) >= 1 && menu.children?.[request_path[0]]) {
 		let cat = menu.children[request_path[0]];
 
-		tabmenu_html = render_tabmenu_json(request_path[0], cat, 1);
+		tabmenu_html = render_tabmenu_json(request_path[0], cat, 1, true);
 	}
 
 	// unsaved changes count (server side, for the initial badge)
@@ -479,7 +700,8 @@
 	topMenu.menus.forEach(function(item,index,self){
 		let title = item["data-title"]
 		let icon = iconMap.get(title)
-		if (icon != undefined) {
+		/* keep icons injected server side (menugroup/menumove sections) */
+		if (icon != undefined && item["icon"] == undefined) {
 			item["icon"] = icon
 		}
 	});
