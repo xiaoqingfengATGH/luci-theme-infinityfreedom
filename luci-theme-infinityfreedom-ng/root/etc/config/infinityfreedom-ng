@@ -79,7 +79,7 @@ config menuorder
 	option path 'admin/services'
 	list order 'passwall2'     # PassWall 2
 	list order 'acme'          # ACME 证书
-	list order 'homeredirect'  # 端口转发 (Home Redirect)
+	list order 'homeredirect'  # 端口转发
 	list order 'nlbw'          # 带宽监控
 	list order 'hometunnel'    # HomeTunnel
 	list order 'wol'           # 网络唤醒
