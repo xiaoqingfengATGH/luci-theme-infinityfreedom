@@ -264,7 +264,13 @@
 					'cbi-button-action':   'btn btn-purple waves-effect waves-light'
 				};
 
-				jQuery(root).find('button.cbi-button, button[class*="cbi-button-"]').each(function(i, e) {
+				/* LuCI renders the same control in multiple element personas: the
+			   page footer "Save & Apply" is div.cbi-dropdown.btn.cbi-button-apply,
+			   view action links are a.btn.cbi-button-*, and only classic submit
+			   buttons are <button>. Match every persona so the dropdown footer
+			   control gets its primary color like its siblings (it previously
+			   fell through: transparent .btn base + gray text). */
+			jQuery(root).find('.cbi-button, [class*="cbi-button-"]').each(function(i, e) {
 					let el = jQuery(e);
 					for (let cls in map) {
 						if (el.hasClass(cls)) {
