@@ -11,28 +11,120 @@
 # path 'admin'. Node names are the last path segment.
 #
 # Listed children sort by list position; unlisted ones keep their default
-# order and follow after the listed ones. Both section types are optional:
-# an empty or missing file leaves the menu untouched.
+# order and follow after the listed ones. All groups below are fully
+# enumerated in their current (factory) order, so this file renders
+# exactly like an uncustomized menu - just reorder lines at will.
+#
+# Notes:
+# - Uninstalled apps drop out of the menu automatically; entries left
+#   here for missing nodes are harmless no-ops.
+# - New apps installed later (not listed here) append to the end of
+#   their group; add them to a list to pin their position.
+# - menurename overrides only the display title; icons/tab highlighting
+#   match on the original (data-title) text and stay unaffected.
 
-# --- examples (uncomment and edit as needed) ---
+# ---- level 1 (children of 'admin') ----
 
-# config menuorder
-# 	option path 'admin'
-# 	list order 'status'
-# 	list order 'network'
-# 	list order 'system'
-# 	list order 'services'
+config menuorder
+	option path 'admin'
+	list order 'status'      # 状态
+	list order 'system'      # 系统
+	list order 'services'    # 服务
+	list order 'control'     # 管控
+	list order 'nas'         # 网络存储
+	list order 'vpn'         # VPN
+	list order 'network'     # 网络
 
-# config menuorder
-# 	option path 'admin/services'
-# 	list order 'passwall2'
-# 	list order 'ddns-go'
-# 	list order 'homeredirect'
+# ---- 状态 (admin/status) ----
 
-# config menurename
-# 	option path 'admin/services/homeredirect'
-# 	option title '端口转发'
+config menuorder
+	option path 'admin/status'
+	list order 'overview'      # 驾驶舱
+	list order 'routesj'       # 路由
+	list order 'nftables'      # 防火墙
+	list order 'logs'          # 系统日志
+	list order 'processes'     # 进程
+	list order 'realtime'      # 实时信息
+	list order 'release_ram'   # 释放内存
+	list order 'mwan3'         # MultiWAN 管理器
+
+# ---- 系统 (admin/system) ----
+
+config menuorder
+	option path 'admin/system'
+	list order 'system'          # 系统
+	list order 'admin'           # 管理权
+	list order 'homestatus'      # 定制驾驶舱
+	list order 'package-manager' # 软件包
+	list order 'startup'         # 启动项
+	list order 'crontab'         # 计划任务
+	list order 'mounts'          # 挂载点
+	list order 'diskman'         # 磁盘管理
+	list order 'flash'           # 备份与更新
+	list order 'autoreboot'      # 定时重启
+	list order 'filetransfer'    # 文件传输
+	list order 'reboot'          # 重启
+	list order 'ttyd'            # 终端
+
+# ---- 服务 (admin/services) ----
+
+config menuorder
+	option path 'admin/services'
+	list order 'passwall2'     # PassWall 2
+	list order 'acme'          # ACME 证书
+	list order 'homeredirect'  # 端口转发 (Home Redirect)
+	list order 'nlbw'          # 带宽监控
+	list order 'hometunnel'    # HomeTunnel
+	list order 'wol'           # 网络唤醒
+	list order 'ddns-go'       # DDNS-Go
+	list order 'dockerman'     # Dockerman JS
+	list order 'ksmbd'         # 网络共享
+	list order 'upnp'          # UPnP IGD 和 PCP
+	list order 'vlmcsd'        # Vlmcsd KMS 服务器
+
+# ---- 管控 (admin/control) ----
+
+config menuorder
+	option path 'admin/control'
+	list order 'webrestriction'  # 访问限制
+	list order 'weburl'          # 网址过滤
+	list order 'timewol'         # 定时唤醒
+
+# ---- 网络存储 (admin/nas) ----
+
+config menuorder
+	option path 'admin/nas'
+	list order 'hd_idle'      # 硬盘休眠
+	list order 'cifs-mount'   # 挂载 SMB 网络共享
+	list order 'vsftpd'       # FTP 服务器
+
+# ---- VPN (admin/vpn) ----
+
+config menuorder
+	option path 'admin/vpn'
+	list order 'ipsec-server'  # IPSec VPN 服务器
+
+# ---- 网络 (admin/network) ----
+
+config menuorder
+	option path 'admin/network'
+	list order 'network'       # 接口
+	list order 'routes'        # 路由
+	list order 'dhcp'          # DHCP
+	list order 'arpbind'       # IP/MAC绑定
+	list order 'dns'           # DNS
+	list order 'diagnostics'   # 网络诊断
+	list order 'firewall'      # 防火墙
+	list order 'syncdial'      # 多线多拨
+	list order 'mwan3'         # MultiWAN 管理器
+	list order 'turboacc'      # Turbo ACC 网络加速
+
+# ---- renames (uncomment and edit as needed) ----
 
 # config menurename
 # 	option path 'admin/status'
 # 	option title '运行状态'
+
+# config menurename
+# 	option path 'admin/services/homeredirect'
+# 	option title '端口转发'
