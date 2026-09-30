@@ -223,7 +223,11 @@
 .ngov-foot .txt { margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ----------------------------------------------------------------- cards ---- */
-.ngov-cols { display: grid; grid-template-columns: 1.45fr 1fr; gap: 16px; align-items: start; }
+/* Equal columns (user decision): WAN/upstream and LAN devices cards share
+ * the row 50/50. The height-cap logic in ngOverview.js re-measures the WAN
+ * card every render, so a taller left card automatically re-caps the
+ * devices table. */
+.ngov-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
 
 .ngov-card { background: var(--ngov-card); border: 1px solid var(--ngov-line); border-radius: 8px; overflow: hidden; }
 
