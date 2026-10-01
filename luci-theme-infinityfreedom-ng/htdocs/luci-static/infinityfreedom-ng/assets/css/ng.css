@@ -400,3 +400,14 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
 .cbi-value-field > div > input.mx-1,
 .cbi-value-field > div > select.mx-1{margin-left:0 !important;margin-right:0 !important}
 .cbi-value-field > div:not(.cbi-checkbox) + .cbi-value-description{padding-left:calc(1px + .9rem)}
+
+/* passwall2's lv-dropdown bakes the hidden select's computed style into
+   an inline ID-selector rule (#cbid...node.display). The snapshot copies
+   .form-select's padding-right 2.7rem - space reserved for the NATIVE
+   select arrow - but the display div draws its own lv-arrow-down span,
+   so the arrow floats 43px from the right edge. The baked rule is ID
+   specificity without !important, so a class rule with !important wins
+   (and survives resize re-bakes, which rewrite the same non-important
+   rule). 0.9rem mirrors the left padding: arrow ~15px from the edge,
+   like the theme's native selects. */
+.lv-dropdown-display{padding-right:.9rem !important}
