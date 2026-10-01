@@ -51,13 +51,18 @@ config menuorder
 	list order 'nftables'      # 防火墙
 	list order 'processes'     # 进程
 	list order 'realtime'      # 实时信息
-	list order 'release_ram'   # 释放内存
+	list order 'nlbw'          # 带宽监控
 	list order 'mwan3'         # MultiWAN 管理器
 	list order 'logs'          # 系统日志
+	list order 'release_ram'   # 释放内存
 
 config menurename
  	option path 'admin/status/mwan3'
  	option title '多WAN状态'
+
+config menumove
+ 	option path 'admin/services/nlbw'
+ 	option target 'admin/status'
 
 # ---- 系统 (admin/system) ----
 
@@ -99,14 +104,14 @@ config menuorder
 	option path 'admin/services'
 #	list order 'passwall2'     # PassWall 2
 	list order 'acme'          # ACME 证书
-	list order 'homeredirect'  # 端口转发
-	list order 'nlbw'          # 带宽监控
+#	list order 'homeredirect'  # 端口转发
+#	list order 'nlbw'          # 带宽监控
 	list order 'hometunnel'    # HomeTunnel
 	list order 'wol'           # 网络唤醒
 	list order 'ddns-go'       # DDNS-Go
 	list order 'dockerman'     # Dockerman JS
 #	list order 'ksmbd'         # 网络共享
-	list order 'upnp'          # UPnP IGD 和 PCP
+#	list order 'upnp'          # UPnP IGD 和 PCP
 	list order 'vlmcsd'        # Vlmcsd KMS 服务器
 
 # ---- 管控 (admin/control) ----
@@ -160,6 +165,8 @@ config menuorder
 	list order 'dns'           # DNS
 	list order 'diagnostics'   # 网络诊断
 	list order 'firewall'      # 防火墙
+	list order 'homeredirect'  # 端口转发
+	list order 'upnp'          # UPnP IGD 和 PCP
 	list order 'syncdial'      # 多线多拨
 	list order 'mwan3'         # MultiWAN 管理器
 	list order 'turboacc'      # Turbo ACC 网络加速
@@ -167,6 +174,14 @@ config menuorder
 config menurename
  	option path 'admin/network/mwan3'
  	option title '多WAN管理器'
+
+config menumove
+	option path 'admin/services/upnp'
+	option target 'admin/network'
+
+config menumove
+	option path 'admin/services/homeredirect'
+	option target 'admin/network'
 
 # ---- renames (uncomment and edit as needed) ----
 
