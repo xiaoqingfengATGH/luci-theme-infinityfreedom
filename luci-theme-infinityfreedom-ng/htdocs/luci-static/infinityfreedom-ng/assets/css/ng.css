@@ -418,10 +418,19 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    DOWNWARD from the last row of the page, so with the actions row at
    the container bottom edge the whole menu was rendered outside the
    clip - only a sliver of the first item peeked through. Both rules
-   exist only to stop the fixed sidebar's box-shadow bleeding sideways;
-   vertical clipping serves no purpose here. Re-enable visible overflow
-   (same specificity, later in cascade: ng.css loads after app-dark). */
-#wrapper,
+   exist only to stop the fixed sidebar's box-shadow bleeding sideways
+   (box-shadows never create scrollable overflow anyway), so vertical
+   clipping serves no purpose here. Re-enable visible overflow
+   (same specificity, later in cascade: ng.css loads after app-dark).
+
+   #wrapper additionally becomes display:flow-root: as a BFC root it
+   CONTAINS .content-page's margin-top:70px (app-dark), which
+   overflow:hidden used to contain. Without it the 70px margin
+   collapses through #wrapper onto body and pushes the whole page -
+   including the position:fixed top navbar, whose static position
+   floats with the document - 70px down, exposing the wallpaper above
+   the navbar. flow-root restores the BFC without any clipping. */
+#wrapper{overflow:visible;display:flow-root}
 .content-page{overflow:visible}
 
 /* Footer.ut decorates buttons (including the Save&Apply cbi-dropdown)
