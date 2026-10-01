@@ -383,3 +383,20 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
 .btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active,.btn-secondary.active,.show>.btn-secondary.dropdown-toggle,.cbi-button-neutral:hover,.cbi-button-neutral:focus{color:#fff;background-color:#9aa3e0;border-color:#9aa3e0}
 .btn-secondary:focus{box-shadow:0 0 0 .15rem rgba(136,146,214,.5)}
 .btn-secondary:disabled,.btn-secondary.disabled,.cbi-button-neutral:disabled{color:#fff;background-color:#6b74a8;border-color:#6b74a8;opacity:.65}
+
+/* Field help text (modern form.js fields) starts at the control's BORDER
+   while the control's text sits inset by its .9rem left padding, so the
+   help reads ~15px further left than the value it describes - and on
+   text inputs the theme's own mx-1 margin (added by ngRender.js to every
+   input[type=text], a leftover from inline legacy forms) shifts the
+   control another 6px right, widening the gap to 21px. Align help text
+   with the control TEXT edge:
+   - neutralize mx-1 when the input sits in its own wrapper div (the
+     modern form.js field structure; legacy inline rows keep it). The
+     mx-1 utility itself carries !important, so the fix needs it too.
+   - indent the help text to match (1px border + .9rem left padding of
+     select/input/textarea); checkbox rows keep 0 - the box itself hugs
+     the field edge and its hidden legacy input must not indent it. */
+.cbi-value-field > div > input.mx-1,
+.cbi-value-field > div > select.mx-1{margin-left:0 !important;margin-right:0 !important}
+.cbi-value-field > div:not(.cbi-checkbox) + .cbi-value-description{padding-left:calc(1px + .9rem)}
