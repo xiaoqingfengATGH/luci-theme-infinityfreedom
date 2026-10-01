@@ -411,3 +411,15 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    rule). 0.9rem mirrors the left padding: arrow ~15px from the edge,
    like the theme's native selects. */
 .lv-dropdown-display{padding-right:.9rem !important}
+
+/* The admin template's app-dark.min.css sets overflow:hidden on BOTH
+   #wrapper and .content-page. LuCI's page-footer cbi-dropdown (the
+   "Save & Apply" rollback-timeout selector) opens its ul.dropdown
+   DOWNWARD from the last row of the page, so with the actions row at
+   the container bottom edge the whole menu was rendered outside the
+   clip - only a sliver of the first item peeked through. Both rules
+   exist only to stop the fixed sidebar's box-shadow bleeding sideways;
+   vertical clipping serves no purpose here. Re-enable visible overflow
+   (same specificity, later in cascade: ng.css loads after app-dark). */
+#wrapper,
+.content-page{overflow:visible}
