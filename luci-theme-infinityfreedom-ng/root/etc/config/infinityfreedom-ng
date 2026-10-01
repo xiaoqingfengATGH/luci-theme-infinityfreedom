@@ -36,6 +36,7 @@ config menuorder
 	option path 'admin'
 	list order 'status'      # 状态
 	list order 'network'     # 网络
+	list order 'dns'         # DNS
 	list order 'vpn'         # VPN
 	list order 'services'    # 服务
 	list order 'nas'         # 网络存储
@@ -108,7 +109,7 @@ config menuorder
 #	list order 'nlbw'          # 带宽监控
 	list order 'hometunnel'    # HomeTunnel
 	list order 'wol'           # 网络唤醒
-	list order 'ddns-go'       # DDNS-Go
+#	list order 'ddns-go'       # DDNS-Go
 	list order 'dockerman'     # Dockerman JS
 #	list order 'ksmbd'         # 网络共享
 #	list order 'upnp'          # UPnP IGD 和 PCP
@@ -162,7 +163,6 @@ config menuorder
 	list order 'routes'        # 路由
 	list order 'dhcp'          # DHCP
 	list order 'arpbind'       # IP/MAC绑定
-	list order 'dns'           # DNS
 	list order 'diagnostics'   # 网络诊断
 	list order 'firewall'      # 防火墙
 	list order 'homeredirect'  # 端口转发
@@ -182,6 +182,26 @@ config menumove
 config menumove
 	option path 'admin/services/homeredirect'
 	option target 'admin/network'
+
+# ---- DNS (admin/dns, new group) ----
+
+config menugroup
+	option path 'admin/dns'
+	option title 'DNS'
+	option icon 'mdi mdi-dns'
+
+config menuorder
+	option path 'admin/dns'
+	list order 'dns'           # DNS
+	list order 'ddns-go'       # DDNS-Go
+
+config menumove
+	option path 'admin/network/dns'
+	option target 'admin/dns'
+
+config menumove
+	option path 'admin/services/ddns-go'
+	option target 'admin/dns'
 
 # ---- renames (uncomment and edit as needed) ----
 
