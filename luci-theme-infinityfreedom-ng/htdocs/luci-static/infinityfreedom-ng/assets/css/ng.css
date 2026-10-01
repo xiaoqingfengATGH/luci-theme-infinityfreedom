@@ -345,6 +345,15 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    so a whitespace-only descr hides too. */
 .cbi-section-descr:empty,
 .cbi-map-descr:empty{display:none}
+/* Bare JS views (mwan3 notify ...) put their page-level help text as a
+   DIRECT child of #view - wrapBareView() excludes .cbi-section-descr
+   from card wrapping as pure metadata, so a long text (mwan3 notify:
+   443 chars documenting the /etc/mwan3.user hook) sits directly on the
+   wallpaper with nothing but the 8% tint behind it and drowns in the
+   background art. Give view-top-level descrs the opaque theme card
+   base; descrs inside .cbi-map/.cbi-section already sit on cards. */
+#view > .cbi-section-descr,
+#view > .cbi-map-descr{background:rgba(54,64,74,.9)}
 .cbi-section-descr a,
 .cbi-map-descr a{color:#5c9fd6;text-decoration:none;border-bottom:1px dotted #5c9fd6}
 .cbi-section-descr a:hover,
