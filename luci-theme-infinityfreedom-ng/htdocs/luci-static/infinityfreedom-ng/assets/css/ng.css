@@ -441,3 +441,27 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    scrolled - the second clip layer after #wrapper/.content-page.
    Open dropdowns must escape their button box. */
 .cbi-dropdown.waves-effect[open]{overflow:visible !important}
+
+/* File inputs (system/filetransfer upload area): the native
+   "选择文件" button renders browser-default light gray, clashing
+   with the dark theme and the purple action button next to it.
+   Style the pseudo-element with the theme's form-control palette
+   (same family as .cbi-dropdown form rules), keep the action
+   button (上传) visually distinct as the primary action. */
+input[type=file]::file-selector-button{
+	background:linear-gradient(#3b4651 0%,#333d47 100%);
+	border:1px solid #424e5a;
+	border-radius:3px;
+	color:#c0cbd4;
+	font-size:13px;
+	font-family:inherit;
+	padding:.45rem .9rem;
+	margin-right:.75rem;
+	cursor:pointer;
+	-webkit-appearance:none;
+	appearance:none
+}
+input[type=file]::file-selector-button:hover{
+	background:linear-gradient(#424e5a 0%,#3a444f 100%);
+	color:#fff
+}
