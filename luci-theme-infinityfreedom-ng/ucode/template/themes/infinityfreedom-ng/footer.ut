@@ -105,6 +105,17 @@
 						return;
 					if (el.closest('.cbi-map-tabbed').length > 0)
 						return;
+					/* ui.tabs panes (nlbw display, status/iptables, ...) carry
+					   data-tab themselves and MUST stay direct children of
+					   their group container: switchTab() resolves panes via
+					   menu.nextElementSibling.childNodes. Cardifying them
+					   individually here would defeat the shared-card path in
+					   wrapBareView() below (group.children('[data-tab]') would
+					   find only col-12 wrappers) and the menu would get its
+					   own card - breaking menu/group adjacency so tabs change
+					   the highlight but never the content. */
+					if (el.attr('data-tab') !== undefined)
+						return;
 					let col = jQuery('<div class="col-12"></div>');
 					let card = jQuery('<div class="card"></div>');
 					el.wrap(col);
