@@ -54,6 +54,17 @@ table.table > tr > th{padding:.85rem .85rem;vertical-align:middle;border-bottom:
 table.table > tr > td > *,
 table.table > tr > th > *{padding:0}
 
+/* LuCI JS views put grid col-N classes on table cells (realtime
+   connections: th.col-2/col-7/col-4 ...). In LuCI's own themes these
+   are flex proportions, but this theme ships twitter bootstrap, where
+   .col-7 is a grid class with width:58.33% - injected into a table
+   cell it grabs a huge width unrelated to content (source-address
+   column 273px for ~130px of text). Neutralize grid sizing inside
+   .table so table-layout:auto sizes columns by content; grid usage
+   outside tables (real flex/grid layouts) is unaffected. */
+.table th[class*="col-"],
+.table td[class*="col-"]{width:auto;flex:0 0 auto}
+
 /* cbi tab panels (form.js renders one div[data-tab] per tab, the
    active one flagged data-tab-active="true"). Without these rules
    every panel renders stacked and tab clicks change nothing visibly -
