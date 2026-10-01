@@ -73,6 +73,7 @@ config menuorder
 	list order 'admin'           # 管理权
 	list order 'diskman'         # 磁盘管理
 	list order 'mounts'          # 挂载点
+	list order 'hd_idle'         # 硬盘休眠
 	list order 'ttyd'            # 终端
 	list order 'homestatus'      # 定制驾驶舱
 	list order 'package-manager' # 软件包
@@ -82,6 +83,10 @@ config menuorder
 	list order 'flash'           # 备份与更新
 	list order 'autoreboot'      # 定时重启
 	list order 'reboot'          # 重启
+
+config menumove
+ 	option path 'admin/nas/hd_idle'
+ 	option target 'admin/system'
 
 config menurename
  	option path 'admin/system'
@@ -115,6 +120,14 @@ config menuorder
 #	list order 'upnp'          # UPnP IGD 和 PCP
 	list order 'vlmcsd'        # Vlmcsd KMS 服务器
 
+config menurename
+ 	option path 'admin/services/dockerman'
+ 	option title 'Docker容器管理'
+
+config menurename
+ 	option path 'admin/services/vlmcsd'
+ 	option title '微软产品激活服务器'
+
 # ---- 管控 (admin/control) ----
 
 config menuorder
@@ -129,7 +142,7 @@ config menuorder
 	option path 'admin/nas'
 	list order 'cifs-mount'   # 挂载 SMB 网络共享
 	list order 'ksmbd'         # 网络共享
-	list order 'hd_idle'      # 硬盘休眠
+#	list order 'hd_idle'      # 硬盘休眠
 	list order 'vsftpd'       # FTP 服务器
 
 config menurename
@@ -202,6 +215,14 @@ config menumove
 config menumove
 	option path 'admin/services/ddns-go'
 	option target 'admin/dns'
+
+config menurename
+ 	option path 'admin/dns/dns'
+ 	option title '系统DNS'
+
+config menurename
+ 	option path 'admin/dns/ddns-go'
+ 	option title '动态域名'
 
 # ---- renames (uncomment and edit as needed) ----
 
