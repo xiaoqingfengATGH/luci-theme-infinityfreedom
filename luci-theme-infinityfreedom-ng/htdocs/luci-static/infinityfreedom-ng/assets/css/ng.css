@@ -465,3 +465,22 @@ input[type=file]::file-selector-button:hover{
 	background:linear-gradient(#424e5a 0%,#3a444f 100%);
 	color:#fff
 }
+
+/* Package-manager (and similar .controls views): LuCI's own inline
+   CSS grows every .controls > * > * (meant for the filter inputs) to
+   fill its flex row - the pager "« / »" buttons included. Stock
+   bootstrap renders them transparent, so a 500px wide button is
+   invisible. Our neutral-button restyling (btn-secondary -> theme
+   purple) made them solid purple slabs spanning a third of the page.
+   Compact the pager buttons back to intrinsic width; the status text
+   between them keeps the rest. */
+.controls .pager > .btn{
+	flex-grow:0;
+	flex-shrink:0;
+	flex-basis:auto;
+	width:auto;
+	min-width:2.5em
+}
+
+/* pager buttons sat flush against the "正在显示 1-100, 共 N" text */
+.controls .pager{gap:.75rem}
