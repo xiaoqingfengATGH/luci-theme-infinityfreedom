@@ -423,3 +423,12 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    (same specificity, later in cascade: ng.css loads after app-dark). */
 #wrapper,
 .content-page{overflow:visible}
+
+/* Footer.ut decorates buttons (including the Save&Apply cbi-dropdown)
+   with the Material-Waves ripple classes .waves-effect/.waves-light.
+   app-dark's .waves-effect sets overflow:hidden on the dropdown
+   itself; the open menu (ul.dropdown) is a CHILD of the dropdown, so
+   it was clipped to the 36px button box no matter where the page was
+   scrolled - the second clip layer after #wrapper/.content-page.
+   Open dropdowns must escape their button box. */
+.cbi-dropdown.waves-effect[open]{overflow:visible !important}
