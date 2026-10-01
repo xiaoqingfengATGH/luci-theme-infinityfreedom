@@ -311,8 +311,16 @@ tr.placeholder > td,.tr.placeholder > td{color:#94a0ad}
    three buttons. Reserve enough space for the action group and keep its
    buttons on one flex row; the command column remains the flexible column. */
 body.logged-in #view table .cbi-section-actions{width:220px;min-width:220px;white-space:nowrap}
-body.logged-in #view table td.cbi-section-actions>div{display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
+/* :not(.btn) - JS views (package-manager) put the BUTTON itself as a
+   direct div child of the cell; without the exclusion this rule makes
+   it a block-level flex container that stretches to the full 192px
+   cell width. Exclude buttons so they keep intrinsic .btn width;
+   wrapper divs (processes) keep the flex row. */
+body.logged-in #view table td.cbi-section-actions>div:not(.btn){display:flex;align-items:center;justify-content:flex-end;gap:.3rem;white-space:nowrap}
 body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
+/* right-align intrinsic-width action buttons in JS-view tables
+   (package-manager rows: td.cbi-section-actions > div.btn) */
+.table > tr > td.cbi-section-actions{text-align:right}
 /* system/logging log_size: form.js wraps the input in a block div and emits
    the short KiB unit as the following .cbi-value-description, forcing the
    unit onto a second line. Flatten only this widget wrapper and keep input +
@@ -484,3 +492,68 @@ input[type=file]::file-selector-button:hover{
 
 /* pager buttons sat flush against the "正在显示 1-100, 共 N" text */
 .controls .pager{gap:.75rem}
+
+/* Bootstrap's table cell selector .table>:not(caption)>*>* is FOUR
+   levels deep (table>tbody>tr>td), written for parser-created markup.
+   JS views build tables via E()/appendChild (package-manager:
+   table.table > tr.tr > td.td) with NO tbody - the HTML parser
+   would auto-insert one, but direct DOM building skips it. The
+   fourth level then punches THROUGH the td and hits the action
+   buttons inside it: the transparent .table cell background wins
+   over .btn-danger/.btn-success (equal specificity, later sheet
+   order), the cell's .85rem padding inflates them to 49px ghosts
+   with a colored border and no fill - "按钮只有外边框有颜色".
+   Scope the same declarations to the tbody-less shape so the cells
+   keep bootstrap styling and their contents stay button-sized. */
+.table > tr > td,
+.table > tr > th{
+	padding:.85rem .85rem;
+	border-bottom-width:1px;
+	box-shadow:inset 0 0 0 9999px var(--bs-table-accent-bg)
+}
+/* restore the variant FILL the cell rule flattened (background-color
+   from the .table cell rule is transparent; re-assert per variant) */
+.table > tr > td > .btn-danger{background-color:#f7531f}
+.table > tr > td > .btn-success{background-color:#78c350}
+.table > tr > td > .btn-primary{background-color:#348cd4}
+.table > tr > td > .btn-info{background-color:#45bbe0}
+.table > tr > td > .btn-warning{background-color:#ff9800}
+.table > tr > td > .btn-purple{background-color:#8892d6}
+.table > tr > td > .btn-secondary{background-color:#8892d6}
+
+/* LuCI JS-view pagers (package-manager .controls .pager): their
+   .card-body wrapper carries bootstrap's 24px padding, the pager
+   row is one line of small widgets - a 91px slab. Slim the wrapper
+   to a quiet one-line toolbar. */
+.controls.card-body{
+	padding:.4rem .9rem
+}
+.controls .pager.center{
+	align-items:center;
+	justify-content:center;
+	padding:0
+}
+
+/* Package-manager only (scoped by #packages, the view's table id):
+   tab menu / pager bars / package table render as three sibling
+   cards stacked with bootstrap's 24px card margins - blank bands
+   between the TAB bar, the pagers and the data. Merge them into
+   ONE continuous card. Card shapes as wrapped by wrapBareView:
+     .card > ul.cbi-tabmenu.card-body          (tab card)
+     .card > div.controls.card-body > .pager   (pager cards)
+     .card > .table-responsive > table#packages(table card)
+   #view:has(#packages) scopes every rule to this view only. */
+#view:has(#packages) .card:has(> ul.cbi-tabmenu){margin-bottom:0}
+#view:has(#packages) .card:has(> ul.cbi-tabmenu) > ul.cbi-tabmenu{padding:.5rem .9rem 0}
+#view:has(#packages) .card:has(> .controls .pager){margin-bottom:0}
+#view:has(#packages) .card:has(> .controls .pager) > .controls{margin:0}
+#view:has(#packages) .card:has(> .table-responsive > #packages){margin-bottom:0}
+#view:has(#packages) .card:has(> .table-responsive > #packages) > .table-responsive > table{padding:0}
+
+/* the 4-level bootstrap cell rule also lands on the action buttons
+   in tbody-less view tables - it overrides .btn padding (.45rem
+   .9rem -> .85rem) and the buttons render 49px tall. Re-assert
+   button geometry at higher specificity. */
+.table > tr > td > .btn{
+	padding:.45rem .9rem
+}

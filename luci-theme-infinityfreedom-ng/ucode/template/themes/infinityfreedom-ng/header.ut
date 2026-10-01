@@ -621,7 +621,7 @@
     <!-- ng.css cache-buster: bump the ?v= query on every content change so
          browsers refetch (uhttpd serves no Cache-Control, only ETag, so
          heuristic caching serves stale CSS for hours after a deploy). -->
-    <link href="{{ media }}/assets/css/ng.css?v=10" rel="stylesheet" type="text/css" />
+    <link href="{{ media }}/assets/css/ng.css?v=14" rel="stylesheet" type="text/css" />
 
 	{% if (node?.css): %}
 	<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
