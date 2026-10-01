@@ -328,6 +328,13 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
    cbi-map-descr 渲染为无样式裸文本）——配色取主题弱化色系 ---- */
 .cbi-section-descr,
 .cbi-map-descr{margin-bottom:.75rem;padding:.5rem .75rem;color:#94a0ad;font-size:.85rem;line-height:1.6;border-left:3px solid #348cd4;border-radius:0 .25rem .25rem 0;background:rgba(52,140,212,.08)}
+/* LuCI form.js emits an empty .cbi-section-descr / .cbi-map-descr div for
+   every section that has no description text - with the callout styling
+   above each empty one renders as a stray colored bar taking up space.
+   :empty also matches whitespace-only text nodes in modern browsers,
+   so a whitespace-only descr hides too. */
+.cbi-section-descr:empty,
+.cbi-map-descr:empty{display:none}
 .cbi-section-descr a,
 .cbi-map-descr a{color:#5c9fd6;text-decoration:none;border-bottom:1px dotted #5c9fd6}
 .cbi-section-descr a:hover,
@@ -345,3 +352,15 @@ body.logged-in #view table td.cbi-section-actions button{flex:0 0 auto;margin:0}
 .cbi-dropdown.btn > ul > li,.cbi-dropdown.cbi-button > ul > li{min-height:0;padding:0 .25em;color:inherit;line-height:inherit;font-size:inherit}
 .cbi-dropdown.btn > .open,.cbi-dropdown.cbi-button > .open{line-height:1.5;padding:0 .5em;margin-left:.5em;border-left:1px solid rgba(255,255,255,.35)}
 .cbi-dropdown.btn > .more,.cbi-dropdown.cbi-button > .more{display:none}
+
+/* Neutral buttons (interface card Restart/Stop = .cbi-button-neutral +
+   .btn-secondary, bootstrap's LIGHT secondary): bootstrap-dark ships
+   them light (#cedeef bg, dark text) with no dark-theme adaptation, so
+   on dark cards they look like unstyled raw buttons next to the themed
+   edit/remove buttons. Re-skin to the theme's own neutral accent (the
+   same violet used by cbi-button-action/btn-purple) so the whole button
+   row reads as one themed family. */
+.btn-secondary,.cbi-button-neutral{color:#fff;background-color:#8892d6;border-color:#8892d6}
+.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active,.btn-secondary.active,.show>.btn-secondary.dropdown-toggle,.cbi-button-neutral:hover,.cbi-button-neutral:focus{color:#fff;background-color:#9aa3e0;border-color:#9aa3e0}
+.btn-secondary:focus{box-shadow:0 0 0 .15rem rgba(136,146,214,.5)}
+.btn-secondary:disabled,.btn-secondary.disabled,.cbi-button-neutral:disabled{color:#fff;background-color:#6b74a8;border-color:#6b74a8;opacity:.65}
