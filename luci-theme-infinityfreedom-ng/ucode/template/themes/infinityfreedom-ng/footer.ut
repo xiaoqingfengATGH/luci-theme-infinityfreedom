@@ -174,6 +174,30 @@
 					return !e.matches('h2, .cbi-map-descr, .cbi-section-descr, .cbi-page-actions, script, .spinning, .col-12');
 				});
 
+				/* Two shapes of bare content:
+				   - structural containers (form, div, table, textarea...):
+				     one card EACH - diagnostics shows one card per tool,
+				     processes one card for its table. Keep as-is.
+				   - small flow elements only (system/reboot is
+				     p + hr + button): wrap them TOGETHER in ONE shared
+				     card. Cardifying each separately made three slivers,
+				     and addClass('card-body') on the <button> itself put
+				     card padding + block display on it - a full-width
+				     70px slab instead of a button. */
+				let smallOnly = main.length > 0 && main.toArray().every(function(e) {
+					return e.matches('p, hr, button, a, span, small, em, strong');
+				});
+
+				if (smallOnly) {
+					if (main.closest('.card').length > 0)
+						return;
+					main.wrapAll('<div class="card-body"></div>');
+					let body = main.parent();
+					body.wrap('<div class="card"></div>');
+					body.parent().wrap('<div class="col-12"></div>');
+					return;
+				}
+
 				main.each(function(i, e) {
 					let el = jQuery(e);
 					if (el.closest('.card').length > 0)

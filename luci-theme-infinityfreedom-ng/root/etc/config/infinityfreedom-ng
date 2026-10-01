@@ -113,7 +113,7 @@ config menuorder
 #	list order 'homeredirect'  # 端口转发
 #	list order 'nlbw'          # 带宽监控
 	list order 'hometunnel'    # HomeTunnel
-	list order 'wol'           # 网络唤醒
+#	list order 'wol'           # 网络唤醒
 #	list order 'ddns-go'       # DDNS-Go
 	list order 'dockerman'     # Dockerman JS
 #	list order 'ksmbd'         # 网络共享
@@ -132,9 +132,14 @@ config menurename
 
 config menuorder
 	option path 'admin/control'
+	list order 'wol'           # 网络唤醒
+	list order 'timewol'         # 定时唤醒
 	list order 'webrestriction'  # 访问限制
 	list order 'weburl'          # 网址过滤
-	list order 'timewol'         # 定时唤醒
+
+config menumove
+ 	option path 'admin/services/wol'
+ 	option target 'admin/control'
 
 # ---- 网络存储 (admin/nas) ----
 
