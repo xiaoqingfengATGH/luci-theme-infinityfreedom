@@ -38,8 +38,8 @@ config menuorder
 	list order 'network'     # 网络
 	list order 'vpn'         # VPN
 	list order 'services'    # 服务
-	list order 'control'     # 管控
 	list order 'nas'         # 网络存储
+	list order 'control'     # 管控
 	list order 'system'      # 系统
 
 # ---- 状态 (admin/status) ----
@@ -54,6 +54,10 @@ config menuorder
 	list order 'release_ram'   # 释放内存
 	list order 'mwan3'         # MultiWAN 管理器
 	list order 'logs'          # 系统日志
+
+config menurename
+ 	option path 'admin/status/mwan3'
+ 	option title '多WAN状态'
 
 # ---- 系统 (admin/system) ----
 
@@ -93,7 +97,7 @@ config menurename
 
 config menuorder
 	option path 'admin/services'
-	list order 'passwall2'     # PassWall 2
+#	list order 'passwall2'     # PassWall 2
 	list order 'acme'          # ACME 证书
 	list order 'homeredirect'  # 端口转发
 	list order 'nlbw'          # 带宽监控
@@ -101,7 +105,7 @@ config menuorder
 	list order 'wol'           # 网络唤醒
 	list order 'ddns-go'       # DDNS-Go
 	list order 'dockerman'     # Dockerman JS
-	list order 'ksmbd'         # 网络共享
+#	list order 'ksmbd'         # 网络共享
 	list order 'upnp'          # UPnP IGD 和 PCP
 	list order 'vlmcsd'        # Vlmcsd KMS 服务器
 
@@ -117,20 +121,33 @@ config menuorder
 
 config menuorder
 	option path 'admin/nas'
-	list order 'hd_idle'      # 硬盘休眠
 	list order 'cifs-mount'   # 挂载 SMB 网络共享
+	list order 'ksmbd'         # 网络共享
+	list order 'hd_idle'      # 硬盘休眠
 	list order 'vsftpd'       # FTP 服务器
+
+config menurename
+ 	option path 'admin/nas/cifs-mount'
+ 	option title '挂载SMB存储到路由'
+
+config menumove
+ 	option path 'admin/services/ksmbd'
+ 	option target 'admin/nas'
+
+config menurename
+ 	option path 'admin/nas/ksmbd'
+ 	option title '共享路由存储到内网'
 
 # ---- VPN (admin/vpn) ----
 
 config menuorder
 	option path 'admin/vpn'
+	list order 'passwall2'     # PassWall 2
 	list order 'ipsec-server'  # IPSec VPN 服务器
 
 config menumove
  	option path 'admin/services/passwall2'
  	option target 'admin/vpn'
- 	option order '10'
 
 # ---- 网络 (admin/network) ----
 
@@ -146,6 +163,10 @@ config menuorder
 	list order 'syncdial'      # 多线多拨
 	list order 'mwan3'         # MultiWAN 管理器
 	list order 'turboacc'      # Turbo ACC 网络加速
+
+config menurename
+ 	option path 'admin/network/mwan3'
+ 	option title '多WAN管理器'
 
 # ---- renames (uncomment and edit as needed) ----
 
