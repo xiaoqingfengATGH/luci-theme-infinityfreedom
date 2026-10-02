@@ -151,13 +151,18 @@ config menumove
 config menuorder
 	option path 'admin/nas'
 	list order 'cifs-mount'   # 挂载 SMB 网络共享
-	list order 'ksmbd'         # 网络共享
+	list order 'samba4'        # 网络共享 (Samba4)
+	list order 'ksmbd'         # 网络共享 (Ksmbd)
 #	list order 'hd_idle'      # 硬盘休眠
 	list order 'vsftpd'       # FTP 服务器
 
 config menurename
  	option path 'admin/nas/cifs-mount'
  	option title '挂载SMB存储到路由'
+
+config menurename
+ 	option path 'admin/nas/samba4'
+ 	option title '共享路由存储到内网'
 
 config menumove
  	option path 'admin/services/ksmbd'
