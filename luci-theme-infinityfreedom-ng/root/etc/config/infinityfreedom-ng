@@ -134,11 +134,16 @@ config menuorder
 	option path 'admin/control'
 	list order 'wol'           # 网络唤醒
 	list order 'timewol'         # 定时唤醒
+	list order 'watchcat'        # Watchcat 看门狗
 	list order 'webrestriction'  # 访问限制
 	list order 'weburl'          # 网址过滤
 
 config menumove
  	option path 'admin/services/wol'
+ 	option target 'admin/control'
+
+config menumove
+ 	option path 'admin/services/watchcat'
  	option target 'admin/control'
 
 # ---- 网络存储 (admin/nas) ----

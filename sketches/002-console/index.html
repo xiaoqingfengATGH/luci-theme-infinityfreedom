@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HomeLede 首页 UE 方案 B — 监控台</title>
+<style>
+:root{
+  --bg:#242b32; --panel:#2f3841; --panel2:#37414b; --line:#3d4a56;
+  --fg:#e6edf3; --fg2:#93a1ae; --fg3:#6d7b88;
+  --primary:#348cd4; --success:#78c350; --warn:#ff9800; --danger:#f7531f; --info:#45bbe0;
+  --mono:'Consolas','Courier New',monospace;
+  --sans:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:13px;line-height:1.45;-webkit-font-smoothing:antialiased}
+
+/* 顶部命令条 */
+.cmd{display:flex;align-items:center;gap:14px;padding:10px 18px;background:#1f262c;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.cmd .h{font-size:.95rem;font-weight:600}
+.cmd .sub{color:var(--fg3);font-size:.74rem}
+.cmd .sp{margin-left:auto;display:flex;gap:12px;align-items:center;color:var(--fg3);font-size:.75rem}
+.led{display:inline-flex;align-items:center;gap:6px}
+.led b{color:var(--fg);font-weight:500}
+.b{width:8px;height:8px;border-radius:50%;display:inline-block}
+.b.g{background:var(--success);box-shadow:0 0 6px var(--success)}
+.b.r{background:var(--danger)}
+.b.w{background:var(--warn)}
+.b.m{background:var(--fg3)}
+
+.shell{display:grid;grid-template-columns:210px 1fr;gap:1px;background:var(--line);min-height:calc(100vh - 42px)}
+.rail{background:#28303a;padding:14px 12px;display:flex;flex-direction:column;gap:16px}
+.rail h4{font-size:.68rem;letter-spacing:1.1px;text-transform:uppercase;color:var(--fg3);margin-bottom:8px;font-weight:600}
+
+/* 环形表盘 */
+.gauges{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gauge{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:9px 6px;text-align:center}
+.ring{position:relative;width:62px;height:62px;margin:0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring path{fill:none;stroke-width:7;stroke-linecap:round}
+.ring .t{stroke:#3d4a56}
+.ring .v{stroke:var(--success);transition:stroke-dashoffset .7s}
+.ring.w .v{stroke:var(--warn)}
+.ring.r .v{stroke:var(--danger)}
+.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:600;font-variant-numeric:tabular-nums}
+.gauge span{display:block;color:var(--fg3);font-size:.7rem;margin-top:5px}
+
+/* 竖排迷你列表 */
+.rlist{display:flex;flex-direction:column;gap:7px}
+.rrow{display:flex;align-items:center;gap:7px;font-size:.78rem}
+.rrow em{font-style:normal;color:var(--fg3);margin-left:auto;font-variant-numeric:tabular-nums}
+.rrow .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.main{padding:16px 18px;display:flex;flex-direction:column;gap:14px;background:var(--bg)}
+
+/* 面板 */
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:7px}
+.pane-h{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid var(--line)}
+.pane-h h3{font-size:.84rem;font-weight:600;letter-spacing:.3px}
+.pane-h .sp{margin-left:auto;color:var(--fg3);font-size:.72rem}
+.pane-b{padding:12px 14px}
+
+/* 流量图 */
+.traffic{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tcol .tl{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.tcol .tl b{font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+.tcol .tl span{color:var(--fg3);font-size:.72rem}
+.sparkwrap{border:1px solid var(--line);border-radius:5px;background:#262e37;overflow:hidden}
+svg.spark{display:block;width:100%;height:104px}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;color:var(--fg3);font-size:.68rem;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:0 8px 7px 0;border-bottom:1px solid var(--line)}
+td{padding:8px 8px 8px 0;border-bottom:1px solid rgba(61,74,86,.6);font-size:.82rem;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.03)}
+.mono{font-family:var(--mono);font-size:.78rem;color:var(--fg2)}
+.ipbox{font-family:var(--mono);font-size:.78rem;background:#3a4550;border-radius:4px;padding:1px 7px;display:inline-block}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;padding:1px 8px;border-radius:10px}
+.p-g{background:rgba(120,195,80,.18);color:#93d96c}
+.p-r{background:rgba(247,83,31,.18);color:#ff8a5e}
+.p-m{background:rgba(109,123,136,.22);color:#a8b3be}
+.p-b{background:rgba(52,140,212,.18);color:#6cb3e8}
+.rbtn{background:transparent;border:1px solid var(--line);color:var(--fg2);border-radius:4px;padding:1px 8px;font-size:.72rem;cursor:pointer}
+.rbtn:hover{border-color:var(--primary);color:var(--primary)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.hint{color:var(--fg3);font-size:.72rem;padding:8px 2px 0}
+.legend{display:flex;gap:12px;color:var(--fg3);font-size:.7rem;padding-top:6px}
+.legend i{display:inline-block;width:9px;height:3px;border-radius:2px;margin-right:4px;vertical-align:middle}
+</style>
+</head>
+<body>
+
+<div class="cmd">
+  <span class="b g"></span>
+  <div>
+    <div class="h">LEDE · 运行正常</div>
+    <div class="sub">HomeLede v2024.08.03 / OpenWrt R26.05.20 / 内核 6.12.104 / x86-64</div>
+  </div>
+  <div class="sp">
+    <span class="led"><span class="b g"></span>WAN <b>192.168.1.115</b></span>
+    <span class="led"><span class="b r"></span>PassWall2 <b>已禁用</b></span>
+    <span class="led"><span class="b r"></span>hometunnel <b>已停止</b></span>
+    <span>运行 <b>4h 46m</b></span>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- 左轨：表盘 + 关键指示灯 -->
+  <aside class="rail">
+    <div>
+      <h4>实时负载</h4>
+      <div class="gauges">
+        <div class="gauge">
+          <div class="ring"><svg width="62" height="62"><path class="t" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/><path class="v" stroke-dasharray="163.4" stroke-dashoffset="155" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/></svg><b>5%</b></div>
+          <span>CPU</span>
+        </div>
+        <div class="gauge">
+          <div class="ring"><svg width="62" height="62"><path class="t" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/><path class="v" stroke-dasharray="163.4" stroke-dashoffset="116" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/></svg><b>29%</b></div>
+          <span>内存</span>
+        </div>
+        <div class="gauge">
+          <div class="ring"><svg width="62" height="62"><path class="t" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/><path class="v" stroke-dasharray="163.4" stroke-dashoffset="145" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/></svg><b>11%</b></div>
+          <span>系统盘</span>
+        </div>
+        <div class="gauge">
+          <div class="ring w"><svg width="62" height="62"><path class="t" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/><path class="v" stroke-dasharray="163.4" stroke-dashoffset="127" d="M31 5a26 26 0 1 1 0 52a26 26 0 1 1 0-52"/></svg><b>22%</b></div>
+          <span>/boot</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h4>指示灯</h4>
+      <div class="rlist">
+        <div class="rrow"><span class="b g"></span><span class="nm">WAN 链路</span><em>已连通</em></div>
+        <div class="rrow"><span class="b g"></span><span class="nm">DNS / DHCP</span><em>运行中</em></div>
+        <div class="rrow"><span class="b g"></span><span class="nm">Docker</span><em>运行中</em></div>
+        <div class="rrow"><span class="b g"></span><span class="nm">nlbwmon</span><em>运行中</em></div>
+        <div class="rrow"><span class="b g"></span><span class="nm">FTP</span><em>运行中</em></div>
+        <div class="rrow"><span class="b g"></span><span class="nm">wsdd2</span><em>运行中</em></div>
+        <div class="rrow"><span class="b r"></span><span class="nm">mwan3 多拨</span><em>已停止</em></div>
+        <div class="rrow"><span class="b r"></span><span class="nm">hometunnel</span><em>已停止</em></div>
+        <div class="rrow"><span class="b m"></span><span class="nm">PassWall2</span><em>已禁用</em></div>
+      </div>
+    </div>
+
+    <div>
+      <h4>连接</h4>
+      <div class="rlist">
+        <div class="rrow"><span class="nm">活动连接</span><em>12 / 65535</em></div>
+        <div class="rrow"><span class="nm">接入设备</span><em>2</em></div>
+        <div class="rrow"><span class="nm">DHCP 租约</span><em>0</em></div>
+        <div class="rrow"><span class="nm">ARP 条目</span><em>11</em></div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 主列 -->
+  <div class="main">
+
+    <!-- 流量 -->
+    <div class="pane">
+      <div class="pane-h"><h3>接口流量</h3><span class="sp">每 5 秒采样 · 最近 5 分钟</span></div>
+      <div class="pane-b">
+        <div class="traffic">
+          <div class="tcol">
+            <div class="tl"><span class="b g"></span><b>3.80 MiB/s</b><span>WAN 下行 · eth1</span></div>
+            <div class="sparkwrap">
+              <svg class="spark" viewBox="0 0 320 104" preserveAspectRatio="none">
+                <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#78c350" stop-opacity=".55"/><stop offset="100%" stop-color="#78c350" stop-opacity="0"/>
+                </linearGradient></defs>
+                <polyline fill="url(#g1)" stroke="none" points="0,104 0,78 20,70 40,82 60,60 80,66 100,44 120,52 140,30 160,46 180,36 200,54 220,40 240,58 260,48 280,62 300,52 320,66 320,104"/>
+                <polyline fill="none" stroke="#78c350" stroke-width="2" points="0,78 20,70 40,82 60,60 80,66 100,44 120,52 140,30 160,46 180,36 200,54 220,40 240,58 260,48 280,62 300,52 320,66"/>
+              </svg>
+            </div>
+            <div class="legend"><span><i style="background:#78c350"></i>实时速率</span><span>峰值 5.62 MiB/s</span><span>累计 ▲355 KiB</span></div>
+          </div>
+          <div class="tcol">
+            <div class="tl"><span class="b b" style="background:#45bbe0"></span><b>5.10 KiB/s</b><span>WAN 上行 · eth1</span></div>
+            <div class="sparkwrap">
+              <svg class="spark" viewBox="0 0 320 104" preserveAspectRatio="none">
+                <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#45bbe0" stop-opacity=".5"/><stop offset="100%" stop-color="#45bbe0" stop-opacity="0"/>
+                </linearGradient></defs>
+                <polyline fill="url(#g2)" stroke="none" points="0,104 0,92 20,88 40,94 60,86 80,90 100,84 120,88 140,80 160,86 180,82 200,88 220,84 240,90 260,86 280,88 300,84 320,90 320,104"/>
+                <polyline fill="none" stroke="#45bbe0" stroke-width="2" points="0,92 20,88 40,94 60,86 80,90 100,84 120,88 140,80 160,86 180,82 200,88 220,84 240,90 260,86 280,88 300,84 320,90"/>
+              </svg>
+            </div>
+            <div class="legend"><span><i style="background:#45bbe0"></i>实时速率</span><span>峰值 12.4 KiB/s</span><span>累计 ▼2.3 MiB</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="split">
+      <!-- 接入设备 -->
+      <div class="pane">
+        <div class="pane-h"><h3>接入设备</h3><span class="sp">LAN 192.168.224.0/24 · 2 台在线</span></div>
+        <div class="pane-b">
+          <table>
+            <thead><tr><th>IP / MAC</th><th>识别</th><th>来源</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><span class="ipbox">192.168.1.115</span><div class="mono" style="margin-top:3px">CC:D8:43:96:E2:F8</div></td>
+                <td>MiWiFi-RC01-srv</td>
+                <td><span class="pill p-b">上游网关</span></td>
+                <td style="text-align:right"><button class="rbtn">详情</button></td>
+              </tr>
+              <tr>
+                <td><span class="ipbox">192.168.224.1</span><div class="mono" style="margin-top:3px">00:50:56:C0:00:01</div></td>
+                <td>VMware 虚拟网卡</td>
+                <td><span class="pill p-b">静态</span></td>
+                <td style="text-align:right"><button class="rbtn">详情</button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="hint">当前 DHCP 未发放任何租约，表中数据来自 ARP / 邻居表与接口地址。设备名可后续由 homestatus 结合 MAC 厂商库补全。</div>
+        </div>
+      </div>
+
+      <!-- 存储 -->
+      <div class="pane">
+        <div class="pane-h"><h3>存储</h3><span class="sp">sda · 2.00 GiB</span></div>
+        <div class="pane-b">
+          <table>
+            <thead><tr><th>挂载点</th><th>类型</th><th style="width:34%">用量</th><th style="text-align:right">剩余</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">/</td><td class="mono">f2fs</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:11%;background:#348cd4"></i></span><span class="mono">11%</span></div></td>
+                <td style="text-align:right" class="mono">1.60 GiB</td></tr>
+              <tr><td class="mono">/overlay</td><td class="mono">f2fs</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:11%;background:#348cd4"></i></span><span class="mono">11%</span></div></td>
+                <td style="text-align:right" class="mono">1.60 GiB</td></tr>
+              <tr><td class="mono">/opt/docker</td><td class="mono">f2fs</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:11%;background:#348cd4"></i></span><span class="mono">11%</span></div></td>
+                <td style="text-align:right" class="mono">1.60 GiB</td></tr>
+              <tr><td class="mono">/mnt/sda1</td><td class="mono">vfat</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:22%;background:#348cd4"></i></span><span class="mono">22%</span></div></td>
+                <td style="text-align:right" class="mono">24.5 MiB</td></tr>
+              <tr><td class="mono">/boot</td><td class="mono">vfat</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:22%;background:#348cd4"></i></span><span class="mono">22%</span></div></td>
+                <td style="text-align:right" class="mono">24.5 MiB</td></tr>
+              <tr style="opacity:.6"><td class="mono">/rom</td><td class="mono">squashfs</td>
+                <td><div style="display:flex;align-items:center;gap:7px"><span style="flex:1;height:6px;background:#3d4a56;border-radius:3px;overflow:hidden"><i style="display:block;height:100%;width:100%;background:#5a6673"></i></span><span class="mono">—</span></div></td>
+                <td style="text-align:right" class="mono">只读</td></tr>
+            </tbody>
+          </table>
+          <div class="hint">loop0 → sda2 承载 /、/overlay、/opt/docker 三个挂载点；另有 1 个未挂载分区 sda128。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 应用 -->
+    <div class="pane">
+      <div class="pane-h"><h3>关键应用</h3><span class="sp">8 项监视 · 单击行内按钮重启</span></div>
+      <div class="pane-b">
+        <table>
+          <thead><tr><th style="width:26%">应用</th><th>状态</th><th>自启</th><th>探针详情</th><th style="text-align:right">操作</th></tr></thead>
+          <tbody>
+            <tr><td>DNS / DHCP (dnsmasq)</td><td><span class="pill p-g">运行中</span></td><td>是</td><td class="mono">pid 3312 · exe</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>nlbwmon 流量统计</td><td><span class="pill p-g">运行中</span></td><td>是</td><td class="mono">pid 4277 · exe</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>Docker</td><td><span class="pill p-g">运行中</span></td><td>是</td><td class="mono">pid 2871 · exe</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>FTP (vsftpd)</td><td><span class="pill p-g">运行中</span></td><td>是</td><td class="mono">pid 4671 · exe</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>局域网发现 (wsdd2)</td><td><span class="pill p-g">运行中</span></td><td>是</td><td class="mono">pid 3526 · exe</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>mwan3 多拨</td><td><span class="pill p-r">已停止</span></td><td>是</td><td class="mono">cmd 'mwan3' 无匹配</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>hometunnel 控制端</td><td><span class="pill p-r">已停止</span></td><td>是</td><td class="mono">cmd 'ctl-loop' 无匹配</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+            <tr><td>PassWall2</td><td><span class="pill p-m">已禁用</span></td><td>是</td><td class="mono">端口 1070 未监听</td><td style="text-align:right"><button class="rbtn">重启</button></td></tr>
+          </tbody>
+        </table>
+        <div class="hint">PassWall2 主开关关闭、hometunnel 仅控制面常驻——两者的“停止”都不代表故障，可用状态色区分。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

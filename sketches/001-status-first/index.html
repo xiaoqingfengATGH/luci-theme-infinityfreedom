@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HomeLede 首页 UE 方案 A — 状态优先</title>
+<style>
+:root{
+  --bg:#2b333b; --card:#36404a; --card2:#3d4854; --line:#424e5a;
+  --fg:#e8eef3; --fg2:#a8b5c1; --fg3:#8b98a5;
+  --primary:#348cd4; --success:#78c350; --warn:#ff9800; --danger:#f7531f; --info:#45bbe0;
+  --mono:'Consolas','Courier New',monospace;
+  --sans:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.5;padding:20px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+
+/* ---------- 顶部健康条 ---------- */
+.hero{
+  background:linear-gradient(100deg,rgba(120,195,80,.16),rgba(54,64,74,.95) 45%);
+  border:1px solid var(--line);border-left:3px solid var(--success);
+  border-radius:8px;padding:16px 20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap
+}
+.hero.degraded{background:linear-gradient(100deg,rgba(255,152,0,.16),rgba(54,64,74,.95) 45%);border-left-color:var(--warn)}
+.hero-badge{display:flex;align-items:center;gap:10px}
+.dot{width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 4px rgba(120,195,80,.18);flex:0 0 auto}
+.dot.g{background:var(--success);box-shadow:0 0 0 4px rgba(120,195,80,.18)}
+.dot.w{background:var(--warn);box-shadow:0 0 0 4px rgba(255,152,0,.18)}
+.dot.r{background:var(--danger);box-shadow:0 0 0 4px rgba(247,83,31,.18)}
+.dot.m{background:var(--fg3);box-shadow:0 0 0 4px rgba(139,152,165,.18)}
+.sm{width:8px;height:8px;box-shadow:none}
+.hero-title{font-size:1.35rem;font-weight:600;letter-spacing:.2px}
+.hero-sub{color:var(--fg2);font-size:.82rem}
+.hero-right{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
+.hero-kv{text-align:right}
+.hero-kv b{display:block;font-size:1.05rem;font-weight:600;font-variant-numeric:tabular-nums}
+.hero-kv span{color:var(--fg3);font-size:.75rem;letter-spacing:.6px}
+
+/* ---------- KPI 条：五张卡统一解剖 = 标题 / 大值 / 副行 / 底部指示 ---------- */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:13px 15px 0;display:flex;flex-direction:column;min-height:116px}
+.kpi-h{display:flex;align-items:center;gap:7px;color:var(--fg2);font-size:.78rem;letter-spacing:.3px}
+.kpi-v{font-size:1.5rem;font-weight:600;margin-top:5px;font-variant-numeric:tabular-nums;line-height:1.2}
+.kpi-v small{font-size:.72rem;color:var(--fg3);font-weight:400;margin-left:3px}
+/* 状态型大值：落在同一字号槽位，不破坏五卡基线节奏 */
+.kpi-v.state{font-size:1.16rem;letter-spacing:.5px;padding-top:4px}
+.kpi-v.state.g{color:#8fd166}
+.kpi-v.state.r{color:#ff7a4d}
+.kpi-v.state.w{color:#ffb74d}
+.kpi-f{color:var(--fg3);font-size:.72rem;margin-top:3px;flex:1}
+/* 比例轨（表达“用了多少”） */
+.kpi-bar{height:4px;background:#4b5865;border-radius:2px;margin-bottom:14px;overflow:hidden}
+.kpi-bar>i{display:block;height:100%;border-radius:2px;min-width:6px;transition:width .6s ease}
+/* 状态脚注（表达“是/否”）。刻意不用轨道，避免被读成 100% 进度条 */
+.kpi-foot{display:flex;align-items:center;gap:7px;margin:auto -15px 0;padding:9px 15px;border-top:1px solid var(--line);color:var(--fg3);font-size:.72rem}
+.kpi-foot .txt{margin-left:auto;font-variant-numeric:tabular-nums}
+.dot.b{background:var(--primary);box-shadow:0 0 0 4px rgba(52,140,212,.18)}
+
+/* ---------- 通用卡片 ---------- */
+.cols{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.02)}
+.card-h h3{font-size:.94rem;font-weight:600;letter-spacing:.2px}
+.card-h .cnt{color:var(--fg2);font-size:.75rem;background:#4b5865;border-radius:9px;padding:1px 8px}
+.card-h .act{margin-left:auto;display:flex;gap:12px;align-items:center}
+.card-b{padding:14px 16px}
+.link{color:var(--fg2);font-size:.76rem;cursor:pointer;text-decoration:none}
+.link:hover{color:#6cb3e8}
+
+/* ---------- 网络接入 ---------- */
+.nettop{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.mini{background:var(--card2);border:1px solid var(--line);border-radius:6px;padding:9px 12px}
+.mini span{display:block;color:var(--fg3);font-size:.72rem;letter-spacing:.3px}
+.mini b{font-size:.95rem;font-weight:600;font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;color:var(--fg3);font-size:.72rem;font-weight:500;letter-spacing:.5px;padding:0 8px 8px 0;border-bottom:1px solid var(--line)}
+td{padding:9px 8px 9px 0;border-bottom:1px solid rgba(66,78,90,.55);font-size:.85rem;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+.dev{display:flex;align-items:center;gap:9px}
+.avatar{width:26px;height:26px;border-radius:6px;background:#4b5865;display:flex;align-items:center;justify-content:center;font-size:.72rem;color:var(--fg2);flex:0 0 auto}
+.dev b{font-weight:500}
+.dev em{font-style:normal;display:block;color:var(--fg3);font-size:.72rem}
+.mono{font-family:var(--mono);font-size:.8rem;color:var(--fg2)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;padding:2px 9px;border-radius:11px;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor;flex:0 0 auto}
+.p-g{background:rgba(120,195,80,.16);color:#8fd166}
+.p-w{background:rgba(255,152,0,.16);color:#ffb74d}
+.p-r{background:rgba(247,83,31,.16);color:#ff7a4d}
+.p-m{background:rgba(139,152,165,.2);color:#adb8c3}
+.p-b{background:rgba(52,140,212,.16);color:#6cb3e8}
+
+/* ---------- 应用 ---------- */
+.apps{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.app{background:var(--card2);border:1px solid var(--line);border-left:3px solid var(--fg3);border-radius:6px;padding:9px 11px;display:flex;align-items:center;gap:9px}
+.app.on{border-left-color:var(--success)}
+.app.off{border-left-color:var(--danger)}
+.app.dis{border-left-color:var(--fg3);opacity:.78}
+.app-info{min-width:0;flex:1}
+.app-info b{display:block;font-weight:500;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app-info em{font-style:normal;color:var(--fg3);font-size:.71rem;font-family:var(--mono)}
+/* 重启是每张卡的主操作，给足对比度与命中面积 */
+.iconbtn{background:#4b5865;border:1px solid #5f6e7c;color:var(--fg);border-radius:5px;width:29px;height:29px;cursor:pointer;font-size:.9rem;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.iconbtn:hover{border-color:var(--primary);color:#6cb3e8;background:#526070}
+.app-note{grid-column:1/-1;color:var(--fg3);font-size:.72rem;padding:2px 0 0 2px}
+
+/* ---------- 磁盘 ---------- */
+.disk{display:flex;flex-direction:column;gap:11px}
+.drow{display:grid;grid-template-columns:132px 1fr 66px 96px;gap:12px;align-items:center}
+.drow .mp{font-family:var(--mono);font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.drow .mp em{font-style:normal;display:block;font-family:var(--sans);font-weight:400;color:var(--fg3);font-size:.7rem}
+.bar{height:8px;background:#4b5865;border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--primary);border-radius:4px;min-width:6px}
+.bar>i.w{background:var(--warn)}
+.bar>i.r{background:var(--danger)}
+/* 只读镜像：斜纹中性轨。不用满格进度条，避免被读成“用满了” */
+.bar.ro{background:repeating-linear-gradient(45deg,#4b5865,#4b5865 4px,#5a6673 4px,#5a6673 8px)}
+.drow .pct{text-align:right;font-variant-numeric:tabular-nums;font-size:.82rem}
+.drow .av{text-align:right;color:var(--fg3);font-size:.78rem;font-variant-numeric:tabular-nums}
+.dfoot{color:var(--fg3);font-size:.72rem;margin-top:3px;padding-top:9px;border-top:1px solid var(--line)}
+
+/* ---------- 折叠详情 ---------- */
+details.card{border-radius:8px}
+details.card>summary{cursor:pointer;list-style:none;padding:12px 16px;display:flex;align-items:center;gap:9px;font-size:.9rem;font-weight:600}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary:after{content:'▾';margin-left:auto;color:var(--fg3);transition:transform .2s}
+details[open].card>summary:after{transform:rotate(180deg)}
+.sysgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.sysgrid div{background:var(--card);padding:9px 16px}
+.sysgrid span{display:block;color:var(--fg3);font-size:.71rem;letter-spacing:.4px}
+.sysgrid b{font-weight:500;font-size:.83rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ① 系统健康横幅：一眼回答“路由正常吗” -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="dot g"></span>
+      <div>
+        <div class="hero-title">系统运行正常</div>
+        <div class="hero-sub">HomeLede v2024.08.03 · OpenWrt R26.05.20 · 内核 6.12.104 · x86/64 · LEDE</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-kv"><b>2</b><span>接入设备</span></div>
+      <div class="hero-kv"><b>5 / 8</b><span>应用运行</span></div>
+      <div class="hero-kv"><b>4h 46m</b><span>运行时间</span></div>
+    </div>
+  </div>
+
+  <!-- ② KPI 条：五张卡同一解剖；比例用轨，状态用贴底色条 -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-h">CPU 使用率</div>
+      <div class="kpi-v">5<small>%</small></div>
+      <div class="kpi-f" style="flex:0">负载 0.03 / 0.03 / 0.00 · 2 核</div>
+      <div class="kpi-foot"><span class="dot g sm"></span>负载正常<span class="txt">2 核</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-h">内存</div>
+      <div class="kpi-v">29<small>%</small></div>
+      <div class="kpi-f" style="flex:0">可用 209.19 MiB / 702.15 MiB</div>
+      <div class="kpi-foot"><span class="dot g sm"></span>占用健康<span class="txt">209 MiB</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-h">WAN 出口</div>
+      <div class="kpi-v state g">已连通</div>
+      <div class="kpi-f" style="flex:0">eth1 · DHCP · 192.168.1.115</div>
+      <div class="kpi-foot"><span class="dot g sm"></span>链路在线<span class="txt">1 GbE 全双工</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-h">接入设备</div>
+      <div class="kpi-v">2<small>台</small></div>
+      <div class="kpi-f" style="flex:0">1 有线 · 1 上游 · 0 无线</div>
+      <div class="kpi-foot"><span class="dot b sm"></span>全部在线<span class="txt">0 离线</span></div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-h">系统盘 /overlay</div>
+      <div class="kpi-v">11<small>%</small></div>
+      <div class="kpi-f" style="flex:0">可用 1.60 GiB / 1.81 GiB</div>
+      <div class="kpi-foot"><span class="dot b sm"></span>空间充足<span class="txt">1.60 GiB</span></div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <!-- ③ 网络接入设备 -->
+    <div class="card">
+      <div class="card-h">
+        <h3>网络接入设备</h3><span class="cnt">2</span>
+        <div class="act"><a class="link">DHCP 租约 →</a><a class="link">刷新</a></div>
+      </div>
+      <div class="card-b">
+        <div class="nettop">
+          <div class="mini"><span>LAN 网段</span><b>192.168.224.0/24</b></div>
+          <div class="mini"><span>活动连接数</span><b>12 / 65535</b></div>
+          <div class="mini"><span>DHCP 池占用</span><b>0 / 150</b></div>
+        </div>
+        <table>
+          <thead><tr><th style="width:34%">设备</th><th>IP 地址</th><th>接入方式</th><th>状态</th><th style="text-align:right">流量</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="dev"><span class="avatar">GW</span><div><b>MiWiFi-RC01-srv</b><em>CC:D8:43:96:E2:F8</em></div></div></td>
+              <td><span class="mono">192.168.1.115</span></td>
+              <td><span class="pill p-b"><i></i>WAN 上游</span></td>
+              <td><span class="pill p-g"><i></i>在线</span></td>
+              <td style="text-align:right"><span class="mono">▲3.8 MiB<br>▼355 KiB</span></td>
+            </tr>
+            <tr>
+              <td><div class="dev"><span class="avatar">VM</span><div><b>VMware 虚拟网卡</b><em>00:50:56:C0:00:01</em></div></div></td>
+              <td><span class="mono">192.168.224.1</span></td>
+              <td><span class="pill p-b"><i></i>静态 ARP</span></td>
+              <td><span class="pill p-g"><i></i>在线</span></td>
+              <td style="text-align:right"><span class="mono">—</span></td>
+            </tr>
+            <tr>
+              <td colspan="5" style="padding-top:11px">
+                <span class="pill p-m"><i></i>暂无 DHCP 租约</span>
+                <span style="color:var(--fg3);font-size:.75rem;margin-left:8px">dnsmasq 未发放地址，表中数据来自 ARP / 邻居表与接口地址。</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ④ WAN 侧卡片 -->
+    <div class="card">
+      <div class="card-h"><h3>WAN 出口</h3><div class="act"><a class="link">详情 →</a></div></div>
+      <div class="card-b" style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="dot g"></span>
+          <div><b style="font-weight:500">链路已连通</b><div style="color:var(--fg3);font-size:.74rem">eth1 · 1000F 全双工 · 已连接 4h 45m</div></div>
+        </div>
+        <table>
+          <tbody>
+            <tr><td style="color:var(--fg3);width:42%">接入方式</td><td>DHCP 客户端</td></tr>
+            <tr><td style="color:var(--fg3)">IPv4 地址</td><td class="mono">192.168.1.115/24</td></tr>
+            <tr><td style="color:var(--fg3)">网关</td><td class="mono">192.168.1.1</td></tr>
+            <tr><td style="color:var(--fg3)">DNS</td><td class="mono">192.168.1.1</td></tr>
+            <tr><td style="color:var(--fg3)">上游主机名</td><td>MiWiFi-RC01-srv</td></tr>
+            <tr><td style="color:var(--fg3)">租约剩余</td><td>7h 14m 13s</td></tr>
+          </tbody>
+        </table>
+        <div style="display:flex;gap:8px">
+          <button class="iconbtn" style="width:auto;padding:0 12px;height:29px;font-size:.78rem">重连</button>
+          <button class="iconbtn" style="width:auto;padding:0 12px;height:29px;font-size:.78rem">复制 IP</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ 关键应用 -->
+  <div class="card">
+    <div class="card-h">
+      <h3>关键应用</h3>
+      <span class="cnt">8 项 · 5 运行 / 2 停止 / 1 禁用</span>
+      <div class="act"><a class="link">监视设置 →</a></div>
+    </div>
+    <div class="card-b">
+      <div class="apps">
+        <div class="app on"><span class="dot g sm"></span>
+          <div class="app-info"><b>DNS / DHCP (dnsmasq)</b><em>pid 3312 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app on"><span class="dot g sm"></span>
+          <div class="app-info"><b>nlbwmon 流量统计</b><em>pid 4277 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app on"><span class="dot g sm"></span>
+          <div class="app-info"><b>Docker</b><em>pid 2871 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app on"><span class="dot g sm"></span>
+          <div class="app-info"><b>FTP (vsftpd)</b><em>pid 4671 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app on"><span class="dot g sm"></span>
+          <div class="app-info"><b>局域网发现 (wsdd2)</b><em>pid 3526 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app off"><span class="dot r sm"></span>
+          <div class="app-info"><b>mwan3 多拨</b><em>未运行 · 开机启动</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app off"><span class="dot r sm"></span>
+          <div class="app-info"><b>hometunnel 控制端</b><em>ctl-loop 未运行</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app dis"><span class="dot m sm"></span>
+          <div class="app-info"><b>PassWall2</b><em>主开关已关闭</em></div>
+          <button class="iconbtn" title="重启">↻</button></div>
+        <div class="app-note">PassWall2 主开关关闭 ≠ 进程异常；hometunnel 数据面按需启动，仅控制面常驻。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑥ 存储 -->
+  <div class="card">
+    <div class="card-h"><h3>存储</h3><span class="cnt">1 块磁盘 · 6 个挂载点 · 1 个数据卷</span>
+      <div class="act"><a class="link">完整视图 →</a></div>
+    </div>
+    <div class="card-b">
+      <div class="disk">
+        <div class="drow">
+          <div class="mp">/<em>loop0 → sda2 f2fs</em></div>
+          <div class="bar"><i style="width:11%"></i></div><div class="pct">11%</div><div class="av">可用 1.60 GiB</div>
+        </div>
+        <div class="drow">
+          <div class="mp">/overlay<em>与 / 同源</em></div>
+          <div class="bar"><i style="width:11%"></i></div><div class="pct">11%</div><div class="av">可用 1.60 GiB</div>
+        </div>
+        <div class="drow">
+          <div class="mp">/opt/docker<em>与 / 同源</em></div>
+          <div class="bar"><i style="width:11%"></i></div><div class="pct">11%</div><div class="av">可用 1.60 GiB</div>
+        </div>
+        <div class="drow">
+          <div class="mp">/mnt/sda1<em>sda1 vfat</em></div>
+          <div class="bar"><i style="width:22%"></i></div><div class="pct">22%</div><div class="av">可用 24.5 MiB</div>
+        </div>
+        <div class="drow">
+          <div class="mp">/boot<em>sda1 vfat</em></div>
+          <div class="bar"><i style="width:22%"></i></div><div class="pct">22%</div><div class="av">可用 24.5 MiB</div>
+        </div>
+        <div class="drow" style="opacity:.72">
+          <div class="mp">/rom<em>sda2 squashfs</em></div>
+          <div class="bar ro"></div><div class="pct"><span class="pill p-m">只读</span></div><div class="av">固件镜像</div>
+        </div>
+      </div>
+      <div class="dfoot">另有 1 个未挂载分区 sda128（239.00 KiB · 无文件系统）。总容量 2.00 GiB（VMware Virtual S）。</div>
+    </div>
+  </div>
+
+  <!-- ⑦ 折叠的系统详情，把原有信息收进抽屉 -->
+  <details class="card">
+    <summary>系统详情<span style="color:var(--fg3);font-weight:400;font-size:.78rem;margin-left:6px">型号 / 固件 / 架构 / 时间</span></summary>
+    <div class="sysgrid">
+      <div><span>主机名</span><b>LEDE</b></div>
+      <div><span>型号</span><b>VMware Virtual Platform</b></div>
+      <div><span>架构</span><b>AMD Ryzen 9 5900X ×1C2T</b></div>
+      <div><span>目标平台</span><b>x86/64</b></div>
+      <div><span>固件版本</span><b>HomeLede v2024.08.03</b></div>
+      <div><span>内核版本</span><b>6.12.104</b></div>
+      <div><span>CPU 跑分</span><b>75950.1</b></div>
+      <div><span>本地时间</span><b>2026-09-26 15:04:43</b></div>
+      <div><span>运行时间</span><b>4h 46m 7s</b></div>
+    </div>
+  </details>
+
+</div>
+</body>
+</html>
