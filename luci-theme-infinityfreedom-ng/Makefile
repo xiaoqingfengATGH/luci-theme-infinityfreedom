@@ -30,6 +30,6 @@ define Package/luci-theme-infinityfreedom-ng/conffiles
 /etc/config/infinityfreedom-ng
 endef
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
