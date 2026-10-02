@@ -341,10 +341,13 @@
 		let title = entityencode(striptags(node?.title ? `${_(node.title)}` : ''), true);
 
 		/* user-defined rename (see menu_custom above), raw text as-is;
+		   Chinese-only: the custom labels are Chinese, so apply them
+		   only when the UI language is Chinese (dispatcher.lang, e.g.
+		   'zh-Hans'); other languages keep the translated node title;
 		   falls back to the menugroup title of new groups */
 		let override = menu_custom.title[path];
 
-		if (override != null && length(override) > 0)
+		if (override != null && length(override) > 0 && match(`${dispatcher.lang ?? ''}`, /^zh/))
 			title = entityencode(striptags(`${override}`), true);
 		else if (fallback != null && length(fallback) > 0)
 			title = entityencode(striptags(`${fallback}`), true);
