@@ -603,19 +603,34 @@ input[type=file]::file-selector-button:hover{
 .cbi-filebrowser>ul>li{
 	display:flex;
 	flex-direction:row;
-	list-style:none
+	align-items:center;
+	list-style:none;
+	padding:.15rem .35rem
 }
 .cbi-filebrowser>ul>li:hover{
 	background:#526170
 }
+/* pack name + mtime together at the left (ls -l style): the stock
+   flex:10/flex:3 split stretches the name box to ~60% of the row,
+   stranding a huge whitespace band between the filename text and the
+   date column. Content-size the name (shrinkable, ellipsized), hug
+   the date to it, and let only the action cluster own the right edge. */
 .cbi-filebrowser>ul>li>div:first-child{
-	flex:10;
+	flex:0 1 auto;
+	min-width:0;
 	overflow:hidden;
 	text-overflow:ellipsis
 }
+.cbi-filebrowser>ul>li>div:first-child+div{
+	flex:0 0 auto;
+	margin-left:.75rem;
+	color:#76838f;
+	font-variant-numeric:tabular-nums
+}
 .cbi-filebrowser>ul>li>div:last-child{
-	flex:3;
-	text-align:right
+	flex:1 0 auto;
+	display:flex;
+	justify-content:flex-end
 }
 .cbi-filebrowser>ul>li>div:last-child>button{
 	padding:.125em .25em;
@@ -642,6 +657,25 @@ input[type=file]::file-selector-button:hover{
 }
 .cbi-filebrowser .upload>div>input{
 	width:100%
+}
+/* ui.js emits bare class="btn" for the per-row Download/Deselect buttons
+   and the upload Browse button - no cbi-button-* semantic class, so the
+   footer's modern-button mapper ignores them and they render as
+   transparent ghost controls next to the colored Delete button.
+   [class*="btn-"] also excludes cbi-button-* carriers (negative/positive/
+   save are mapped to bootstrap variants by the JS pass), so this only
+   ever paints the truly bare ones. Secondary gray per bootstrap.min.css. */
+.cbi-filebrowser button.btn:not([class*="btn-"]),
+.cbi-filebrowser a.btn:not([class*="btn-"]){
+	color:#fff;
+	background-color:#6c757d;
+	border-color:#6c757d
+}
+.cbi-filebrowser button.btn:not([class*="btn-"]):hover,
+.cbi-filebrowser a.btn:not([class*="btn-"]):hover{
+	color:#fff;
+	background-color:#5c636a;
+	border-color:#565e64
 }
 /* hide-xs helper (stock luci ships it in bootstrap/mobile.css): drop the
    mtime column on phone widths */
