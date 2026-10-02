@@ -71,13 +71,14 @@ config menuorder
 	option path 'admin/system'
 	list order 'system'          # 系统
 	list order 'admin'           # 管理权
-	list order 'diskman'         # 磁盘管理
+	list order 'partexp'         # 单盘快速扩容
+	list order 'diskman'         # 高级磁盘管理
 	list order 'mounts'          # 挂载点
 	list order 'hd_idle'         # 硬盘休眠
 	list order 'ttyd'            # 终端
 	list order 'homestatus'      # 定制驾驶舱
 	list order 'package-manager' # 软件包
-	list order 'filetransfer'    # 文件传输
+	list order 'filebrowser'     # 浏览路由文件
 	list order 'startup'         # 启动项
 	list order 'crontab'         # 计划任务
 	list order 'flash'           # 备份与更新
@@ -103,6 +104,18 @@ config menurename
 config menurename
  	option path 'admin/system/mounts'
  	option title '挂载磁盘'
+
+config menurename
+ 	option path 'admin/system/partexp'
+ 	option title '单盘快速扩容'
+
+config menurename
+ 	option path 'admin/system/diskman'
+ 	option title '高级磁盘管理'
+
+config menurename
+ 	option path 'admin/system/filebrowser'
+ 	option title '浏览路由文件'
 
 # ---- 服务 (admin/services) ----
 
