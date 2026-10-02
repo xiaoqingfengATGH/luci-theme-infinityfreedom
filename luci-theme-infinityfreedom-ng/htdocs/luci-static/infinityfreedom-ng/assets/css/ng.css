@@ -684,3 +684,18 @@ input[type=file]::file-selector-button:hover{
 		display:none!important
 	}
 }
+
+/* hand-rolled views (partexp & co): top-level elements sitting directly
+   in #view outside any .cbi-map/.card - cardify so they don't render on
+   the wallpaper. Bootstrap-admin .card recipe: #36404a bg, radius .25rem. */
+#view > .cbi-section-descr,
+.cbi-map > .cbi-section-descr {
+	padding: .75rem 1rem;
+	background: #36404a;
+	border-radius: .25rem;
+}
+#log-section {
+	padding: 1rem;
+	background: #36404a;
+	border-radius: .25rem;
+}

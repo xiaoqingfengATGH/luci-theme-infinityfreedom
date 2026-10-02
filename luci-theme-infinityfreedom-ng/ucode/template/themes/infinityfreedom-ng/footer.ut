@@ -98,8 +98,13 @@
 					let el = jQuery(e);
 					/* already wrapped, or a nested section inside a tab
 					   panel (1.2 keeps those inside the tab content area,
-					   not as separate cards) */
-					if (el.closest('.card').length > 0 || el.hasClass('cbi-section-node'))
+					   not as separate cards). form.js always renders the
+					   node as a CHILD of its .cbi-section; hand-rolled
+					   views (partexp) emit a top-level div carrying BOTH
+					   classes on the same element - that one IS the
+					   section and must be cardified. */
+					if (el.closest('.card').length > 0
+					    || (el.hasClass('cbi-section-node') && !el.hasClass('cbi-section')))
 						return;
 					if (el.closest('.cbi-tabcontainer').length > 0)
 						return;
