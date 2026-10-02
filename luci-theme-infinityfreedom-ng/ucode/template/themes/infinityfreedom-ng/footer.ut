@@ -423,6 +423,12 @@
 				new MutationObserver(function() {
 					styleModernButtons(ov);
 					styleModernFormControls(ov);
+					/* form.js renders tabbed interface properties (常规设置/
+					   物理设置/防火墙设置/...) as ul.cbi-tabmenu INSIDE the
+					   dialog - without the bootstrap pass they render as a
+					   bulleted vertical list (modal is outside #view, so the
+					   load-time styleTabmenus(viewEl) never saw it) */
+					styleTabmenus(ov);
 				}).observe(ov, { childList: true, subtree: true });
 			}
 
