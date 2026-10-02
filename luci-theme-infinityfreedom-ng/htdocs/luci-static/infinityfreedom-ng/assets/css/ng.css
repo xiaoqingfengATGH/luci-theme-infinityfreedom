@@ -557,3 +557,96 @@ input[type=file]::file-selector-button:hover{
 .table > tr > td > .btn{
 	padding:.45rem .9rem
 }
+
+/* ===== CBI.FileUpload browser (luci-app-filebrowser & friends) =====
+   The FileSelect/FileUpload directory listing (ui.js renderListing)
+   relies on luci-theme-bootstrap cascade.css rules this theme never
+   shipped: without them the ul keeps bootstrap-reboot disc bullets and
+   a 2rem indent, and li children (name/mtime/action divs) stack
+   vertically - three lines and 79px per entry. Restore the stock
+   geometry with this theme's dark palette (border #424e5a, hover
+   #526170). Rules mirror cascade.css 2483-2572. */
+.cbi-filebrowser{
+	min-width:210px;
+	max-width:100%;
+	border:1px solid #424e5a;
+	border-radius:3px;
+	display:flex;
+	flex-direction:column
+}
+.cbi-filebrowser.open{
+	opacity:1;
+	height:auto;
+	overflow:visible;
+	transition:opacity .25s ease-in
+}
+.cbi-filebrowser>*{
+	max-width:100%;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	padding:0 0 .25em 0;
+	margin:.25em .25em 0 .25em;
+	white-space:nowrap;
+	border-bottom:1px solid #424e5a
+}
+.cbi-filebrowser .cbi-button-positive{
+	margin-right:.25em
+}
+.cbi-filebrowser>div{
+	border-bottom:none
+}
+.cbi-filebrowser>ul{
+	list-style:none;
+	margin:0;
+	padding:0
+}
+.cbi-filebrowser>ul>li{
+	display:flex;
+	flex-direction:row;
+	list-style:none
+}
+.cbi-filebrowser>ul>li:hover{
+	background:#526170
+}
+.cbi-filebrowser>ul>li>div:first-child{
+	flex:10;
+	overflow:hidden;
+	text-overflow:ellipsis
+}
+.cbi-filebrowser>ul>li>div:last-child{
+	flex:3;
+	text-align:right
+}
+.cbi-filebrowser>ul>li>div:last-child>button{
+	padding:.125em .25em;
+	margin:1px 0 1px .25em
+}
+.cbi-filebrowser .upload{
+	display:flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	margin:0 -.125em .25em -.125em;
+	padding:0 0 .125em 0;
+	border-bottom:1px solid #424e5a
+}
+.cbi-filebrowser .upload>*{
+	margin:.125em;
+	flex:1
+}
+.cbi-filebrowser .upload>.btn{
+	flex-basis:60px
+}
+.cbi-filebrowser .upload>div{
+	flex:10;
+	min-width:150px
+}
+.cbi-filebrowser .upload>div>input{
+	width:100%
+}
+/* hide-xs helper (stock luci ships it in bootstrap/mobile.css): drop the
+   mtime column on phone widths */
+@media(max-width:575.98px){
+	.cbi-filebrowser .hide-xs{
+		display:none!important
+	}
+}
