@@ -734,3 +734,15 @@ input[type=file]::file-selector-button:hover{
 #view div[style*="grid-template-columns"] span {
 	color: #94a0ad !important;
 }
+/* overview.js stat icons are <img src=...svg> - three of the four ship
+   with no fill (renders pure black, invisible on the dark card). CSS
+   cannot reach inside an img-referenced SVG, but invert(1) flips the
+   whole raster black -> white. containers.svg is excluded: it carries
+   its own blue (#1d63ed) which reads fine on dark and would turn
+   orange under inversion. Scoped per filename for exactly that reason. */
+#view div[style*="grid-template-columns"] img[src*="dockerman/images.svg"],
+#view div[style*="grid-template-columns"] img[src*="dockerman/networks.svg"],
+#view div[style*="grid-template-columns"] img[src*="dockerman/volumes.svg"] {
+	filter: invert(1);
+	opacity: .9;
+}
