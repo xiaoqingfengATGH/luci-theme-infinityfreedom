@@ -167,7 +167,11 @@ table.table > tr > th > .form-control{padding:.45rem .9rem}
    class in some views (dockerman/container.js); date inputs default to a
    wider UA box, keep them inline and dark */
 #view input.cbi-input[type="date"],
-#view input.cbi-input[type="time"] {
+#view input.cbi-input[type="time"],
+/* bare datetime-local with no class at all (dockerman/events.js): UA
+   defaults to a white box; also flip the native calendar picker popup
+   dark via color-scheme */
+#view input[type="datetime-local"] {
 	display: inline-block;
 	width: auto;
 	min-width: 210px;
@@ -178,6 +182,7 @@ table.table > tr > th > .form-control{padding:.45rem .9rem}
 	background-color: #3b4651;
 	border: 1px solid #424e5a;
 	border-radius: .2rem;
+	color-scheme: dark;
 }
 
 /* select.cbi-input-select arrives from the server WITHOUT bootstrap's
@@ -698,4 +703,34 @@ input[type=file]::file-selector-button:hover{
 	padding: 1rem;
 	background: #36404a;
 	border-radius: .25rem;
+}
+
+/* ===== dockerman (luci-app-dockerman) =====
+   Its hand-rolled views inline hard-coded LIGHT colors (overview.js
+   statusContainer: border:#ddd, color:#333/#666, transparent bg over the
+   wallpaper; strong #0066cc/#28a745 links on light assumptions). Inline
+   styles only lose to !important, so re-assert the card recipe per
+   element. Scope: #view [style*="grid-template-columns"] IS the stats
+   grid - the only dockerman page element using that inline property. */
+#view div[style*="grid-template-columns"] {
+	background: #36404a;
+	border-radius: .25rem;
+	padding: .75rem;
+	margin-bottom: 1rem;
+}
+#view div[style*="grid-template-columns"] a {
+	text-decoration: none;
+}
+#view div[style*="grid-template-columns"] a > div {
+	background: rgba(54, 64, 74, .9) !important;
+	border: 1px solid #424e5a !important;
+}
+#view div[style*="grid-template-columns"] a > div:hover {
+	border-color: #526170 !important;
+}
+#view div[style*="grid-template-columns"] a > div > div > div:first-child {
+	color: #d6dde5 !important;
+}
+#view div[style*="grid-template-columns"] span {
+	color: #94a0ad !important;
 }
