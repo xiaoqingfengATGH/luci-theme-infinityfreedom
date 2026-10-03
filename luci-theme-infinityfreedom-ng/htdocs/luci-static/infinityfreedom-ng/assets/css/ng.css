@@ -746,3 +746,280 @@ input[type=file]::file-selector-button:hover{
 	filter: invert(1);
 	opacity: .9;
 }
+
+/* ===== pushbot (luci-app-pushbot) =====
+   PushBot ships a fully hand-rolled UI (pushbot_status.ut inline <style>,
+   218 selectors, slate light palette: #fff cards, #f8fafc fields, #475569
+   labels). Its own dark-mode detector reads the FIRST 'background: #' in any
+   <style> on the page - which is its own card background #ffffff - so it
+   always classifies itself as LIGHT and never adds .pushbot-dk; the white
+   cards render directly on our dark wallpaper. Even when forced on, its
+   slate-dark palette (#1e293b family) is not our palette. Same approach as
+   the dockerman section above: re-assert our card recipe over the inline
+   light colors, scoped to pushbot classnames. Layout, radii, gradients on
+   semantic accents and all animations stay the app's own. */
+.pushbot-body .pushbot-mode-card {
+	background: #36404a;
+	border-color: #424e5a;
+	box-shadow: none;
+}
+.pushbot-body .pushbot-inline-field {
+	background: rgba(54, 64, 74, .9);
+	border-color: #424e5a;
+	box-shadow: none;
+}
+.pushbot-body .pushbot-inline-title,
+.pushbot-body .pushbot-card-subtitle,
+.pushbot-body .pushbot-inline-description,
+.pushbot-body .pushbot-log-switch {
+	color: #94a0ad;
+}
+.pushbot-body .pushbot-card-title {
+	color: #d6dde5;
+}
+.pushbot-body .pushbot-card-subtitle a {
+	color: #7ab2e8;
+}
+/* version + status badges sit ON the card: swap light slate gradient for
+   our card-inner surface so they read as chips on the dark card */
+.pushbot-body .pushbot-version-badge {
+	background: rgba(54, 64, 74, .9);
+	border-color: #424e5a;
+	color: #94a0ad;
+}
+.pushbot-body .pushbot-version-badge:hover {
+	background: #424e5a;
+}
+.pushbot-body #pushbot_status_badge.is-stopped,
+.pushbot-body .pushbot-status-badge.is-stopped {
+	background: rgba(239, 68, 68, .12);
+	color: #f1a9a9;
+	border-color: rgba(239, 68, 68, .35);
+}
+.pushbot-body #pushbot_status_badge.is-running,
+.pushbot-body .pushbot-status-badge.is-running {
+	background: rgba(16, 185, 129, .12);
+	color: #9fe8cf;
+	border-color: rgba(16, 185, 129, .35);
+}
+/* inputs: theme select/input recipe (#3b4651 bg, #94a0ad text) */
+.pushbot-body .pushbot-inline-body input:not([type="checkbox"]):not([type="radio"]),
+.pushbot-body .pushbot-inline-body textarea,
+.pushbot-body .pushbot-inline-body select,
+.pushbot-body .pushbot-alias-input,
+.pushbot-body .pushbot-mac-input,
+.pushbot-body .pushbot-dnd-input {
+	background-color: #3b4651;
+	border-color: #424e5a;
+	color: #d6dde5;
+	border-radius: 3px;
+}
+.pushbot-body .pushbot-inline-body input::placeholder,
+.pushbot-body .pushbot-mac-input::placeholder,
+.pushbot-body .pushbot-dnd-input::placeholder {
+	color: #76838f;
+}
+/* tabs: our dark tab-bar recipe (like the theme's cbi tabs) */
+.pushbot-body .pushbot-tab-bar {
+	background: #2b343d;
+	border-color: #424e5a;
+}
+.pushbot-body .pushbot-tab {
+	color: #94a0ad;
+}
+.pushbot-body .pushbot-tab.is-active {
+	background: rgb(66, 78, 90);
+	color: #d6dde5;
+	box-shadow: none;
+	border-radius: 11px;
+}
+.pushbot-body .pushbot-tab:hover:not(.is-active) {
+	color: #d6dde5;
+	background: rgba(66, 78, 90, .5);
+	box-shadow: none;
+}
+.pushbot-body .pushbot-tab-indicator {
+	background: rgba(122, 178, 232, .12);
+}
+/* custom dropdown (.pushbot-sel-*): themed menu */
+.pushbot-body .pushbot-sel-btn {
+	background: #3b4651;
+	border-color: #424e5a;
+	color: #d6dde5;
+}
+.pushbot-body .pushbot-sel-list {
+	background: #36404a;
+	border-color: #424e5a;
+}
+.pushbot-body .pushbot-sel-item {
+	color: #d6dde5;
+}
+.pushbot-body .pushbot-sel-item:hover {
+	background: #424e5a;
+}
+.pushbot-body .pushbot-sel-item.is-on {
+	background: rgb(66, 78, 90);
+}
+/* choice chips + toggle pills: chip surface = inner card */
+.pushbot-body .pushbot-choice-button {
+	background: rgba(54, 64, 74, .9);
+	border-color: #424e5a;
+	color: #d6dde5;
+	box-shadow: none;
+}
+.pushbot-body .pushbot-choice-button:hover {
+	border-color: #526170;
+}
+.pushbot-body .pushbot-choice-button.is-on {
+	background: rgba(52, 140, 212, .18);
+	border-color: rgb(52, 140, 212);
+	color: #7ab2e8;
+	box-shadow: none;
+	transform: none;
+}
+.pushbot-body .pushbot-toggle-button.is-off {
+	background: rgba(239, 68, 68, .12);
+	color: #f1a9a9;
+	border-color: rgba(239, 68, 68, .35);
+	box-shadow: none;
+}
+/* alias tags (green on light) - inner-card chips */
+.pushbot-body .pushbot-alias-tag {
+	background: rgba(16, 185, 129, .15);
+	border-color: rgba(16, 185, 129, .4);
+	color: #9fe8cf;
+}
+/* send-test pill: keep its blue gradient but our primary blue family */
+.pushbot-body .pushbot-sendtest-btn {
+	background: linear-gradient(135deg, rgb(52, 140, 212), rgb(36, 116, 182));
+	box-shadow: none;
+}
+/* footer action row: secondary buttons = theme neutral */
+.pushbot-body .pushbot-preview-btn {
+	background: #3b4651;
+	border-color: #424e5a;
+	color: #d6dde5;
+	box-shadow: none;
+}
+.pushbot-body .pushbot-preview-btn:hover {
+	background: #46535f;
+	border-color: #526170;
+	color: #e6edf4;
+}
+.pushbot-body .pushbot-save-btn {
+	background: linear-gradient(135deg, rgb(52, 140, 212), rgb(64, 92, 181));
+	box-shadow: none;
+}
+.pushbot-body .pushbot-save-btn:hover {
+	background: linear-gradient(135deg, rgb(64, 154, 226), rgb(78, 108, 198));
+}
+/* OTA button inside the version toast: translucent-on-dark */
+.pushbot-body .pushbot-ota-btn {
+	background: rgba(255, 255, 255, .08);
+	border-color: rgba(255, 255, 255, .25);
+}
+/* log panel + client table: themed surfaces */
+.pushbot-body .pushbot-log-header,
+.pushbot-body .pushbot-log-btn,
+.pushbot-body .pushbot-log-content {
+	background: #2b343d;
+	border-color: #424e5a;
+	color: #94a0ad;
+}
+.pushbot-body .pushbot-log-btn {
+	background: #3b4651;
+	color: #d6dde5;
+}
+.pushbot-body .pushbot-log-btn:hover,
+.pushbot-body .pushbot-log-btn.is-on {
+	background: #46535f;
+	color: #e6edf4;
+}
+.pushbot-body .pushbot-log-switch-track {
+	background: #424e5a;
+}
+.pushbot-body .pushbot-log-switch input:checked + .pushbot-log-switch-track {
+	background: rgb(52, 140, 212);
+}
+.pushbot-body .pushbot-log-content pre {
+	color: #c0cbd4;
+}
+.pushbot-body .pushbot-client-table thead th {
+	color: #94a0ad;
+	border-bottom-color: #424e5a;
+	background: #2b343d;
+}
+.pushbot-body .pushbot-client-table tbody td {
+	color: #d6dde5;
+	border-bottom-color: rgba(66, 78, 90, .5);
+}
+.pushbot-body .pushbot-client-table tbody tr:hover td {
+	background: rgba(66, 78, 90, .35);
+}
+/* preview/reset/confirm modals (pb-preview-*): these overlays are appended
+   directly to document.body by the app's JS (NOT inside .pushbot-body), and
+   the app's inline <style> loads after ng.css - equal specificity loses.
+   Prefix with body > (0,1,1 beats 0,1,0) to win the cascade. */
+body > .pb-preview-overlay {
+	background: rgba(0, 0, 0, .5);
+}
+body > .pb-preview-overlay .pb-preview-box {
+	background: #36404a;
+	border: 1px solid #424e5a;
+	color: #d6dde5;
+	box-shadow: 0 25px 60px rgba(0, 0, 0, .5);
+}
+body > .pb-preview-overlay .pb-preview-title {
+	color: #d6dde5;
+	border-bottom-color: #424e5a;
+}
+body > .pb-preview-overlay .pb-preview-empty,
+body > .pb-preview-overlay .pb-pv-arrow,
+body > .pb-preview-overlay .pb-pv-off,
+body > .pb-preview-overlay .pb-pv-null,
+body > .pb-preview-overlay .pb-pv-arrsep {
+	color: #76838f;
+}
+body > .pb-preview-overlay .pb-pv-str {
+	color: #d6dde5;
+}
+body > .pb-preview-overlay .pb-preview-item {
+	border-bottom-color: rgba(66, 78, 90, .5);
+}
+body > .pb-preview-overlay .pb-preview-item-label {
+	color: #d6dde5;
+}
+body > .pb-preview-overlay .pb-preview-item-diff {
+	color: #94a0ad;
+}
+body > .pb-preview-overlay .pb-preview-btns {
+	border-top-color: #424e5a;
+}
+body > .pb-preview-overlay .pb-preview-btn {
+	background: #3b4651;
+	color: #d6dde5;
+}
+body > .pb-preview-overlay .pb-preview-btn-disc {
+	background: #3b4651;
+	color: #d6dde5;
+}
+body > .pb-preview-overlay .pb-preview-btn-disc:hover {
+	background: #46535f;
+	color: #e6edf4;
+}
+/* save toast overlay: also body-level, app tints it white frost */
+body > .pushbot-toast-overlay {
+	background: rgba(0, 0, 0, .5);
+}
+/* JS-built inline-styled confirm dialogs (pbCmConfirm / send-test confirm)
+   hard-code #64748b hint text via cssText - only !important beats inline */
+body > .pb-preview-overlay div[style*="#64748b"] {
+	color: #94a0ad !important;
+}
+/* JS-injected inputs (alias/tags/dnd rows, cron fields) style themselves
+   via cssText 'background: var(--pb-input-bg)' - inline style beats any
+   selector, so retarget the variable itself at the page root. The app
+   defaults it to rgba(255,255,255,.7) white. */
+.pushbot-body {
+	--pb-input-bg: #3b4651;
+}
