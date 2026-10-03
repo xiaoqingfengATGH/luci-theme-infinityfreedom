@@ -17,7 +17,7 @@
 {% if (ctx.path?.[1] == 'status' && ctx.path?.[2] == 'overview'): %}
 	   <!-- status-first overview relayout; only meaningful on the overview page -->
 	   <link rel="stylesheet" type="text/css" href="{{ media }}/assets/css/ngOverview.css" />
-	   <script src="{{ media }}/assets/js/ngOverview.js"></script>
+	   <script src="{{ media }}/assets/js/ngOverview.js?v=2"></script>
 {% endif %}
         <!-- Footer Start -->
         <footer class="footer">

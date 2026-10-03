@@ -294,6 +294,7 @@
 				hsRestart:  d('luci.homestatus', 'restart_app', [ 'payload' ], {}),
 				hsWol:      d('luci.homestatus', 'wol_targets', null, {}),
 				hsWake:     d('luci.homestatus', 'wake', [ 'payload' ], {}),
+				hsNetprobe: d('luci.homestatus', 'netprobe', null, {}),
 				wifiDevs:   d('iwinfo', 'devices', null, {}),
 				wifiAssoc:  d('iwinfo', 'assoclist', [ 'device' ], {})
 			};
@@ -1236,50 +1237,21 @@
 		return { cls: 'g', text: '正常', dot: 'g' };
 	}
 
-	/* Browser-side reachability probe, TWO targets with distinct meaning:
-	 * - www.baidu.com  domestic path (direct egress); on failure a probe of
-	 *   the IP-literal https://223.5.5.5 tells DNS trouble (IP ok, name
-	 *   fails) from a dead exit (both fail).
-	 * - www.google.com overseas path - through the router this exercises
-	 *   the proxy chain (PassWall2), so "国内可达 · 海外不可达" reads as
-	 *   "proxy not working" rather than "offline".
-	 * A no-cors fetch resolves whenever ANY HTTP response arrives (status
-	 * unreadable, but network-level success is what we need) and rejects
-	 * on DNS/TCP/TLS failure. Both targets run in parallel; the KPI flips
-	 * when the round settles. Failure only degrades (one browser is a
-	 * single sample - a local proxy extension must not claim the router
-	 * is down); a down LINE stays the hard red. */
+	/* Router-LOCAL dual-path reachability probe, run by the router itself
+	 * (luci.homestatus netprobe RPC: one curl --parallel on the router,
+	 * system resolver + routing table + proxy chain). The admin browser
+	 * is NOT the probe host - a fetch() here would test the admin PC's
+	 * path, not the router's, and a local proxy extension would skew it.
+	 * The RPC returns, per side:
+	 *   { ok: true,  ms, ip, code }
+	 *   { ok: false, reason, exitcode, stage, ms }
+	 * - reason is already human Chinese ("域名解析失败（DNS）" /
+	 *   "连接超时" / "TLS 握手失败" …) built from the curl exit code and
+	 *   the timing ladder (namelookup/connect/appconnect name the phase);
+	 * - stage: 'dns' | 'connect' | 'tls' | null pinpoints where it died.
+	 * Failure only degrades (single-sample browser cache, RPC hiccups);
+	 * a hard red stays reserved for a down line (ubus evidence). */
 	var probe = { pending: true, cn: null, intl: null };
-
-	function fetchProbe(url, ms) {
-		return new Promise(function(resolve) {
-			var done = false;
-			var ctl = (typeof AbortController == 'function') ? new AbortController() : null;
-			var opt = { mode: 'no-cors', cache: 'no-store' };
-
-			if (ctl)
-				opt.signal = ctl.signal;
-
-			var t = setTimeout(function() {
-				if (!done) {
-					done = true;
-					try { if (ctl) ctl.abort(); } catch (e) {}
-					resolve(false);
-				}
-			}, ms || 4000);
-
-			try {
-				fetch(url, opt).then(function() {
-					if (!done) { done = true; clearTimeout(t); resolve(true); }
-				}, function() {
-					if (!done) { done = true; clearTimeout(t); resolve(false); }
-				});
-			}
-			catch (e) {
-				if (!done) { done = true; clearTimeout(t); resolve(false); }
-			}
-		});
-	}
 
 	var probeBusy = false;
 
@@ -1291,30 +1263,35 @@
 
 		/* repaint from the last gathered data as soon as the round settles
 		 * so the KPI flips within one probe cycle, not the next poll */
-		function settle() {
+		function settle(cn, intl) {
 			probe.pending = false;
 			probeBusy = false;
+
+			if (cn != null)
+				probe.cn = cn;
+			if (intl != null)
+				probe.intl = intl;
 
 			if (state.mounted && state.lastNorm)
 				render(state.lastNorm);
 		}
 
-		var cnP = fetchProbe('https://www.baidu.com', 4500).then(function(ok) {
-			if (ok) {
-				probe.cn = true;
+		loadApi().then(function(api) {
+			return L.resolveDefault(api.hsNetprobe(), null);
+		}).then(function(r) {
+			/* both sides arrive from ONE router-side curl run; keep the
+			 * previous round's values if the RPC itself failed (rpcd
+			 * restarting, homestatus absent) - better a stale-but-true
+			 * verdict than a false red */
+			if (r == null || r.ok != true || r.result == null) {
+				settle(null, null);
 				return;
 			}
 
-			/* domain failed: is it DNS or the exit? IP-literal answers. */
-			return fetchProbe('https://223.5.5.5', 4000).then(function(ipOk) {
-				probe.cn = ipOk ? 'dns' : false;
-			});
+			settle(r.result.cn ?? null, r.result.intl ?? null);
+		}, function() {
+			settle(null, null);
 		});
-		var intlP = fetchProbe('https://www.google.com', 5000).then(function(ok) {
-			probe.intl = !!ok;
-		});
-
-		Promise.all([ cnP, intlP ]).then(settle, settle);
 	}
 
 	/* "互联网" KPI answers the user-level question: can traffic actually
@@ -1381,6 +1358,20 @@
 		var footRight = d.sideRouter ? (d.lanNet || null) : null;
 		var v, cls, footTxt, footCls;
 
+		/* helper: one-sided failure detail from the router-local probe.
+		 * probe.cn/.intl hold { ok, reason, exitcode, stage, ms, ip }
+		 * (or null before the first settled round). */
+		function sideDetail(side, label) {
+			var p = probe[side];
+
+			if (p == null || p.ok)
+				return null;
+
+			/* "海外不可达（连接超时：Connection timed out after 4002
+			 * milliseconds）" - the reason is router-side truth, show it */
+			return label + '不可达（' + (p.reason || '未知原因') + '）';
+		}
+
 		if (probe.pending) {
 			/* first round not settled: line semantics + 探测中 marker */
 			v = up ? '已接通' : '不通';
@@ -1388,39 +1379,49 @@
 			footTxt = (up ? '出口链路正常' : '所有出口均不可用') + ' · 探测中';
 			footCls = up ? 'g' : 'r';
 		}
-		else if (probe.cn === true && probe.intl !== false) {
+		else if (probe.cn && probe.cn.ok && probe.intl && probe.intl.ok) {
 			/* both ok (intl null cannot happen after settle, defensive) */
 			v = '已接通';
 			cls = 'g';
 			footTxt = '国内 · 海外均可达';
 			footCls = 'g';
 		}
-		else if (probe.cn === true && probe.intl === false) {
+		else if (probe.cn && probe.cn.ok) {
 			/* domestic works, overseas dead: proxy chain suspect */
 			v = '部分接通';
 			cls = 'w';
-			footTxt = '仅国内可达 · 海外不可达（代理未生效？）';
+			footTxt = sideDetail('intl', '海外') || '仅国内可达 · 海外不可达（代理未生效？）';
 			footCls = 'w';
 		}
-		else if (probe.intl === true) {
+		else if (probe.intl && probe.intl.ok) {
 			/* overseas ok but domestic direct broken: odd but real */
 			v = '部分接通';
 			cls = 'w';
-			footTxt = (probe.cn === 'dns') ? '仅海外可达 · 国内 DNS 异常' : '仅海外可达 · 国内直连异常';
+			footTxt = sideDetail('cn', '国内') || '仅海外可达 · 国内直连异常';
 			footCls = 'w';
 		}
 		else {
-			/* everything failed */
-			if (probe.cn === 'dns') {
+			/* everything failed: name the phase from the router probe */
+			var cnStage = (probe.cn && !probe.cn.ok && probe.cn.stage) ? probe.cn : null;
+			var intlStage = (probe.intl && !probe.intl.ok && probe.intl.stage) ? probe.intl : null;
+
+			if (cnStage && cnStage.stage == 'dns') {
 				v = 'DNS 异常';
 				cls = 'w';
-				footTxt = '线路就绪 · 域名解析失败';
+				footTxt = '线路就绪 · 域名解析失败（' + (cnStage.reason || 'DNS') + '）';
 				footCls = 'w';
 			}
 			else if (up) {
 				v = '未接通';
 				cls = 'w';
 				footTxt = '线路就绪 · 探测均未通过';
+
+				/* name the more specific phase if the router probe has one */
+				if (cnStage || intlStage) {
+					var s = cnStage || intlStage;
+					footTxt = '线路就绪 · ' + (s.reason || '探测未通过');
+				}
+
 				footCls = 'w';
 			}
 			else {
