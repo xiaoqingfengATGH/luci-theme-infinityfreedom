@@ -456,7 +456,15 @@
 			let descr = jQuery("div.cbi-map-descr");
 			if (descr.length > 0) {
 				let d = jQuery(descr[0]);
-				jQuery("#homelede_page_desc").html(d.html()).attr("title", "点击放大页面描述。");
+				jQuery("#homelede_page_desc").html(d.html()).attr("title", "点击放大页面描述。")
+					.off('click.ngPageDesc').on('click.ngPageDesc', function() {
+						/* Use the toast lifecycle so data-bs-dismiss also hides it.
+						   jQuery.fadeIn() leaves display:block behind after close. */
+						bootstrap.Toast.getOrCreateInstance(
+							document.getElementById('homelede_page_desc_popup'),
+							{ autohide: false }
+						).show();
+					});
 				jQuery("#homelede_page_desc_popup > div.toast-body").html(d.html());
 				d.css("display", "none");
 			}
