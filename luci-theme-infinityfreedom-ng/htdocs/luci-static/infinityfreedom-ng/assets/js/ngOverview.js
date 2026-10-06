@@ -835,11 +835,15 @@
 		var apps = (raw.hs && Array.isArray(raw.hs.apps)) ? raw.hs.apps : [];
 		apps = apps.filter(function(x) { return x != null && x.error == null; });
 
-		var running = 0, stopped = 0, disabled = 0;
+		var running = 0, stopped = 0, disabled = 0, stoppedCritical = 0;
 
 		for (var ap = 0; ap < apps.length; ap++) {
 			if (apps[ap].state == 'running') running++;
-			else if (apps[ap].state == 'stopped') stopped++;
+			else if (apps[ap].state == 'stopped') {
+				stopped++;
+				if (apps[ap].critical !== false)
+					stoppedCritical++;
+			}
 			else if (apps[ap].state == 'disabled') disabled++;
 		}
 
@@ -939,7 +943,7 @@
 			wol: (raw.wol && Array.isArray(raw.wol.targets)) ? raw.wol.targets : [],
 			wolErr: (raw.wol && raw.wol.read_error) ? raw.wol.read_error : null,
 			wolOk: !!(raw.wol && raw.wol.ok === true && raw.wol.etherwake !== false),
-			counts: { running: running, stopped: stopped, disabled: disabled, total: apps.length },
+			counts: { running: running, stopped: stopped, disabled: disabled, total: apps.length, stoppedCritical: stoppedCritical },
 			diskRows: diskRows(raw.hs),
 			overlay: ov,
 			speed: speed,
@@ -1035,11 +1039,12 @@
 			}
 
 		/* A stopped service matters; a disabled one is a deliberate choice.
+		 * Only apps marked critical affect the top-level health banner.
 		 * Skipped when the user hid the app block: the banner would
 		 * otherwise flag services the page no longer lists, leaving the
 		 * reason unexplainable. */
-		if (d.showApps && d.counts.stopped > 0) {
-			reasons.push(d.counts.stopped + ' 个关键服务未运行');
+		if (d.showApps && d.counts.stoppedCritical > 0) {
+			reasons.push(d.counts.stoppedCritical + ' 个关键服务未运行');
 			bump('degraded');
 		}
 
