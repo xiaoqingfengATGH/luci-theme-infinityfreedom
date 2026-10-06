@@ -52,9 +52,9 @@
 											<label for="password" class="form-label">{{ _('Password') }}</label>
 											<div class="input-group input-group-merge">
 												<input type="password" id="password" class="form-control" placeholder="Enter your password" name="luci_password">
-												<div class="input-group-text" data-password="false">
-													<span class="password-eye"></span>
-												</div>
+												<button type="button" id="login-password-toggle" class="input-group-text" aria-controls="password" aria-label="{{ _('Password') }}" aria-pressed="false">
+													<span class="password-eye" aria-hidden="true"></span>
+												</button>
 											</div>
 										</div>
 

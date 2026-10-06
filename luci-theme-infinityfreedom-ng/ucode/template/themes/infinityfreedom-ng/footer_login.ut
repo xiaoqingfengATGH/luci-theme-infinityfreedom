@@ -15,6 +15,30 @@
 	</div> <!-- END wrapper -->
 
 	<script>
+	(function() {
+		/* app.min.js initializes in the header, before the login form exists.
+		   Bind this control after the form and keep it out of data-password
+		   handling so a later component initialization cannot double-toggle. */
+		var input = document.getElementById('password');
+		var toggle = document.getElementById('login-password-toggle');
+		if (!input || !toggle)
+			return;
+
+		function setVisible(visible) {
+			input.type = visible ? 'text' : 'password';
+			toggle.classList.toggle('show-password', visible);
+			toggle.setAttribute('aria-pressed', String(visible));
+		}
+
+		toggle.addEventListener('click', function() {
+			setVisible(input.type === 'password');
+		});
+		input.form.addEventListener('reset', function() {
+			setVisible(false);
+		});
+	})();
+	</script>
+	<script>
 	jQuery(function()
 	{
 		if(jQuery("body").hasClass("authentication-bg")){
