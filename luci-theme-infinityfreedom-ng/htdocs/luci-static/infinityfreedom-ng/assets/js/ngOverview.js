@@ -502,16 +502,30 @@
 	function overlayRow(hs, mounts) {
 		var rows = diskRows(hs);
 
-		for (var i = 0; i < rows.length; i++)
-			if (rows[i].target == '/overlay' && rows[i].use_pct != null)
-				return rows[i];
+		/* The writable overlay can surface under several targets depending
+		 * on the build: the classic '/overlay' (NAND/NOR squashfs), the
+		 * x86 loop-device form '/rom/overlay' (f2fs loop over a partition),
+		 * or as the overlayfs root mounted at '/'. Prefer whichever row
+		 * carries real numbers, in that order. */
+		var targets = [ '/overlay', '/rom/overlay' ];
+
+		for (var t = 0; t < targets.length; t++)
+			for (var i = 0; i < rows.length; i++)
+				if (rows[i].target == targets[t] && rows[i].use_pct != null)
+					return rows[i];
+
+		/* squashfs+overlay root: no separate overlay mount row, but the
+		 * overlayfs '/' entry has the same numbers (df '/' == df upperdir) */
+		for (var r = 0; r < rows.length; r++)
+			if (rows[r].target == '/' && rows[r].fstype == 'overlay' && rows[r].use_pct != null)
+				return rows[r];
 
 		/* fall back to the standard mount list if homestatus is unavailable */
 		var list = Array.isArray(mounts) ? mounts
 			: ((mounts && Array.isArray(mounts.result)) ? mounts.result : []);
 
 		for (var j = 0; j < list.length; j++) {
-			if (list[j].mount != '/overlay')
+			if (list[j].mount != '/overlay' && list[j].mount != '/rom/overlay')
 				continue;
 
 			var size = list[j].size, free = list[j].free;

@@ -55,7 +55,9 @@
 
 /* ------------------------------------------------------------------ hero ---- */
 .ngov-hero {
-	background: linear-gradient(100deg, rgba(120, 195, 80, .14), var(--ngov-card) 45%);
+	background-image: linear-gradient(100deg, rgba(120, 195, 80, .14), rgba(0, 0, 0, 0) 45%);
+	background-color: var(--ngov-card);
+	background-color: color-mix(in srgb, var(--ngov-card) 78%, transparent);
 	border: 1px solid var(--ngov-line);
 	border-left: 3px solid var(--ngov-ok);
 	border-radius: 8px;
@@ -67,12 +69,16 @@
 }
 
 .ngov-hero.degraded {
-	background: linear-gradient(100deg, rgba(255, 152, 0, .14), var(--ngov-card) 45%);
+	background-image: linear-gradient(100deg, rgba(255, 152, 0, .14), rgba(0, 0, 0, 0) 45%);
+	background-color: var(--ngov-card);
+	background-color: color-mix(in srgb, var(--ngov-card) 78%, transparent);
 	border-left-color: var(--ngov-warn);
 }
 
 .ngov-hero.critical {
-	background: linear-gradient(100deg, rgba(247, 83, 31, .14), var(--ngov-card) 45%);
+	background-image: linear-gradient(100deg, rgba(247, 83, 31, .14), rgba(0, 0, 0, 0) 45%);
+	background-color: var(--ngov-card);
+	background-color: color-mix(in srgb, var(--ngov-card) 78%, transparent);
 	border-left-color: var(--ngov-crit);
 }
 
