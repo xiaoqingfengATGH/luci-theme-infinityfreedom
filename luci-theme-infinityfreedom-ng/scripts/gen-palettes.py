@@ -530,6 +530,7 @@ def format_state_fixups(tokens):
     BODY = tokens['text-body']
     C2 = tokens['bg-card2']
     ACC = tokens['accent']
+    LB = tokens['line-bright']
     fix = []
 
     def rgba(tok, alpha):
@@ -631,13 +632,16 @@ def format_state_fixups(tokens):
         fix.append(f'body[data-if-palette] .text-bg-{st}{{color:{ON}}}')
 
     # ---- neutral actions: raised gray, not violet ----
+    # visible outline: the fill sits only 1.2:1 above the card, so the
+    # border carries the button affordance (rest: lifted line; hover:
+    # accent-soft flip, mirroring the base theme's border feedback)
     nsel = (
         f'body[data-if-palette] .btn-secondary,'
         f'body[data-if-palette] .cbi-button-neutral,'
         f'body[data-if-palette] .btn-purple,'
         f'body[data-if-palette] .table > tr > td > .btn-secondary,'
         f'body[data-if-palette] .table > tr > td > .btn-purple')
-    fix.append(f'{nsel}{{color:{BR};background-color:{C2};border-color:{C2}}}')
+    fix.append(f'{nsel}{{color:{BR};background-color:{C2};border-color:{LB}}}')
     nhover = (
         f'body[data-if-palette] .btn-secondary:hover,'
         f'body[data-if-palette] .btn-secondary:focus,'
@@ -648,8 +652,13 @@ def format_state_fixups(tokens):
         f'body[data-if-palette] .cbi-button-neutral:focus,'
         f'body[data-if-palette] .btn-purple:hover,'
         f'body[data-if-palette] .btn-purple:focus')
-    fix.append(f'{nhover}{{background-color:{C2}}}')
+    fix.append(f'{nhover}{{background-color:{C2};border-color:{LB}}}')
     fix.append(f'{nhover}{{background-color:color-mix(in srgb,{C2} 85%,{BR})}}')
+    fix.append(f"{nhover}{{border-color:{tokens['accent-soft']}}}")
+    nactive = (
+        f'body[data-if-palette] .btn-secondary:active,'
+        f'body[data-if-palette] .btn-purple:active')
+    fix.append(f'{nactive}{{border-color:{tokens["accent"]}}}')
     fix.append(
         f'body[data-if-palette] .btn-secondary:focus,'
         f'body[data-if-palette] .btn-check:focus+.btn-secondary,'
@@ -666,10 +675,10 @@ def format_state_fixups(tokens):
     # class-scoped fixup; restyle it as the raised-gray neutral)
     fix.append(
         f'body[data-if-palette] #view button.ng-password-toggle{{'
-        f'color:{tokens["text-dim"]};background:{C2};border-color:{tokens["line"]}}}')
+        f'color:{tokens["text-dim"]};background:{C2};border-color:{LB}}}')
     fix.append(
         f'body[data-if-palette] #view button.ng-password-toggle:hover{{'
-        f'color:{BR};background:{C2}}}')
+        f'color:{BR};background:{C2};border-color:{tokens["accent-soft"]}}}')
     fix.append(
         f'body[data-if-palette] #view button.ng-password-toggle:active{{'
         f'color:{BR};background:{C2}}}')

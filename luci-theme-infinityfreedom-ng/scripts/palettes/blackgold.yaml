@@ -29,6 +29,7 @@ bg-hover: "#26262d"          # hover/active surface between card and card2
 # ---- lines & borders ----
 line: "#737176"              # from the color card
 line-muted: "#55545c"        # subtle dividers
+line-bright: "#858389"       # lifted line: neutral button borders (>= 3:1 on bg-card2)
 
 # ---- text ----
 text-body: "#d9d5dd"

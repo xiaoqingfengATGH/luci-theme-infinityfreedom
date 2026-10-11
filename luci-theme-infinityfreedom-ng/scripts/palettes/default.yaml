@@ -20,6 +20,7 @@ bg-hover: "#3b4651"          # hover/active surface between card and card2
 # ---- lines & borders ----
 line: "#5d7186"              # primary border color
 line-muted: "#76838f"        # subtle dividers
+line-bright: "#8ea3b5"       # lifted line: neutral button borders
 
 # ---- text ----
 text-body: "#94a0ad"         # default body text
