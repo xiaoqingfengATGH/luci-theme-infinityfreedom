@@ -388,10 +388,22 @@ def generate_for_file(base_name, tokens):
         mapped_rgba = map_rgba(mapped_hex, tokens)
         if mapped_rgba != body:
             selectors = [s.strip() for s in sel.split(',') if s.strip()]
-            prefixed = ', '.join(
-                f'body[data-if-palette] {s}' for s in selectors)
+            # `body[data-if-palette] <sel>` must never produce a `body ... body`
+            # descendant chain (a <body> inside <body> never matches, so e.g.
+            # `body[data-sidebar-color=dark] .left-side-menu` would silently
+            # lose its override). Merge the anchor INTO a leading body
+            # selector instead.
+            prefixed = ', '.join(prefix_selector(s) for s in selectors)
             out.append(f'{prefixed}{{{mapped_rgba}}}')
     return out
+
+def prefix_selector(sel):
+    """Prefix a selector with the palette anchor, merging into a leading
+    `body[...]` part so the result still matches the single <body> element."""
+    m = re.match(r'^(body((?:\[[^\]]+\])*)((?:\.[\w-]+)*))(.*)$', sel)
+    if m:
+        return f'body[data-if-palette]{m.group(2)}{m.group(3)}{m.group(4)}'
+    return f'body[data-if-palette] {sel}'
 
 def gen_palette(name, tokens, all_base_rules):
     """Build the full override stylesheet for one palette."""

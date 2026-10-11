@@ -45,10 +45,11 @@
 			link.type = 'text/css';
 			document.head.appendChild(link);
 		}
-		/* derive /assets/css/palette-<name>.min.css from any theme asset url */
+		/* derive /assets/css/palette-<name>.min.css?v=1 from any theme asset url;
+		 * the ?v= mirrors the server-emitted <link> so both share one cache entry */
 		var base = baseUrl || (document.querySelector('link[id="app-dark-stylesheet"]')?.href || '');
 		var dir = base.replace(/[^/]*$/, '');
-		link.href = dir + 'palette-' + palette + '.min.css';
+		link.href = dir + 'palette-' + palette + '.min.css?v=2';
 	}
 
 	function applyPalette(palette) {
