@@ -14,6 +14,17 @@
 	const boardinfo = ubus.call('system', 'board');
 	const hostname = striptags(boardinfo?.hostname ?? '?');
 
+	/* ---- palette (color scheme) selection --------------------------
+	   Mirrors header.ut: read once per request from
+	   /etc/config/infinityfreedom-ng (config theme 'palette'). */
+	const ng_palettes = {
+		default:   { label: '默认' },
+		blackgold: { label: '黑金' },
+	};
+	let ng_palette = uci.get('infinityfreedom-ng', 'palette', 'name') ?? 'default';
+	if (!(ng_palette in ng_palettes))
+		ng_palette = 'default';
+
 	// send as HTML5
 	http.prepare_content('text/html; charset=UTF-8');
 -%}
@@ -39,7 +50,7 @@
 		<meta name="full-screen" content="yes">
 		<meta name="x5-page-mode" content="app">
 		<meta name="browsermode" content="application">
-		<meta name="theme-color" content="#0099CC">
+		<meta name="theme-color" content="{% if (ng_palette != 'default'): %}{{ ng_palettes[ng_palette].meta ?? '#121315' }}{% else %}#0099CC{% endif %}">
 		<meta name="msapplication-tap-highlight" content="no">
 		<meta name="msapplication-TileColor" content="#0099CC">
 
@@ -52,6 +63,10 @@
 
 		<link href="{{ media }}/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
 		<link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+{% if (ng_palette != 'default'): %}
+		<!-- palette override sheet, mirrors header.ut -->
+		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
+{% endif %}
 
 		<!-- icons -->
 		<link href="{{ media }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
@@ -71,7 +86,8 @@
 		<script src="{{ media }}/assets/js/vue.global.prod.js"></script>
 	</head>
 
-<body class="authentication-bg lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"
+<body class="authentication-bg lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"{% if (ng_palette != 'default'): %}
+    data-if-palette="{{ ng_palette }}"{% endif %}
     data-layout='{"mode": "dark", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "dark", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
 	<!-- App js-->
 	<script src="{{ media }}/assets/js/app.min.js"></script>
