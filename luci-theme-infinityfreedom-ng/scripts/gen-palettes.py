@@ -516,6 +516,27 @@ def format_fixups(name, tokens):
     fix.append(
         f'body[data-if-palette]{{background-image:'
         f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
+    # page-title texts sit directly on the photo; bright highlights
+    # behind the right-hand breadcrumb can crush light text to ~1:1.
+    # Give each title group a frosted scrim chip and recolor the
+    # breadcrumb into the palette accent family.
+    bgR, bgG, bgB = hex2rgb(tokens['bg-deep'])
+    sbR, sbG, sbB = hex2rgb(tokens['accent-soft'])
+    fix.append(
+        f'body[data-if-palette] .page-title-box>div{{'
+        f'background:rgba({bgR},{bgG},{bgB},.78);'
+        f'border:1px solid rgba({sbR},{sbG},{sbB},.16);'
+        f'border-radius:.5rem;padding:.3rem .75rem}}')
+    fix.append(
+        f'body[data-if-palette] .breadcrumb{{background:transparent;margin:0}}')
+    fix.append(
+        f'body[data-if-palette] .breadcrumb-item a{{color:{S}}}')
+    fix.append(
+        f'body[data-if-palette] .breadcrumb-item+.breadcrumb-item::before'
+        f'{{color:{tokens["text-dim"]}}}')
+    fix.append(
+        f'body[data-if-palette] .breadcrumb-item.active{{'
+        f'color:{tokens["text-body"]}}}')
     # meta theme-color for mobile chrome is set in the template via JS
     return fix
 
