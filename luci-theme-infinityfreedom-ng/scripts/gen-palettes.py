@@ -1,0 +1,533 @@
+#!/usr/bin/env python3
+"""
+Palette generator for luci-theme-infinityfreedom-ng.
+
+Reads token files from scripts/palettes/*.yaml and emits, for every
+non-default palette, a self-contained override stylesheet:
+
+    htdocs/luci-static/infinityfreedom-ng/assets/css/palette-<name>.min.css
+
+The override sheet has three sections:
+
+  1. VARIABLE OVERRIDES
+     A `body[data-if-palette="<name>"]{...}` rule that redefines every
+     --bs-* variable (and derived rgb triplets) the theme's bootstrap-dark
+     defines in :root. ngOverview.css (and any future var() consumer)
+     follows automatically.
+
+  2. HARDCODED-COLOR OVERRIDES
+     The baseline CSS (bootstrap-dark.min.css, app-dark.min.css, ng.css,
+     ngOverview.css) hardcodes ~600 colors outside of variables. For every
+     rule in those files whose body contains a mapped color, an override
+     rule is emitted with the SAME selector(s), prefixed with
+     `body[data-if-palette="<name>"] ` to win the cascade, and the mapped
+     colors replaced by the palette tokens.
+
+  3. PALETTE-SPECIFIC FIXUPS
+     Hand-written rules that cannot be expressed as a color swap (e.g.
+     the login rainbow line becomes a gold gradient, the loading cover,
+     shadows re-tinted). Kept in FIXUPS below as a python dict.
+
+Color -> role mapping lives in COLOR_MAP (per file). It was built from a
+full census of the four files (every hex + rgba occurrence); colors not in
+the map are intentionally left alone (pure white/black, images, the rare
+unclassifiable tint - see gen report).
+
+Usage:  python3 scripts/gen-palettes.py          # regenerate all
+        python3 scripts/gen-palettes.py --check  # verify committed files
+                                               # are up to date (CI guard)
+"""
+
+import re
+import sys
+import glob
+import os
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+PKG = os.path.dirname(HERE)
+CSS_DIR = os.path.join(PKG, 'htdocs', 'luci-static', 'infinityfreedom-ng', 'assets', 'css')
+
+# baseline sheets that hardcoded colors are read from, in cascade order
+BASE_FILES = [
+    'bootstrap-dark.min.css',
+    'app-dark.min.css',
+    'ng.css',
+    'ngOverview.css',
+]
+
+# ---------------------------------------------------------------- helpers --
+
+def parse_tokens(path):
+    """Minimal YAML subset parser: `key: "value"` / `key: value` lines.
+    Inline comments (# after the value) are stripped; values containing #
+    (hex colors) must be quoted."""
+    tokens = {}
+    for line in open(path, encoding='utf-8'):
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        m = re.match(r'^([a-z0-9-]+)\s*:\s*("[^"]*")\s*(?:#.*)?$', line) \
+            or re.match(r'^([a-z0-9-]+)\s*:\s*([^#]*?)\s*(?:#.*)?$', line)
+        if not m:
+            continue
+        key, val = m.group(1), m.group(2).strip()
+        if val.startswith('"') and val.endswith('"'):
+            val = val[1:-1]
+        tokens[key] = val
+    return tokens
+
+def hex2rgb(h):
+    h = h.lstrip('#')
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+# ------------------------------------------------------------ color maps --
+# old color -> token name. Per file where the same hex is used with
+# different meanings, but overwhelmingly one global map suffices; the
+# file key just documents where each entry came from.
+#
+# Built from the census (see commit message): every occurrence was
+# inspected. Colors present but intentionally NOT mapped:
+#   #ffffff / #000000 / #eee  - pure anchors
+#   image urls, rgba() of white/black - keep as-is
+#   #0099cc, #0066cc, #1d63ed, #28a745, #e91c62, #ec3372, #732f46,
+#   #6658dd, #0ebeff..#47cf73 (rainbow line - handled in FIXUPS),
+#   #07223e, #444444, #565e64, #5c636a, #2c333b, #333333, #666666,
+#   #dddddd, #f8fafc  - legacy single-site leftovers, near-invisible or
+#   neutral enough to not clash (kept neutral under any palette)
+
+COLOR_MAP = {
+    # accents (the old blue family)
+    '348cd4': 'accent',
+    '2c77b4': 'accent',
+    '246294': 'accent-strong',
+    '21649b': 'accent-strong',
+    '1f547f': 'accent-strong',
+    '194366': 'accent-strong',
+    '2571b0': 'accent-strong',
+    '27699f': 'accent-strong',
+    '2a70aa': 'accent-strong',
+    '2f7ebf': 'accent-strong',
+    '287abc': 'accent-strong',
+    '4b6eaf': 'accent',
+    '4a81d4': 'accent-glow',
+    '529dd6': 'accent-glow',
+    '5c9fd6': 'accent-glow',
+    '82add6': 'accent-glow',
+    '6cb3e8': 'accent-glow',
+    '94b7dc': 'accent-soft',
+    'a8c4e2': 'accent-soft',
+    'acbfd2': 'accent-soft',
+    'c0d5e0': 'accent-soft',
+    'c2ddf2': 'accent-soft',
+    'c6d7e5': 'accent-soft',
+    'd3e1f1': 'accent-soft',
+    'd5e3f1': 'accent-soft',
+    'd6e8f6': 'accent-soft',
+    'd8e5f2': 'accent-soft',
+    'dde8f4': 'accent-soft',
+    'cadbe9': 'accent-soft',
+    'c1d1dd': 'accent-soft',
+    'd1e0e8': 'accent-soft',
+    '7ab2e8': 'accent-glow',
+    # success
+    '78c350': 'success',
+    '609c40': 'success-deep',
+    '66a644': 'success',
+    '5a923c': 'success-deep',
+    '549433': 'success-deep',
+    '5fa739': 'success-deep',
+    '3a5e26': 'success-deep',
+    '487530': 'success-deep',
+    '8fd166': 'success',
+    '9fe8cf': 'success',
+    'e4f3dc': 'success',
+    'd3e1cd': 'success',
+    'd7edcb': 'success',
+    'd7e6d1': 'success',
+    'e7eaef': 'success',
+    # warning (old amber)
+    'ff9800': 'warning',
+    'cc7a00': 'warning-deep',
+    'd98100': 'warning-deep',
+    'b36a00': 'warning-deep',
+    'bf7200': 'warning-deep',
+    '7a4900': 'warning-deep',
+    'ffeacc': 'warning',
+    'ebd9bf': 'warning',
+    'f0ddc2': 'warning',
+    'e6d3b8': 'warning',
+    'ffe0b3': 'warning',
+    'fcf8e3': 'warning',
+    'ff8c00': 'warning',
+    'ffb74d': 'warning',
+    # danger (old red-orange)
+    'f7531f': 'danger',
+    'c64219': 'danger-deep',
+    'd2471a': 'danger-deep',
+    'c33407': 'danger-deep',
+    'db3b08': 'danger-deep',
+    '943213': 'danger-deep',
+    '76280f': 'danger-deep',
+    'b93e17': 'danger-deep',
+    'ad3a16': 'danger-deep',
+    'fdddd2': 'danger',
+    'e9cdc4': 'danger',
+    'eed1c8': 'danger',
+    'e4c7bd': 'danger',
+    'fdcbbc': 'danger',
+    'ff7a4d': 'danger',
+    # info (old cyan)
+    '45bbe0': 'info',
+    '3796b3': 'info-deep',
+    '297086': 'info-deep',
+    '3b9fbe': 'info',
+    '348ca8': 'info-deep',
+    '215a6b': 'info-deep',
+    '1f95ba': 'info',
+    '23a6cf': 'info',
+    'daf1f9': 'info',
+    'cee4ec': 'info',
+    'c7ebf6': 'info',
+    'c4d9e0': 'info',
+    # pink / purple / indigo (used by charts, tags)
+    'f06292': 'pink',
+    'c04e75': 'pink',
+    'cc537c': 'pink',
+    'b44a6e': 'pink',
+    'a84566': 'pink',
+    '903b58': 'pink',
+    'fce0e9': 'pink',
+    'fbd0de': 'pink',
+    'e3cad2': 'pink',
+    '8892d6': 'purple',
+    '6d75ab': 'purple',
+    '747cb6': 'purple',
+    '636a72': 'purple',
+    '5f6696': 'purple',
+    '666ea1': 'purple',
+    '525880': 'purple',
+    '626fc9': 'purple',
+    '4f5ec2': 'purple',
+    'dbdef3': 'purple',
+    'e7e9f7': 'purple',
+    'd0d2de': 'purple',
+    'c6cace': 'purple',
+    '675aa9': 'purple',
+    '424666': 'purple',
+    '683ba9': 'purple',
+    '9aa3e0': 'purple',
+    '6b74a8': 'purple',
+    '747cb6': 'purple',
+    # backgrounds
+    '303841': 'bg-deep',
+    '2e373f': 'bg-deep',
+    '282f36': 'bg-deep',
+    '28303a': 'bg-deep',
+    '22282e': 'bg-deep',
+    '20262b': 'bg-deep',
+    '2b323a': 'bg-deep',
+    '2c353d': 'bg-deep',
+    '2b343d': 'bg-deep',
+    '2c333b': 'bg-deep',
+    '323a46': 'bg-base',
+    '333d46': 'bg-base',
+    '323b44': 'bg-base',
+    '353e48': 'bg-base',
+    '333d47': 'bg-base',
+    '3a444f': 'bg-base',
+    '38424d': 'bg-base',
+    '3b4550': 'bg-base',
+    '3e4954': 'bg-base',
+    '36404a': 'bg-card',
+    '37424c': 'bg-card',
+    '383f49': 'bg-card',
+    '3c4752': 'bg-card',
+    '3c4853': 'bg-card',
+    '3b4651': 'bg-card',
+    '414d59': 'bg-card2',
+    '3d4a56': 'bg-card2',
+    '46535f': 'bg-card2',
+    '4a5866': 'bg-card2',
+    '4d5b69': 'bg-card2',
+    '526170': 'bg-card2',
+    '424e5a': 'bg-card2',
+    '4a515f': 'bg-card2',
+    '4c5761': 'bg-card2',
+    '505b66': 'bg-card2',
+    '515b65': 'bg-card2',
+    '55606b': 'bg-card2',
+    '586877': 'bg-card2',
+    '5a6673': 'bg-card2',
+    '5f6e7c': 'bg-card2',
+    '5c636a': 'bg-card2',
+    '607184': 'bg-card2',
+    '3d4854': 'bg-card2',
+    '4b5865': 'bg-card2',
+    '526070': 'bg-card2',
+    '5d7186': 'line',
+    '76838f': 'line-muted',
+    '7c858f': 'line-muted',
+    '85909c': 'line-muted',
+    '87949b': 'line-muted',
+    '9097a7': 'line-muted',
+    '919eab': 'line-muted',
+    '929495': 'line-muted',
+    'a2adb7': 'line-muted',
+    '757677': 'line-muted',
+    # text
+    '94a0ad': 'text-body',
+    '8c98a5': 'text-dim',
+    '98a6ad': 'text-body',
+    'a8b5c1': 'text-body',
+    'adb8c3': 'text-body',
+    'a9b7c6': 'text-body',
+    '8b98a5': 'text-dim',
+    '9097a7': 'text-dim',
+    'cedeef': 'text-bright',
+    'd6dde5': 'text-bright',
+    'c0cbd4': 'text-bright',
+    'c6d7e5': 'text-bright',
+    'd1e0e8': 'text-bright',
+    'd6e8f6': 'text-bright',
+    'e2ecf1': 'text-bright',
+    'e6edf4': 'text-bright',
+    'f3f7f9': 'text-bright',
+    'f7f7f7': 'text-bright',
+    'f5f8fc': 'text-bright',
+    'f4f8fa': 'text-bright',
+    'f5f9fa': 'text-bright',
+    'f7f9fb': 'text-bright',
+    'fbfdfd': 'text-bright',
+    'fdfdfe': 'text-bright',
+    'd3e1f1': 'text-bright',
+    'd5e3f1': 'text-bright',
+    'c2ddf2': 'text-bright',
+    'd8e5f2': 'text-bright',
+    'dde8f4': 'text-bright',
+    'dee2e6': 'text-bright',
+    'e2e6ea': 'text-bright',
+    'e4e4e5': 'text-bright',
+    'c3c6c8': 'text-bright',
+    'afb1b3': 'text-dim',
+    'c8cddc': 'text-bright',
+    'acbfd2': 'text-dim',
+    '3c3f41': 'bg-deep',
+    '6e768e': 'line-muted',
+}
+
+# rgba(52,140,212,x) and friends: accent-tinted translucent overlays.
+# map rgb triplet -> token (alpha preserved as-is)
+RGBA_MAP = {
+    '52,140,212': 'accent',
+    '82,157,218': 'accent-glow',
+    '82,168,236': 'accent-glow',
+    '120,195,80': 'success',
+    '140,204,106': 'success',
+    '247,83,31': 'danger',
+    '248,109,65': 'danger',
+    '255,152,0': 'warning',
+    '255,167,38': 'warning',
+    '69,187,224': 'info',
+    '97,197,229': 'info',
+    '66,78,90': 'bg-card2',
+    '54,64,74': 'bg-card',
+    '44,50,57': 'bg-card',
+    '50,50,50': 'bg-deep',
+    '34,40,46': 'bg-deep',
+    '56,65,74': 'bg-card',
+    '66,72,80': 'bg-card2',
+    '240,98,146': 'pink',
+    '242,122,162': 'pink',
+    '154,162,220': 'purple',
+    '136,146,214': 'purple',
+    '183,198,214': 'text-bright',
+    '215,220,223': 'text-bright',
+    '206,222,239': 'text-bright',
+    '64,149,216': 'accent-glow',
+    '94,105,115': 'line-muted',
+    '139,152,165': 'text-dim',
+}
+
+def map_rgba(css_text, tokens):
+    """Replace mapped rgb triplets inside rgba()/rgb(), keep alpha."""
+    def repl(m):
+        inner = m.group(1)
+        mm = re.match(r'^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(,\s*[\d.]+\s*)?$', inner)
+        if not mm:
+            return m.group(0)
+        triplet = f'{mm.group(1)},{mm.group(2)},{mm.group(3)}'
+        if triplet not in RGBA_MAP:
+            return m.group(0)
+        r, g, b = hex2rgb(tokens[RGBA_MAP[triplet]])
+        alpha = mm.group(4) or ''
+        return f'rgba({r},{g},{b}{alpha})'
+    return re.sub(r'rgba?\(([^()]*)\)', repl, css_text)
+
+def map_hex(css_text, tokens):
+    """Replace mapped hex colors with palette tokens."""
+    def repl(m):
+        h = m.group(0).lower()
+        key = h.lstrip('#')
+        if key in COLOR_MAP:
+            return tokens[COLOR_MAP[key]]
+        return m.group(0)
+    return re.sub(r'#[0-9a-fA-F]{6}\b|#[0-9a-fA-F]{3}\b', repl, css_text)
+
+# ------------------------------------------------------------- generator --
+
+def generate_for_file(base_name, tokens):
+    """Yield override rules for one baseline css file."""
+    css = open(os.path.join(CSS_DIR, base_name), encoding='utf-8').read()
+    out = []
+    for m in re.finditer(r'([^{}]+)\{([^{}]*)\}', css):
+        sel, body = m.group(1), m.group(2)
+        # skip keyframes/charset/font-face blocks (selectors contain '{' logic)
+        if '@' in sel or sel.strip().startswith('['):
+            continue
+        mapped_hex = map_hex(body, tokens)
+        mapped_rgba = map_rgba(mapped_hex, tokens)
+        if mapped_rgba != body:
+            selectors = [s.strip() for s in sel.split(',') if s.strip()]
+            prefixed = ', '.join(
+                f'body[data-if-palette] {s}' for s in selectors)
+            out.append(f'{prefixed}{{{mapped_rgba}}}')
+    return out
+
+def gen_palette(name, tokens, all_base_rules):
+    """Build the full override stylesheet for one palette."""
+    rules = []
+
+    # --- section 1: variable overrides -------------------------------
+    varlist = []
+    for var, val in VAR_OVERRIDE.items():
+        varlist.append(f'--{var}:{tokens[val]}')
+    for var, val in VAR_RGB_OVERRIDE.items():
+        r, g, b = hex2rgb(tokens[val])
+        varlist.append(f'--{var}:{r},{g},{b}')
+    rules.append(f'body[data-if-palette]{{{";".join(varlist)}}}')
+
+    # --- section 2: hardcoded overrides -------------------------------
+    rules.extend(all_base_rules)
+
+    # --- section 3: fixups --------------------------------------------
+    rules.extend(format_fixups(name, tokens))
+
+    header = (
+        f'/* palette:{name} - AUTO-GENERATED by scripts/gen-palettes.py.\n'
+        f' * Do not edit by hand; edit scripts/palettes/{name}.yaml and rerun.\n'
+        f' * Applied by header.ut via <body data-if-palette="{name}">. */\n'
+    )
+    return header + ''.join(rules)
+
+# --bs-* variables defined by bootstrap-dark.min.css :root, with the token
+# each maps to. rgb triplets are derived automatically.
+VAR_OVERRIDE = {
+    'bs-blue': 'accent',
+    'bs-indigo': 'purple',
+    'bs-purple': 'purple',
+    'bs-pink': 'pink',
+    'bs-red': 'danger',
+    'bs-orange': 'warning',
+    'bs-yellow': 'warning',
+    'bs-green': 'success',
+    'bs-teal': 'info',
+    'bs-cyan': 'info',
+    'bs-gray': 'text-body',
+    'bs-gray-dark': 'text-bright',
+    'bs-gray-100': 'bg-base',
+    'bs-gray-200': 'bg-card',
+    'bs-gray-300': 'bg-card2',
+    'bs-gray-400': 'line',
+    'bs-gray-500': 'line-muted',
+    'bs-gray-600': 'text-body',
+    'bs-gray-700': 'text-bright',
+    'bs-gray-800': 'text-bright',
+    'bs-gray-900': 'text-bright',
+    'bs-primary': 'accent',
+    'bs-secondary': 'text-body',
+    'bs-success': 'success',
+    'bs-info': 'info',
+    'bs-warning': 'warning',
+    'bs-danger': 'danger',
+    'bs-light': 'bg-card2',
+    'bs-dark': 'text-bright',
+    'bs-body-color': 'text-body',
+    'bs-body-bg': 'bg-deep',
+}
+
+VAR_RGB_OVERRIDE = {
+    'bs-primary-rgb': 'accent',
+    'bs-secondary-rgb': 'text-body',
+    'bs-success-rgb': 'success',
+    'bs-info-rgb': 'info',
+    'bs-warning-rgb': 'warning',
+    'bs-danger-rgb': 'danger',
+    'bs-light-rgb': 'bg-card2',
+    'bs-dark-rgb': 'text-bright',
+    'bs-pink-rgb': 'pink',
+    'bs-purple-rgb': 'purple',
+    'bs-body-color-rgb': 'text-body',
+    'bs-body-bg-rgb': 'bg-deep',
+}
+
+def format_fixups(name, tokens):
+    """Palette-aware rules that a pure color swap cannot express."""
+    fix = []
+    A, S = tokens['accent'], tokens['accent-soft']
+    # login page rainbow strip -> gold gradient in this palette family
+    fix.append(
+        f'body[data-if-palette]:not(.logged-out) .Line:after'
+        f'{{background:linear-gradient(70deg,{S},{A},{S})!important}}')
+    # loading cover + spinner tint
+    fix.append(
+        f'body[data-if-palette] .loadingCover{{background:{tokens["loading-cover"]}!important}}')
+    fix.append(
+        f'body[data-if-palette] .loadingCover>div{{color:{S}!important}}')
+    # meta theme-color for mobile chrome is set in the template via JS
+    return fix
+
+def main():
+    check_only = '--check' in sys.argv
+    palette_files = sorted(glob.glob(os.path.join(HERE, 'palettes', '*.yaml')))
+    default_tokens = parse_tokens(os.path.join(HERE, 'palettes', 'default.yaml'))
+
+    # preload baseline rules once (they are palette-independent in form;
+    # the color substitution happens per palette below)
+    generated = {}
+    for pf in palette_files:
+        name = os.path.basename(pf).rsplit('.', 1)[0]
+        if name == 'default':
+            continue
+        tokens = parse_tokens(pf)
+        # every token must be a valid hex or filename
+        for k, v in tokens.items():
+            if k in ('name', 'label', 'bg-image', 'meta-theme-color'):
+                continue
+            if not re.match(r'^#[0-9a-fA-F]{6}$', v):
+                sys.exit(f'{pf}: token {k}={v} is not a 6-digit hex')
+
+        all_rules = []
+        for base in BASE_FILES:
+            all_rules.extend(generate_for_file(base, tokens))
+        generated[name] = gen_palette(name, tokens, all_rules)
+
+    if check_only:
+        ok = True
+        for name, content in generated.items():
+            path = os.path.join(CSS_DIR, f'palette-{name}.min.css')
+            if not os.path.exists(path):
+                print(f'MISSING {path}')
+                ok = False
+            elif open(path, encoding='utf-8').read() != content:
+                print(f'STALE {path}')
+                ok = False
+        sys.exit(0 if ok else 1)
+
+    for name, content in generated.items():
+        path = os.path.join(CSS_DIR, f'palette-{name}.min.css')
+        open(path, 'w', encoding='utf-8', newline='\n').write(content)
+        print(f'wrote {path} ({len(content)} bytes, '
+              f'{content.count("body[data-if-palette]")} override anchors)')
+
+if __name__ == '__main__':
+    main()

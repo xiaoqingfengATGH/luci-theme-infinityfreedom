@@ -30,6 +30,14 @@ define Package/luci-theme-infinityfreedom-ng/conffiles
 /etc/config/infinityfreedom-ng
 endef
 
+define Build/Prepare
+	$(call Build/Prepare/Default)
+	# regenerate palette override sheets from scripts/palettes/*.yaml so the
+	# committed generated files cannot drift from the token definitions
+	$(PYTHON) ./scripts/gen-palettes.py --check || \
+		$(PYTHON) ./scripts/gen-palettes.py
+endef
+
 include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

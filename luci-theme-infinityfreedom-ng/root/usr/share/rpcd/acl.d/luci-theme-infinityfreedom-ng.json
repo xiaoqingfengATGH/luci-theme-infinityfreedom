@@ -1,0 +1,11 @@
+{
+	"luci-theme-infinityfreedom-ng": {
+		"description": "Grant access to switch the theme palette (color scheme)",
+		"read": {
+			"uci": [ "infinityfreedom-ng" ]
+		},
+		"write": {
+			"uci": [ "infinityfreedom-ng" ]
+		}
+	}
+}

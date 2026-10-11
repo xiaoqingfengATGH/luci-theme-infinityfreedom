@@ -1,0 +1,66 @@
+# Homelede InfinityFreedom-NG theme - blackgold palette.
+#
+# "黑金" combination from the user's color card:
+#   #121315 (18/19/21)  near-black   -> page background
+#   #202025 (32/32/37)  deep charcoal-> card / panel surface
+#   #737176 (115/113/118) mid gray-purple -> lines / borders / disabled
+#   #A3814F (163/129/79) bronze gold  -> primary accent
+#   #E6C288 (230/194/136) light sand gold -> bright accent: hover, highlight
+#
+# Derived roles (not on the card) follow the same hue family, tuned for
+# contrast on the near-black base (all text pairs >= 4.5:1 where needed):
+#   body text  #d9d5dd (11.2:1 on card), headings #f0ede8,
+#   muted text #8a8791 (4.6:1 on card - lifts the too-dark #737176),
+#   accent button text uses #121315 (5.1:1 on #A3814F; white is only 3.6:1).
+# Semantic states are re-calibrated as a full set (user decision #2):
+#   warn shifts amber to separate from sand gold; danger/info/green tuned
+#   for the black base.
+
+name: blackgold
+label: "黑金"
+
+# ---- backgrounds (page depth scale) ----
+bg-deep: "#121315"
+bg-base: "#1b1b20"           # section/table head, between deep and card
+bg-card: "#202025"
+bg-card2: "#2c2c33"          # raised surface: table headers, inputs, hover
+bg-hover: "#26262d"          # hover/active surface between card and card2
+
+# ---- lines & borders ----
+line: "#737176"              # from the color card
+line-muted: "#55545c"        # subtle dividers
+
+# ---- text ----
+text-body: "#d9d5dd"
+text-dim: "#a8a5ad"
+text-bright: "#f0ede8"
+text-onaccent: "#121315"     # dark text on gold buttons
+
+# ---- accent ----
+accent: "#A3814F"
+accent-strong: "#8a6c3f"     # pressed state
+accent-soft: "#E6C288"       # from the card: hover, highlight
+accent-glow: "#E6C288"
+
+# ---- semantic states (full recalibration) ----
+success: "#7fb86a"
+success-deep: "#56874a"
+warning: "#ffb84d"
+warning-deep: "#c07d1f"
+danger: "#e05d45"
+danger-deep: "#a63d2c"
+info: "#7fb8d4"
+info-deep: "#4f7f99"
+pink: "#d98ca6"
+purple: "#a99ec9"
+
+# ---- special surfaces ----
+scrollbar: "#3a3a41"
+loading-cover: "#1b1b20"
+progress-track: "#2c2c33"
+badge-danger-bg: "#e05d45"
+
+# gray-scale canyon photo stays (neutral under warm accents too)
+bg-image: "12.jpg"
+
+meta-theme-color: "#121315"

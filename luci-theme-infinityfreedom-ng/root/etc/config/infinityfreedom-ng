@@ -293,3 +293,11 @@ config menurename
 # config menugroup
 # 	option path 'admin/services'
 # 	option icon 'fe-box'
+
+# ---- palette (color scheme) ----
+# Switch the theme color set. Values: default | blackgold
+# Switching from the UI (user dropdown -> 配色) writes this option via ubus;
+# changing it here takes effect on the next page load.
+
+config theme 'palette'
+	option name 'default'
