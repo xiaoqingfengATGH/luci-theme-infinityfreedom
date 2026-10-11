@@ -394,8 +394,24 @@ def generate_for_file(base_name, tokens):
             # lose its override). Merge the anchor INTO a leading body
             # selector instead.
             prefixed = ', '.join(prefix_selector(s) for s in selectors)
-            out.append(f'{prefixed}{{{mapped_rgba}}}')
+            # Only re-emit the declarations the mapping actually changed.
+            # Re-declaring untouched layout props (e.g. bootstrap's
+            # `.dropdown-menu{display:none}`) later at equal specificity
+            # defeats state flips like `.dropdown-menu.show{display:block}`
+            # -- the root cause of "dropdown dead under palette".
+            slim = changed_decls(body, mapped_rgba)
+            if slim:
+                out.append(f'{prefixed}{{{slim}}}')
     return out
+
+def changed_decls(orig, mapped):
+    """Keep only declarations whose value differs after color mapping."""
+    o = [d.strip() for d in orig.split(';')]
+    n = [d.strip() for d in mapped.split(';')]
+    if len(o) != len(n) or not n:
+        return mapped  # unexpected structure; keep the whole body
+    kept = [nd for od, nd in zip(o, n) if od != nd]
+    return ';'.join(kept)
 
 def prefix_selector(sel):
     """Prefix a selector with the palette anchor, merging into a leading
