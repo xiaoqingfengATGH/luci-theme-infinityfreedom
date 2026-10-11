@@ -61,6 +61,6 @@ progress-track: "#2c2c33"
 badge-danger-bg: "#e05d45"
 
 # gray-scale canyon photo stays (neutral under warm accents too)
-bg-image: "12.jpg"
+bg-image: "blackgold.jpg"
 
 meta-theme-color: "#121315"

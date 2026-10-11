@@ -511,6 +511,11 @@ def format_fixups(name, tokens):
         f'body[data-if-palette] .loadingCover{{background:{tokens["loading-cover"]}!important}}')
     fix.append(
         f'body[data-if-palette] .loadingCover>div{{color:{S}!important}}')
+    # page background photo follows the palette (ng.css pins body to
+    # ../images/backgrounds/12.jpg for every theme; override per palette)
+    fix.append(
+        f'body[data-if-palette]{{background-image:'
+        f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
     # meta theme-color for mobile chrome is set in the template via JS
     return fix
 
