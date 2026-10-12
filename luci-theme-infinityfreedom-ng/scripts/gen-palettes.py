@@ -67,7 +67,7 @@ def parse_tokens(path):
         if not line or line.startswith('#'):
             continue
         m = re.match(r'^([a-z0-9-]+)\s*:\s*("[^"]*")\s*(?:#.*)?$', line) \
-            or re.match(r'^([a-z0-9-]+)\s*:\s*([^#]*?)\s*(?:#.*)?$', line)
+            or re.match(r'^([a-z0-9_-]+)\s*:\s*([^#]*?)\s*(?:#.*)?$', line)
         if not m:
             continue
         key, val = m.group(1), m.group(2).strip()
@@ -762,6 +762,120 @@ def format_fixups(name, tokens):
     fix.append(
         f'body[data-if-palette] .breadcrumb-item.active{{'
         f'color:{tokens["text-body"]}}}')
+    # ---- light palettes (is_light: true): the chrome flip -----------------
+    # A light palette flips surfaces to the board's light family; the
+    # workhorse token map handles cards/inputs/tables automatically, but
+    # the chrome needs explicit rules a color swap cannot express:
+    #   (a) sidebar + logo box keep a DEEP navy wall (this family's night
+    #       blood) so light chrome still reads as one theme with its dark
+    #       sibling - the navy is a light-palette constant, not a token;
+    #   (b) app-dark paints sidebar/topbar text via body[data-sidebar-color
+    #       =dark] ... selectors that the census maps to LIGHT text tokens
+    #       (would sit dark-on-navy): re-anchor the wall text to the ice
+    #       family with matching specificity + !important;
+    #   (c) white-text / white-alpha rules that inherit a (now light)
+    #       topbar must be rescued to the navy text family;
+    #   (d) breadcrumbs sit on the photo: anchor hops to the dark family
+    #       (the generic fixup paints the first hop accent-soft, a light
+    #       sky tint, unreadable on the light scrim chip);
+    #   (e) dawn veil: frost the nebula photo toward the ice family so
+    #       the light chrome reads 'morning over the nebula'.
+    # This whole block ships LAST in the fixup list so these rules also
+    # override earlier generic fixups that paint chrome surfaces.
+    if tokens.get('is_light') == 'true':
+        NAVY = '#101d40'      # sidebar/topbar wall (luminousblue bg-card)
+        NAVY2 = '#18294f'     # wall raised surface (hover/active chips)
+        ICE = '#edf1fe'       # wall text family
+        DIM = '#acbec3'       # wall dim text (luminousblue text-body)
+        nR, nG, nB = 0x10, 0x1d, 0x40
+        # (a) the wall: sidebar, logo box, user dropdown
+        fix.append(
+            f'body[data-if-palette] .left-side-menu{{background-color:{NAVY}!important}}')
+        fix.append(
+            f'body[data-if-palette] .logo-box{{background-color:{NAVY}!important}}')
+        fix.append(
+            f'body[data-if-palette] .user-pro-dropdown{{background-color:{NAVY2}!important}}')
+        # (b) sidebar link family, same specificity as app-dark's
+        #     body[data-sidebar-color=dark] chains + !important to win
+        SBL = 'body[data-if-palette] .left-side-menu #sidebar-menu>ul>li>a'
+        fix.append(f'{SBL}{{color:{DIM}!important}}')
+        fix.append(
+            f'{SBL}:active,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu>ul>li>a:focus,'
+            f'{SBL}:hover{{color:{ICE}!important}}')
+        fix.append(
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .menu-title'
+            f'{{color:{DIM}!important}}')
+        fix.append(
+            f'body[data-if-palette] .left-side-menu .nav-second-level li a,'
+            f'body[data-if-palette] .left-side-menu .nav-thrid-level li a'
+            f'{{color:{DIM}!important}}')
+        fix.append(
+            f'body[data-if-palette] .left-side-menu .nav-second-level li a:focus,'
+            f'body[data-if-palette] .left-side-menu .nav-second-level li a:hover,'
+            f'body[data-if-palette] .left-side-menu .nav-thrid-level li a:focus,'
+            f'body[data-if-palette] .left-side-menu .nav-thrid-level li a:hover'
+            f'{{color:{ICE}!important}}')
+        fix.append(
+            f'{SBL}.mm-active,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active>a,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active .active,'
+            f'body[data-if-palette] .left-side-menu .nav-second-level li.active>a,'
+            f'body[data-if-palette] .left-side-menu .nav-thrid-level li.active>a,'
+            f'body[data-if-palette] .left-side-menu .user-box .dropdown>a'
+            f'{{color:{ICE}!important}}')
+        # active chip: raised navy + a royal left edge (the wall's own
+        # lightness step alone reads too weak; the accent edge anchors it)
+        asR, asG, asB = hex2rgb(tokens['accent'])
+        fix.append(
+            f'{SBL}.mm-active,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active>a'
+            f'{{background-color:{NAVY2}!important;'
+            f'box-shadow:inset 3px 0 0 rgb({asR},{asG},{asB})}}')
+        # condensed-mode hover chips (app-dark paints them #323a46 family)
+        fix.append(
+            f'body[data-if-palette] body[data-sidebar-size=condensed] #sidebar-menu>ul>li:hover>a,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu>ul>li:hover>a{{'
+            f'background-color:rgba({nR},{nG},{nB},.9)}}')
+        # (c) topbar (now light ice) text family: app-dark paints its
+        # links and the hamburger with white / white-alpha - unreadable
+        # on ice. Anchor them to the navy text family, hover to royal.
+        fix.append(
+            f'body[data-if-palette] .navbar-custom{{'
+            f'background-color:{tokens["bg-card"]}!important;'
+            f'box-shadow:0 1px 0 rgba({nR},{nG},{nB},.08),'
+            f'0 .75rem 6rem rgba({nR},{nG},{nB},.05)}}')
+        fix.append(
+            f'body[data-if-palette] .navbar-custom .nav-link,'
+            f'body[data-if-palette] .navbar-custom .button-menu-mobile,'
+            f'body[data-if-palette] .navbar-custom .pro-user-name'
+            f'{{color:{tokens["text-body"]}}}')
+        fix.append(
+            f'body[data-if-palette] .navbar-custom .nav-link:focus,'
+            f'body[data-if-palette] .navbar-custom .nav-link:hover,'
+            f'body[data-if-palette] .navbar-custom .button-menu-mobile:hover'
+            f'{{color:{tokens["accent"]}}}')
+        fix.append(
+            f'body[data-if-palette] .navbar-custom .dropdown .nav-link.show{{'
+            f'background-color:rgba({nR},{nG},{nB},.06)}}')
+        # (d) breadcrumb hops on the photo -> dark family
+        fix.append(
+            f'body[data-if-palette] .breadcrumb-item>a{{color:{tokens["accent"]}}}')
+        fix.append(
+            f'body[data-if-palette] .breadcrumb-item+.breadcrumb-item::before'
+            f'{{color:{tokens["text-dim"]}}}')
+        # (e) dawn veil over the nebula photo
+        vR, vG, vB = hex2rgb(tokens['bg-card'])
+        fix.append(
+            f'body[data-if-palette]{{background-image:'
+            f'linear-gradient(rgba({vR},{vG},{vB},.34),rgba({vR},{vG},{vB},.34)),'
+            f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
+        # global link family rides the dark-on-ice rail
+        fix.append(
+            f'body[data-if-palette] a{{color:{tokens["accent"]}}}')
+        fix.append(
+            f'body[data-if-palette] a:hover{{color:{tokens["accent-strong"]}}}')
+
     # meta theme-color for mobile chrome is set in the template via JS
     return fix
 
@@ -780,7 +894,7 @@ def main():
         tokens = parse_tokens(pf)
         # every token must be a valid hex or filename
         for k, v in tokens.items():
-            if k in ('name', 'label', 'bg-image', 'meta-theme-color'):
+            if k in ('name', 'label', 'bg-image', 'meta-theme-color', 'is_light'):
                 continue
             if not re.match(r'^#[0-9a-fA-F]{6}$', v):
                 sys.exit(f'{pf}: token {k}={v} is not a 6-digit hex')

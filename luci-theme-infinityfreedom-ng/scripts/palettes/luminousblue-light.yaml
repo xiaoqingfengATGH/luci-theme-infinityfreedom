@@ -1,0 +1,89 @@
+# "LuminousBlue Light" palette - 光耀蓝·晨曦, the light sibling of
+# luminousblue (same 27/28 Summer color board, same nebula photo, day side).
+#
+# Design: flip the luminousblue depth scale to the board's ICE family
+# (#edf1fe) while the royal blue accent returns to the board's ORIGINAL
+# #1b3f8d (8.69:1 on ice card). All semantic fills go DARK (board deeps)
+# with ice text on them - the generator's RAIL B state system keys off
+# text-onaccent alone, so ice-on-royal (9.80:1) makes every button/badge
+# automatically correct. The sidebar keeps a deep navy "anchor wall"
+# (the nebula's night blood) so the light chrome still reads as one
+# family with its dark sibling - fixed up in format_fixups, not tokens.
+#
+# Board roles (same 8 swatches, day side):
+#   #edf1fe  ice white   - card/base surfaces, on-accent text
+#   #1b3f8d  royal blue  - accent, AS-IS from the board (no lift needed)
+#   #86a1a9  misty       - lines/borders, DARKENED for light surfaces
+#   #5b3644  wine        - danger family (deep variant as fill)
+#   #a3a969  olive       - success family (deep variant as fill)
+#   #ffb865  apricot     - warning family (deep variant as fill)
+#   #23324f / #14264d    - body text / headings (nebula night, on ice)
+#
+# Contrast (computed, WCAG):
+#   text-body #23324f on card #edf1fe  11.35:1 AA
+#   text-bright #14264d on card        13.16:1 AA
+#   accent #1b3f8d on card              8.69:1 AA (link)
+#   text-onaccent #edf1fe on #1b3f8d    9.80:1 AA (buttons)
+#   on accent-soft #a3d0f2: navy #14264d 9.10:1
+#   danger #8d3a56 on card              6.1:1 (fill; ice text on it 6.5:1)
+#   success #5d6b3c on card             5.5:1 (fill; ice text on it 7.2:1)
+#   warning #b36200 on card             4.6:1 (fill; ice text on it 5.9:1)
+#   line #6f8b95 on card                3.21:1 (graphics 3:1)
+#   line-muted #8fa3ac on card          2.2:1 (subtle dividers only)
+#
+# The misty family darkens for light surfaces (dark siblings lift for
+# dark ones - mirror logic): line #86a1a9 -> #6f8b95 / #8fa3ac, text-dim
+# from nebula night #4d6273.
+
+is_light: true
+
+name: luminousblue-light
+label: "光耀蓝·晨曦"
+
+# ---- backgrounds (board ice family, day depth scale) ----
+bg-deep: "#dce4f8"          # page backdrop tint / deepest light layer
+bg-base: "#e2e9f8"          # section/table head, one step under card
+bg-card: "#edf1fe"          # primary surface: cards, sidebar+topbar chrome
+bg-card2: "#e2e9f8"         # raised surface: table headers, inputs, hover
+bg-hover: "#e6ecf9"         # hover/active surface between card and card2
+
+# ---- lines & borders (board misty, darkened for ice) ----
+line: "#617c86"             # 3.93:1 on card / 3.64:1 on card2 - graphics/borders
+line-muted: "#8fa3ac"       # subtle dividers (2.2:1, decor only)
+line-bright: "#53707b"      # neutral button borders (4.3:1 on card2)
+
+# ---- text (nebula night on ice) ----
+text-body: "#23324f"        # 11.35:1 on card
+text-dim: "#4d6273"         # 5.6:1 on card
+text-bright: "#14264d"      # 13.16:1 on card - headings
+text-onaccent: "#edf1fe"    # ice text on royal/deep semantic fills
+
+# ---- accent (board swatch 4: royal, as-is) ----
+accent: "#1b3f8d"           # 8.69:1 on card (links, focus)
+accent-strong: "#16347a"    # pressed state (darker, 10.3:1)
+accent-soft: "#a3d0f2"      # hover highlight, selected chip (navy text)
+accent-glow: "#a3d0f2"      # glow border on cards
+
+# ---- semantic states (DEEP fills + ice text via text-onaccent) ----
+success: "#5d6b3c"          # olive deep; ice on it 7.2:1
+success-deep: "#49542e"
+warning: "#a85a00"          # apricot deep; ice on it 4.51:1
+warning-deep: "#7a4200"
+danger: "#8d3a56"           # wine deep; ice on it 6.5:1
+danger-deep: "#6e2b42"
+info: "#41708c"             # misty deep, blue-shifted; ice on it 6.9:1
+info-deep: "#31566d"
+pink: "#8d5f70"             # wine family, muted
+purple: "#5e5490"           # charts / btn-purple, blue-violet deep
+
+# ---- special surfaces ----
+scrollbar: "#c3d2ee"
+loading-cover: "#dce4f8"
+progress-track: "#d6e0f6"   # one step under card2 for visible tracks
+badge-danger-bg: "#8d3a56"
+
+# page backdrop: same nebula photo, but the light chrome reads "dawn"
+# over it; keep the original image (frost-tinted cards float on the glow)
+bg-image: "luminousblue.jpg"
+
+meta-theme-color: "#dce4f8"
