@@ -521,9 +521,9 @@ def format_state_fixups(tokens):
     text-bright via color-mix, active darkens toward text-onaccent,
     with the plain fill as pre-fallback line.
 
-    Neutral actions (btn-secondary / cbi-button-neutral / btn-purple)
-    become the raised gray surface (bg-card2) with bright text - the
-    violet family never belonged to this palette.
+    Neutral actions (btn-secondary / cbi-button-neutral / btn-pink /
+    btn-purple) become the raised gray surface (bg-card2) with bright
+    text - the violet family never belonged to this palette.
     """
     ON = tokens['text-onaccent']
     BR = tokens['text-bright']
@@ -537,12 +537,20 @@ def format_state_fixups(tokens):
         r, g, b = hex2rgb(tokens[tok])
         return f'rgba({r},{g},{b},{alpha})'
 
+    # pink / purple are chart/tag families, not action states, but
+    # alert-pink / alert-purple / list-group-item-pink / -purple exist
+    # in bootstrap-dark with ALL THREE literals mapped to the same
+    # token - without an entry here those components collapse to
+    # color==background (1:1). RAIL A gives them the soft-wash
+    # treatment: tint + border carry the hue, body text on top.
     states = {
         'success': 'success',
         'warning': 'warning',
         'danger': 'danger',
         'info': 'info',
         'primary': 'accent',
+        'pink': 'pink',
+        'purple': 'purple',
     }
 
     # ---- RAIL A: soft state surfaces ----
@@ -575,10 +583,15 @@ def format_state_fixups(tokens):
         fix.append(
             f'body[data-if-palette] .list-group-item-{st}{{'
             f'color:{BODY};background-color:{soft};border-color:{edge}}}')
+        # hover/focus: the wash lift + text re-anchored to body - the
+        # baseline paints hover as #1f547f text (accent-strong) over the
+        # pastel fill; the census keeps that text mapping, which on the
+        # 22% state wash can read as low as ~2:1 - the wash carries the
+        # state, the text stays body-readable
         fix.append(
             f'body[data-if-palette] .list-group-item-{st}.list-group-item-action:hover,'
             f'body[data-if-palette] .list-group-item-{st}.list-group-item-action:focus'
-            f'{{background-color:{hover}}}')
+            f'{{color:{BODY};background-color:{hover}}}')
 
     # base table zebra/hover lift: a few % of bright over the surface
     # instead of matching the card color exactly (invisible stripes)
@@ -592,35 +605,44 @@ def format_state_fixups(tokens):
     # ---- RAIL B: solid state fills ----
     for st, tok in states.items():
         color = tokens[tok]
-        base_sel = (
-            f'body[data-if-palette] .btn-{st},'
-            f'body[data-if-palette] .btn-check:checked+.btn-{st},'
-            f'body[data-if-palette] .btn-{st}.active,'
-            f'body[data-if-palette] .show>.btn-{st}.dropdown-toggle,'
-            f'body[data-if-palette] .table > tr > td > .btn-{st}')
-        fix.append(f'{base_sel}{{color:{ON};background-color:{color};border-color:{color}}}')
-        # hover: lighten toward text-bright (keeps dark text >= 4.5:1)
-        hsel = f'body[data-if-palette] .btn-{st}:hover'
-        fix.append(f'{hsel}{{background-color:{color}}}')
-        fix.append(f'{hsel}{{background-color:color-mix(in srgb,{color} 86%,{BR})}}')
-        # active/checked: darken slightly toward text-onaccent
-        asel = (
-            f'body[data-if-palette] .btn-{st}:active,'
-            f'body[data-if-palette] .btn-{st}.active,'
-            f'body[data-if-palette] .btn-check:checked+.btn-{st}')
-        fix.append(f'{asel}{{background-color:{color}}}')
-        fix.append(f'{asel}{{background-color:color-mix(in srgb,{color} 94%,{ON})}}')
-        # focus ring in the state color
-        fix.append(
-            f'body[data-if-palette] .btn-{st}:focus,'
-            f'body[data-if-palette] .btn-check:focus+.btn-{st}'
-            f'{{box-shadow:0 0 0 .15rem {rgba(tok,.5)}}}')
-        # disabled: same fill, dimmed
-        fix.append(
-            f'body[data-if-palette] .btn-{st}.disabled,'
-            f'body[data-if-palette] .btn-{st}:disabled'
-            f'{{color:{ON};background-color:{color};border-color:{color};opacity:.55}}')
-        # outline variants flip solid on hover/active: dark text there too
+        # pink / purple are chart/tag families: RAIL A owns their soft
+        # surfaces, and their BUTTON classes are owned by the neutral
+        # rail below (the violet family never belonged to this palette)
+        # - so their solid fills are skipped here; outline/badge rescues
+        # below still apply to every state
+        solid = st not in ('pink', 'purple')
+        if solid:
+            base_sel = (
+                f'body[data-if-palette] .btn-{st},'
+                f'body[data-if-palette] .btn-check:checked+.btn-{st},'
+                f'body[data-if-palette] .btn-{st}.active,'
+                f'body[data-if-palette] .show>.btn-{st}.dropdown-toggle,'
+                f'body[data-if-palette] .table > tr > td > .btn-{st}')
+            fix.append(f'{base_sel}{{color:{ON};background-color:{color};border-color:{color}}}')
+            # hover: lighten toward text-bright (keeps dark text >= 4.5:1)
+            hsel = f'body[data-if-palette] .btn-{st}:hover'
+            fix.append(f'{hsel}{{background-color:{color}}}')
+            fix.append(f'{hsel}{{background-color:color-mix(in srgb,{color} 86%,{BR})}}')
+            # active/checked: darken slightly toward text-onaccent
+            asel = (
+                f'body[data-if-palette] .btn-{st}:active,'
+                f'body[data-if-palette] .btn-{st}.active,'
+                f'body[data-if-palette] .btn-check:checked+.btn-{st}')
+            fix.append(f'{asel}{{background-color:{color}}}')
+            fix.append(f'{asel}{{background-color:color-mix(in srgb,{color} 94%,{ON})}}')
+            # focus ring in the state color
+            fix.append(
+                f'body[data-if-palette] .btn-{st}:focus,'
+                f'body[data-if-palette] .btn-check:focus+.btn-{st}'
+                f'{{box-shadow:0 0 0 .15rem {rgba(tok,.5)}}}')
+            # disabled: same fill, dimmed
+            fix.append(
+                f'body[data-if-palette] .btn-{st}.disabled,'
+                f'body[data-if-palette] .btn-{st}:disabled'
+                f'{{color:{ON};background-color:{color};border-color:{color};opacity:.55}}')
+        # outline variants flip solid on hover/active: dark text there
+        # too - kept for EVERY state (pink/purple included: the census
+        # paints their outline-hover text and fill as the SAME token)
         osel = (
             f'body[data-if-palette] .btn-outline-{st}:hover,'
             f'body[data-if-palette] .btn-outline-{st}.active,'
@@ -635,41 +657,41 @@ def format_state_fixups(tokens):
     # visible outline: the fill sits only 1.2:1 above the card, so the
     # border carries the button affordance (rest: lifted line; hover:
     # accent-soft flip, mirroring the base theme's border feedback)
-    nsel = (
-        f'body[data-if-palette] .btn-secondary,'
-        f'body[data-if-palette] .cbi-button-neutral,'
-        f'body[data-if-palette] .btn-purple,'
-        f'body[data-if-palette] .table > tr > td > .btn-secondary,'
-        f'body[data-if-palette] .table > tr > td > .btn-purple')
+    ncls = ('btn-secondary', 'cbi-button-neutral', 'btn-pink', 'btn-purple')
+
+    def _nsel(pref, suf):
+        return ','.join(
+            f'body[data-if-palette] {pref}.{c}{suf}' for c in ncls)
+
+    nsel = _nsel('', '') + ',' + _nsel('.table > tr > td > ', '')
     fix.append(f'{nsel}{{color:{BR};background-color:{C2};border-color:{LB}}}')
-    nhover = (
-        f'body[data-if-palette] .btn-secondary:hover,'
-        f'body[data-if-palette] .btn-secondary:focus,'
-        f'body[data-if-palette] .btn-secondary:active,'
-        f'body[data-if-palette] .btn-secondary.active,'
-        f'body[data-if-palette] .show>.btn-secondary.dropdown-toggle,'
-        f'body[data-if-palette] .cbi-button-neutral:hover,'
-        f'body[data-if-palette] .cbi-button-neutral:focus,'
-        f'body[data-if-palette] .btn-purple:hover,'
-        f'body[data-if-palette] .btn-purple:focus')
+    nhover = _nsel('', ':hover') + ',' + _nsel('', ':focus')
     fix.append(f'{nhover}{{background-color:{C2};border-color:{LB}}}')
+    # text too: the census maps bootstrap's #36404a hover text to bg-card
+    # (a SURFACE) - dark-on-dark on the raised C2 fill. The neutral
+    # family rides BR text on every state.
+    fix.append(f'{nhover}{{color:{BR}}}')
     fix.append(f'{nhover}{{background-color:color-mix(in srgb,{C2} 85%,{BR})}}')
     fix.append(f"{nhover}{{border-color:{tokens['accent-soft']}}}")
+    # active/checked/show variants: the census paints every one as a
+    # flat token fill with no text step (~2:1 bright text) - the
+    # neutral rail must re-own fill AND text here, not just the border
     nactive = (
-        f'body[data-if-palette] .btn-secondary:active,'
-        f'body[data-if-palette] .btn-purple:active')
-    fix.append(f'{nactive}{{border-color:{tokens["accent"]}}}')
+        _nsel('', ':active') + ','
+        + _nsel('', '.active') + ','
+        + _nsel('.btn-check:active+', '') + ','
+        + _nsel('.btn-check:checked+', '') + ','
+        + ','.join(
+            f'body[data-if-palette] .show>.{c}.dropdown-toggle'
+            for c in ncls))
+    fix.append(f'{nactive}{{color:{BR};background-color:{C2};'
+               f'border-color:{tokens["accent"]}}}')
     fix.append(
-        f'body[data-if-palette] .btn-secondary:focus,'
-        f'body[data-if-palette] .btn-check:focus+.btn-secondary,'
-        f'body[data-if-palette] .btn-purple:focus'
-        f'{{box-shadow:0 0 0 .15rem {rgba("line",.5)}}}')
+        _nsel('', ':focus') + ',' + _nsel('.btn-check:focus+', '')
+        + f'{{box-shadow:0 0 0 .15rem {rgba("line",.5)}}}')
     fix.append(
-        f'body[data-if-palette] .btn-secondary:disabled,'
-        f'body[data-if-palette] .btn-secondary.disabled,'
-        f'body[data-if-palette] .cbi-button-neutral:disabled,'
-        f'body[data-if-palette] .btn-purple:disabled'
-        f'{{color:{BR};background-color:{C2};border-color:{C2};opacity:.55}}')
+        _nsel('', ':disabled') + ',' + _nsel('', '.disabled')
+        + f'{{color:{BR};background-color:{C2};border-color:{C2};opacity:.55}}')
 
     # password reveal toggle (ng.css styles it by ID, which beats any
     # class-scoped fixup; restyle it as the raised-gray neutral)
@@ -731,6 +753,16 @@ def format_fixups(name, tokens):
     fix.append(
         f'body[data-if-palette]:not(.logged-out) .Line:after'
         f'{{background:linear-gradient(70deg,{S},{A},{S})!important}}')
+    # ngov icon buttons: ngOverview.css paints hover as #6cb3e8 text
+    # over #526070 bg - light-blue-on-slate in the dark original. The
+    # census maps them to accent-glow on bg-card2, which in a light
+    # palette is pale-on-pale (~1.3:1). Re-anchor hover to the deep
+    # accent family, keeping the bg lift.
+    fix.append(
+        f'body[data-if-palette] .ngov-iconbtn:hover:not(:disabled),'
+        f'body[data-if-palette] .ngov-wolbtn:hover:not(:disabled)'
+        f'{{color:{tokens["accent"]}!important;'
+        f'border-color:{tokens["accent"]}!important}}')
     # loading cover + spinner tint
     fix.append(
         f'body[data-if-palette] .loadingCover{{background:{tokens["loading-cover"]}!important}}')
@@ -762,6 +794,40 @@ def format_fixups(name, tokens):
     fix.append(
         f'body[data-if-palette] .breadcrumb-item.active{{'
         f'color:{tokens["text-body"]}}}')
+    # ---- census collision rescues (all palettes) ----------------------
+    # bootstrap-dark paints dropdown hover as #85909c text over #424e5a
+    # bg - two different grays - but the census maps BOTH literals to
+    # line-muted, collapsing hover to color==background (1:1, the item
+    # vanishes) in every census-mapped palette. Keep the raised-surface
+    # hover the baseline intends (line-muted lift) and re-anchor the
+    # text to the bright family, matching the active state mapping.
+    fix.append(
+        f'body[data-if-palette] .dropdown-item:focus,'
+        f'body[data-if-palette] .dropdown-item:hover'
+        f'{{color:{tokens["text-bright"]}!important;'
+        f'background-color:{tokens["line-muted"]}!important}}')
+    # condensed sidebar flyout hover: app-dark paints it #348cd4 text on
+    # #4b6eaf bg; the census maps BOTH to accent - 1:1 again. Raised
+    # card surface + bright text, matching the sidebar hover family.
+    fix.append(
+        f'body[data-if-palette][data-sidebar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapse>ul a:hover,'
+        f'body[data-if-palette][data-sidebar-size=condensed] .left-side-menu #sidebar-menu>ul>li:hover>.collapsing>ul a:hover'
+        f'{{color:{tokens["text-bright"]}!important;'
+        f'background-color:{tokens["bg-card2"]}!important}}')
+    # soft-light chips: bootstrap-dark paints them #424e5a text on an
+    # 18% #424e5a wash; the census maps the text to line-muted, which
+    # lands ~1.9:1 on the wash in dark palettes and ~2:1 in light. The
+    # wash carries the chip, the text rides the bright family.
+    fix.append(
+        f'body[data-if-palette] .badge-soft-light,'
+        f'body[data-if-palette] .btn-soft-light'
+        f'{{color:{tokens["text-bright"]}!important}}')
+    # jq-icon-error: app-dark paints it #424e5a text on a #f7531f fill
+    # - a 1.9:1 baseline defect the census faithfully reproduces as
+    # line-muted-on-danger. Solid state fill -> on-accent text (RAIL B).
+    fix.append(
+        f'body[data-if-palette] .jq-icon-error'
+        f'{{color:{tokens["text-onaccent"]}!important}}')
     # ---- light palettes (is_light: true): the chrome flip -----------------
     # A light palette flips surfaces to the board's light family; the
     # workhorse token map handles cards/inputs/tables automatically, but
