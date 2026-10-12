@@ -901,6 +901,25 @@ def format_fixups(name, tokens):
         # also read wrong on ice - retint to the light-scheme severity tint
         fix.append(
             f'[style*="rgba(102,187,106,.10)"]{{background:rgba({soR},{soG},{soB},.08)!important}}')
+        # user dropdown (topbar, real menu class .profile-dropdown;
+        # app-dark's .user-pro-dropdown hover rule targets a dead class but
+        # the census maps BOTH its literals - accent bg + onaccent text -
+        # to light values that resolve to the SAME color #8fa3ac on
+        # #8fa3ac = invisible on hover). Rescue the live selector: royal
+        # wash bg + navy text on hover; the current palette item (marked
+        # data-palette="<current>") gets a royal left edge + soft wash.
+        fix.append(
+            f'body[data-if-palette] .profile-dropdown .dropdown-item:hover,'
+            f'body[data-if-palette] .profile-dropdown .dropdown-item:focus'
+            f'{{background-color:rgba({asR},{asG},{asB},.12)!important;'
+            f'color:{tokens["text-body"]}!important}}')
+        fix.append(
+            f'body[data-if-palette] .profile-dropdown a[data-palette]'
+            f'{{color:{tokens["text-body"]}!important}}')
+        fix.append(
+            f'body[data-if-palette] .profile-dropdown a[data-palette="{tokens["name"]}"]'
+            f'{{border-left:3px solid rgb({asR},{asG},{asB})!important;'
+            f'color:{tokens["text-bright"]}!important;background-color:rgba({asR},{asG},{asB},.08)!important}}')
         # global link family rides the dark-on-ice rail
         fix.append(
             f'body[data-if-palette] a{{color:{tokens["accent"]}}}')

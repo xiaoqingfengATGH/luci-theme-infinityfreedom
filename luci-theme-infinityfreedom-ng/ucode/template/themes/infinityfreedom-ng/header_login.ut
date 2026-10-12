@@ -68,7 +68,7 @@
 		<link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 {% if (ng_palette != 'default'): %}
 		<!-- palette override sheet, mirrors header.ut -->
-		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css?v=16" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
+		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css?v=18" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
 {% endif %}
 
 		<!-- icons -->
