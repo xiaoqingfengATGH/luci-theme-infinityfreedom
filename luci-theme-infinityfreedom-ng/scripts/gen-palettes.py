@@ -820,18 +820,33 @@ def format_fixups(name, tokens):
             f'{SBL}.mm-active,'
             f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active>a,'
             f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active .active,'
-            f'body[data-if-palette] .left-side-menu .nav-second-level li.active>a,'
-            f'body[data-if-palette] .left-side-menu .nav-thrid-level li.active>a,'
+            f'body[data-if-palette] .left-side-menu .nav-second-level li.menuitem-active>a,'
+            f'body[data-if-palette] .left-side-menu .nav-thrid-level li.menuitem-active>a,'
             f'body[data-if-palette] .left-side-menu .user-box .dropdown>a'
             f'{{color:{ICE}!important}}')
-        # active chip: raised navy + a royal left edge (the wall's own
-        # lightness step alone reads too weak; the accent edge anchors it)
+        # active chips - TOP level only: raised navy + a royal left edge
+        # (the wall's own lightness step alone reads too weak; the edge
+        # anchors it). Child-combinator scoped so second/third-level
+        # actives do NOT inherit the top-level treatment.
         asR, asG, asB = hex2rgb(tokens['accent'])
         fix.append(
             f'{SBL}.mm-active,'
-            f'body[data-if-palette] .left-side-menu #sidebar-menu .menuitem-active>a'
-            f'{{background-color:{NAVY2}!important;'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu>ul>li.menuitem-active>a'
+            f'{{background-color:rgba({asR},{asG},{asB},.3)!important;'
             f'box-shadow:inset 3px 0 0 rgb({asR},{asG},{asB})}}')
+        # second/third-level active: ICE text + a faint ICE-wash chip, no
+        # left edge - the baseline signals actives by text brightness, so
+        # the sub level stays one clearly lighter step below the royal
+        # chip of the top level (NAVY2-on-NAVY reads invisible; royal .3
+        # mixes to ~#142757 on the wall - a visible but not loud step)
+        iR, iG, iB = hex2rgb(ICE)
+        fix.append(
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .nav-second-level li.menuitem-active>a,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .nav-second-level li.menuitem-active>a.active,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .nav-thrid-level li.menuitem-active>a,'
+            f'body[data-if-palette] .left-side-menu #sidebar-menu .nav-thrid-level li.menuitem-active>a.active'
+            f'{{color:{ICE}!important;'
+            f'background-color:rgba({iR},{iG},{iB},.07)!important;box-shadow:none}}')
         # condensed-mode hover chips (app-dark paints them #323a46 family)
         fix.append(
             f'body[data-if-palette] body[data-sidebar-size=condensed] #sidebar-menu>ul>li:hover>a,'
