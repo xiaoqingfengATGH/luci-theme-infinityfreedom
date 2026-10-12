@@ -12,7 +12,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-theme-infinityfreedom-ng
 PKG_VERSION:=2.0-ucode
-PKG_RELEASE:=8
+PKG_RELEASE:=9
 PKG_LICENSE:=Apache-2.0
 PKG_MAINTAINER:=Richard Yu <xiaoqingfengatgm@gmail.com>
 
