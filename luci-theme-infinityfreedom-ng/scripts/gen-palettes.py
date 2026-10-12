@@ -870,6 +870,22 @@ def format_fixups(name, tokens):
             f'body[data-if-palette]{{background-image:'
             f'linear-gradient(rgba({vR},{vG},{vB},.34),rgba({vR},{vG},{vB},.34)),'
             f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
+        # app views hardcode dark-theme pastel severity colors as inline
+        # styles (e.g. homevpn overview.js CLR: #c8ecca ok / #f9dedc error /
+        # #ffe0b2 warn) - unreadable pastels on light surfaces. Inline styles
+        # beat every stylesheet rule, so only a same-specificity !important
+        # override can rescue them; match the spans by their exact color.
+        soR, soG, soB = hex2rgb(tokens['success'])
+        fix.append(
+            f'[style*="c8ecca"][style*="color"]{{color:{tokens["success"]}!important}}')
+        fix.append(
+            f'[style*="f9dedc"][style*="color"]{{color:{tokens["danger"]}!important}}')
+        fix.append(
+            f'[style*="ffe0b2"][style*="color"]{{color:{tokens["warning-deep"]}!important}}')
+        # their tinted boxes (<=10% alpha tint of same hue, tuned for dark bg)
+        # also read wrong on ice - retint to the light-scheme severity tint
+        fix.append(
+            f'[style*="rgba(102,187,106,.10)"]{{background:rgba({soR},{soG},{soB},.08)!important}}')
         # global link family rides the dark-on-ice rail
         fix.append(
             f'body[data-if-palette] a{{color:{tokens["accent"]}}}')
