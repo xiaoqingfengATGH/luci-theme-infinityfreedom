@@ -1,0 +1,80 @@
+# "LuminousBlue" palette - 27/28 Summer color board (user's inspiration image).
+#
+# The board: a glowing blue nebula photo over an 8-swatch strip:
+#   #4d4b4f  charcoal    - (kept for reference; near-neutral, carries no hue
+#                          role - line family comes from misty instead)
+#   #e4d7c5  cream       - warm neutral (kept for reference; headings use the
+#                          cooler ice family to stay inside the nebula mood)
+#   #edf1fe  ice white   - headings / bright text
+#   #1b3f8d  royal blue  - primary accent family
+#   #5b3644  wine        - danger family
+#   #a3a969  olive       - success (lifted for contrast)
+#   #ffb865  apricot     - warning (kept bright: dark text on it)
+#   #86a1a9  misty blue-gray - text / lines / borders / info family
+#
+# The photo's own depth scale drives the backgrounds: near-black navy
+# (#070f34 zone) -> luminous cobalt glow, so the page sits *inside* the
+# nebula. Derived roles (WCAG-checked, all text pairs >= 4.5:1, lines
+# >= 3:1 on their surface):
+#   accent royal lifted l .33 -> .64 (#6a8edc) to clear AA on every
+#     surface like blackgold's gold / canyon's terracotta did
+#     (5.12 / 4.44 / 5.63 / 6.63 on card / card2 / base / deep);
+#   text-onaccent #060d24 deep navy (5.97:1 on accent; ice only 2.86);
+#   body text #acbec3 misty family (8.6 on card), headings #edf1fe ice;
+#   warning apricot #ff8900 (dark text 8.10:1) vs accent-soft sky #a3d0f2
+#     - hue distance 200deg, no collision (canyon: 1.79:1 luma gap accepted);
+#   danger wine lifted to #cf718e rose (5.87:1 dark text on it).
+# Lines are the board's misty family (#86a1a9 lifted/dimmed): the cool
+#   gray-blue the board itself uses to frame the glow.
+
+name: luminousblue
+label: "光耀蓝"
+
+# ---- backgrounds (page depth scale: nebula photo depths) ----
+bg-deep: "#060d24"
+bg-base: "#0a1430"           # section/table head, between deep and card
+bg-card: "#101d40"
+bg-card2: "#18294f"          # raised surface: table headers, inputs, hover
+bg-hover: "#142344"          # hover/active surface between card and card2
+
+# ---- lines & borders (board swatch 8: misty family) ----
+line: "#657a81"              # 3.66:1 on bg-card
+line-muted: "#4e5b5f"        # subtle dividers
+line-bright: "#6c8289"       # neutral button borders (3.53:1 on bg-card2)
+
+# ---- text (board swatch 3: ice white / swatch 8 misty lifted) ----
+text-body: "#acbec3"
+text-dim: "#8fa7ae"
+text-bright: "#edf1fe"       # board swatch 3 ice, as-is
+text-onaccent: "#060d24"     # deep navy text on royal buttons
+
+# ---- accent (board swatch 4: royal, lifted for contrast) ----
+accent: "#6a8edc"
+accent-strong: "#4f6cc4"     # pressed state
+accent-soft: "#a3d0f2"       # bright sky: hover, highlight, glow
+accent-glow: "#a3d0f2"
+
+# ---- semantic states ----
+success: "#8c9254"           # board swatch 6 olive, lifted (dark text 5.83)
+success-deep: "#6d7141"
+warning: "#ff8900"           # apricot bright, 8.10:1 dark text on it
+warning-deep: "#cc6e00"
+danger: "#cf718e"            # wine lifted to rose, 5.87:1 dark text on it
+danger-deep: "#983453"
+info: "#8fb6c6"              # board swatch 8 misty, lifted + blue-shifted
+info-deep: "#5a747c"
+pink: "#c98ca4"
+purple: "#9d8ad0"            # charts / btn-purple
+
+# ---- special surfaces ----
+scrollbar: "#1b2c52"
+loading-cover: "#0a1430"
+progress-track: "#18294f"
+badge-danger-bg: "#cf718e"
+
+# page backdrop: the user-supplied nebula photo (LuminousBlue_bg.jpg,
+# 6400x3192 scaled 2560 wide q4; luma p50 63 - the brightest backdrop of
+# the three photo palettes, matching the mood: deep space, luminous glow)
+bg-image: "luminousblue.jpg"
+
+meta-theme-color: "#060d24"

@@ -250,7 +250,7 @@ COLOR_MAP = {
     '4a5866': 'bg-card2',
     '4d5b69': 'bg-card2',
     '526170': 'bg-card2',
-    '424e5a': 'bg-card2',
+    '424e5a': 'line-muted',  # ng.css table row divider (JS-built tables)
     '4a515f': 'bg-card2',
     '4c5761': 'bg-card2',
     '505b66': 'bg-card2',
@@ -329,7 +329,7 @@ RGBA_MAP = {
     '255,167,38': 'warning',
     '69,187,224': 'info',
     '97,197,229': 'info',
-    '66,78,90': 'bg-card2',
+    '66,78,90': 'line-muted',
     '54,64,74': 'bg-card',
     '44,50,57': 'bg-card',
     '50,50,50': 'bg-deep',
@@ -720,6 +720,13 @@ def format_fixups(name, tokens):
         f'body[data-if-palette] .select2-container input::placeholder,'
         f'body[data-if-palette] .selectize-input>input::placeholder'
         f'{{color:{tokens["line-muted"]}}}')
+    # overview drawer separators: ngOverview.css draws them with
+    # --ngov-line: var(--bs-gray-300, ...), and the census maps that var to
+    # bg-card2 (a SURFACE) - so the divider lands ~1.2:1 on the card it
+    # separates, invisible in every palette. Lines are the line family's
+    # job: re-point the var at the real line token (~3:1+ on cards).
+    fix.append(
+        f'body[data-if-palette] .ngov{{--ngov-line:{tokens["line"]}!important}}')
     # login page rainbow strip -> gold gradient in this palette family
     fix.append(
         f'body[data-if-palette]:not(.logged-out) .Line:after'

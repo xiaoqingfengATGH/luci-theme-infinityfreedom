@@ -295,7 +295,7 @@ config menurename
 # 	option icon 'fe-box'
 
 # ---- palette (color scheme) ----
-# Switch the theme color set. Values: default | blackgold | canyon
+# Switch the theme color set. Values: default | blackgold | canyon | luminousblue
 # Switching from the UI (user dropdown -> 配色) writes this option via ubus;
 # changing it here takes effect on the next page load.
 

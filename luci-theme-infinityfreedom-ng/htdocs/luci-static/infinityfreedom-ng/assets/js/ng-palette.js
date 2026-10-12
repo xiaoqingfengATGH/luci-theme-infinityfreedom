@@ -49,7 +49,7 @@
 		 * the ?v= mirrors the server-emitted <link> so both share one cache entry */
 		var base = baseUrl || (document.querySelector('link[id="app-dark-stylesheet"]')?.href || '');
 		var dir = base.replace(/[^/]*$/, '');
-		link.href = dir + 'palette-' + palette + '.min.css?v=12';
+		link.href = dir + 'palette-' + palette + '.min.css?v=13';
 	}
 
 	function applyPalette(palette) {
