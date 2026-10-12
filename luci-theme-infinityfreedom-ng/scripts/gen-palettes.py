@@ -901,18 +901,29 @@ def format_fixups(name, tokens):
         # also read wrong on ice - retint to the light-scheme severity tint
         fix.append(
             f'[style*="rgba(102,187,106,.10)"]{{background:rgba({soR},{soG},{soB},.08)!important}}')
-        # user dropdown (topbar, real menu class .profile-dropdown;
-        # app-dark's .user-pro-dropdown hover rule targets a dead class but
-        # the census maps BOTH its literals - accent bg + onaccent text -
-        # to light values that resolve to the SAME color #8fa3ac on
-        # #8fa3ac = invisible on hover). Rescue the live selector: royal
-        # wash bg + navy text on hover; the current palette item (marked
-        # data-palette="<current>") gets a royal left edge + soft wash.
+        # generic dropdown-item states - UNIFIED for the whole dropdown
+        # family (topbar link menus like 固件资源, the user profile menu,
+        # icon menus): bootstrap-dark paints hover as gray text
+        # #85909c on #424e5a and active as #f3f7f9 on #424e5a, but the
+        # census maps BOTH hover literals to line-muted - in a light
+        # palette they resolve to the SAME value (#8fa3ac on #8fa3ac,
+        # 1:1, invisible). One royal-wash treatment for every dropdown:
+        # hover/focus = 12% wash + navy text, active = 18% wash + bright.
         fix.append(
-            f'body[data-if-palette] .profile-dropdown .dropdown-item:hover,'
-            f'body[data-if-palette] .profile-dropdown .dropdown-item:focus'
-            f'{{background-color:rgba({asR},{asG},{asB},.12)!important;'
-            f'color:{tokens["text-body"]}!important}}')
+            f'body[data-if-palette] .dropdown-item:focus,'
+            f'body[data-if-palette] .dropdown-item:hover'
+            f'{{color:{tokens["text-body"]}!important;'
+            f'background-color:rgba({asR},{asG},{asB},.12)!important}}')
+        fix.append(
+            f'body[data-if-palette] .dropdown-item.active,'
+            f'body[data-if-palette] .dropdown-item:active,'
+            f'body[data-if-palette] .dropdown-menu-dark .dropdown-item.active,'
+            f'body[data-if-palette] .dropdown-menu-dark .dropdown-item:active'
+            f'{{color:{tokens["text-bright"]}!important;'
+            f'background-color:rgba({asR},{asG},{asB},.18)!important}}')
+        fix.append(
+            f'body[data-if-palette] .dropdown-icon-item:hover'
+            f'{{background-color:rgba({asR},{asG},{asB},.12)!important}}')
         fix.append(
             f'body[data-if-palette] .profile-dropdown a[data-palette]'
             f'{{color:{tokens["text-body"]}!important}}')
