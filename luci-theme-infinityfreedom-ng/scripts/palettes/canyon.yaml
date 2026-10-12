@@ -1,0 +1,78 @@
+# "Canyon" palette - 24/25 Autumn canyon color board (user's inspiration image).
+#
+# The board: an Antelope Canyon photo over an 8-swatch strip:
+#   #e7e9e7  bone white       - light anchor
+#   #a05331  terracotta       - primary accent family
+#   #ba8671  clay rose        - text family
+#   #bc9c69  khaki gold       - (kept for reference; too close to marigold
+#                               to carry a UI role - warning shifts hue)
+#   #fccb70  marigold         - bright accent: hover / highlight / glow
+#   #a2c49a  sage             - success (used as-is)
+#   #72486f  plum             - purple / charts
+#   #58646d  slate blue-gray  - lines / borders / info family
+#
+# The photo's own depth scale drives the backgrounds: deep maroon
+# (#1f0005 zone) -> terracotta shadow, so the page sits *inside* the
+# canyon. Derived roles (WCAG-checked, all text pairs >= 4.5:1, lines
+# >= 3:1 on their surface):
+#   accent terracotta lifted l .41 -> .54 (#c17453) to clear AA on every
+#     surface like blackgold's gold did (5.35 / 4.95 / 4.46 / 3.74);
+#   text-onaccent #201012 dark canyon (5.15:1 on accent; white only 3.8);
+#   body text #ccaea4 clay-rose family (7.7 on card), headings #eee6dd;
+#   warning amber #ea832e kept 1.79:1 apart from marigold (blackgold
+#     shipped 1.02 between its warn and sand gold - accepted);
+#   danger crimson #d16174 (4.96:1 dark text on it; distinct hue 350).
+# Lines are the board's slate family (#58646d lifted): the cool counter-
+#   weight the board itself uses against the warm mass.
+
+name: canyon
+label: "峡谷"
+
+# ---- backgrounds (page depth scale: canyon photo depths) ----
+bg-deep: "#1d0a0b"
+bg-base: "#291214"           # section/table head, between deep and card
+bg-card: "#341b1d"
+bg-card2: "#452729"          # raised surface: table headers, inputs, hover
+bg-hover: "#3c2022"          # hover/active surface between card and card2
+
+# ---- lines & borders (board swatch 8: slate family) ----
+line: "#5f6e77"              # 3.02:1 on bg-card
+line-muted: "#49545a"        # subtle dividers
+line-bright: "#70838f"       # neutral button borders (3.38:1 on bg-card2)
+
+# ---- text (board swatch 3: clay rose family, lifted) ----
+text-body: "#ccaea4"
+text-dim: "#af8e83"
+text-bright: "#eee6dd"       # bone-white warmed (board swatch 1)
+text-onaccent: "#201012"     # dark canyon text on terracotta buttons
+
+# ---- accent (board swatch 2: terracotta, lifted for contrast) ----
+accent: "#c17453"
+accent-strong: "#9d5739"     # pressed state
+accent-soft: "#fccb70"       # board swatch 5 marigold: hover, highlight
+accent-glow: "#fccb70"
+
+# ---- semantic states ----
+success: "#a2c49a"           # board swatch 6 sage, as-is
+success-deep: "#568b4b"
+warning: "#ea832e"           # amber, 1.79:1 from marigold (bgold: 1.02)
+warning-deep: "#b65616"
+danger: "#d16174"            # crimson, 4.96:1 dark text on it
+danger-deep: "#a92d42"
+info: "#90acc1"              # board swatch 8 slate, lifted + saturated
+info-deep: "#4d6e89"
+pink: "#c48d9f"
+purple: "#b181ad"            # board swatch 7 plum, lifted
+
+# ---- special surfaces ----
+scrollbar: "#513436"
+loading-cover: "#291214"
+progress-track: "#452729"
+badge-danger-bg: "#d16174"
+
+# page backdrop: the canyon photo region of the same inspiration board
+# (top 80% cropped, scaled 2560 wide q4; luma 46 - deeper than blackgold's
+# 68, matching the canyon mood: darker depths, brighter light shafts)
+bg-image: "canyon.jpg"
+
+meta-theme-color: "#1d0a0b"

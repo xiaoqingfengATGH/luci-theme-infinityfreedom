@@ -19,7 +19,8 @@
 	   /etc/config/infinityfreedom-ng (config theme 'palette'). */
 	const ng_palettes = {
 		default:   { label: '默认' },
-		blackgold: { label: '黑金' },
+		blackgold: { label: '黑金', meta: '#121315' },
+		canyon:    { label: '峡谷', meta: '#1d0a0b' },
 	};
 	let ng_palette = uci.get('infinityfreedom-ng', 'palette', 'name') ?? 'default';
 	if (!(ng_palette in ng_palettes))
@@ -65,7 +66,7 @@
 		<link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 {% if (ng_palette != 'default'): %}
 		<!-- palette override sheet, mirrors header.ut -->
-		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css?v=11" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
+		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css?v=12" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
 {% endif %}
 
 		<!-- icons -->

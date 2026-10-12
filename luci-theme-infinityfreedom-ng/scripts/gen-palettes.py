@@ -709,6 +709,17 @@ def format_fixups(name, tokens):
     """Palette-aware rules that a pure color swap cannot express."""
     fix = []
     A, S = tokens['accent'], tokens['accent-soft']
+    # input placeholders: the baseline paints them #586877, which the color
+    # census maps to bg-card2 (a SURFACE color - 1.2:1 on the input fill,
+    # effectively invisible). Placeholders are hint TEXT: use the dim line
+    # gray instead (~2:1, matching the default theme's 1.8:1 subtlety).
+    fix.append(
+        f'body[data-if-palette] .form-control::placeholder'
+        f'{{color:{tokens["line-muted"]};opacity:1}}')
+    fix.append(
+        f'body[data-if-palette] .select2-container input::placeholder,'
+        f'body[data-if-palette] .selectize-input>input::placeholder'
+        f'{{color:{tokens["line-muted"]}}}')
     # login page rainbow strip -> gold gradient in this palette family
     fix.append(
         f'body[data-if-palette]:not(.logged-out) .Line:after'

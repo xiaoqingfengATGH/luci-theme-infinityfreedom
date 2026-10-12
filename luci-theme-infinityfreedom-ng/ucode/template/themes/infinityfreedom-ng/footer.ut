@@ -438,6 +438,43 @@
 			modalObserver.observe(document.body, { childList: true, subtree: false });
 			document.querySelectorAll('#modal_overlay').forEach(watchModalOverlay);
 
+			/* The ngOverview dashboard (status/overview) inserts its .ngov
+			   root OUTSIDE #view on purpose (so this file's wrap observers
+			   never re-wrap its markup), then moves the server-rendered
+			   stock sections - DHCP leases etc. - into its drawer. Those
+			   sections re-render on their own poll schedule, and the
+			   "Set as static" buttons they emit (<button class="cbi-button
+			   cbi-button-apply">) fall through every styling net: legacy
+			   renderButtons() only matches input.cbi-button-*, and the
+			   #view observer above never fires because #view stays empty.
+			   Watch the .ngov root the same way the modal overlay is
+			   watched, so relocated/re-polled stock sections get their
+			   bootstrap button classes too. */
+			function watchOverviewDrawer(root) {
+				if (root.__ngWatched)
+					return;
+				root.__ngWatched = true;
+				new MutationObserver(function() {
+					styleModernButtons(root);
+					styleModernFormControls(root);
+				}).observe(root, { childList: true, subtree: true });
+				styleModernButtons(root);
+				styleModernFormControls(root);
+			}
+			/* .ngov mounts long after this script parsed (ngOverview.js
+			   fetches its data first), so scan for it now AND watch
+			   #maincontent - the dashboard inserts .ngov as a direct
+			   child of it (a sibling of #view). Direct-children-only
+			   keeps the callback cheap; it just probes for new roots. */
+			function sweepOverviewDrawers() {
+				document.querySelectorAll('.ngov').forEach(watchOverviewDrawer);
+			}
+			let ngovHost = document.getElementById('maincontent') || (viewEl && viewEl.parentNode);
+			if (ngovHost) {
+				new MutationObserver(sweepOverviewDrawers).observe(ngovHost, { childList: true, subtree: false });
+				sweepOverviewDrawers();
+			}
+
 			/* legacy ngRender.js moves title/descr at load time which is
 			   too early for async views - redo it here */
 			let titleEle = jQuery("h2[name=content]");
