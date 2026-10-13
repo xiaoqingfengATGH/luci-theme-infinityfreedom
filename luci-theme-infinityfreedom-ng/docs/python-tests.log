@@ -1,0 +1,20 @@
+test_git_archive_defaults_are_lf (test_defaults_shell.DefaultsTests.test_git_archive_defaults_are_lf) ... ok
+test_shell_upgrade_and_image_build_are_noops (test_defaults_shell.DefaultsTests.test_shell_upgrade_and_image_build_are_noops) ... ok
+test_control_requires_migrated_application_release (test_dependency_control.DependencyControl.test_control_requires_migrated_application_release) ... ok
+test_arbitrary_feed_symlink (test_prepare_paths.PreparePaths.test_arbitrary_feed_symlink) ... ok
+test_explicit_override_without_feed_link (test_prepare_paths.PreparePaths.test_explicit_override_without_feed_link) ... ok
+test_missing_feed_is_actionable (test_prepare_paths.PreparePaths.test_missing_feed_is_actionable) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 2.228s
+
+OK
+Package: luci-theme-infinityfreedom-ng
+Version: 2.0-ucode-r12
+Depends: luci-app-homestatus (>=1.0.0-r2), luci-base, luci-app-homestatus
+SourceName: luci-theme-infinityfreedom-ng
+Section: luci
+URL: https://github.com/openwrt/luci
+Maintainer: OpenWrt LuCI community
+Architecture: all
+Installed-Size: 0

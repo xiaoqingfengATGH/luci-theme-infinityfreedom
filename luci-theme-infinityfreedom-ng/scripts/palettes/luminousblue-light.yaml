@@ -15,7 +15,7 @@
 #   #1b3f8d  royal blue  - accent, AS-IS from the board (no lift needed)
 #   #86a1a9  misty       - lines/borders, DARKENED for light surfaces
 #   #5b3644  wine        - danger family (deep variant as fill)
-#   #a3a969  olive       - success family (deep variant as fill)
+#   #a3a969  olive       - original board reference; success now approved emerald
 #   #ffb865  apricot     - warning family (deep variant as fill)
 #   #23324f / #14264d    - body text / headings (nebula night, on ice)
 #
@@ -65,8 +65,8 @@ accent-soft: "#a3d0f2"      # hover highlight, selected chip (navy text)
 accent-glow: "#a3d0f2"      # glow border on cards
 
 # ---- semantic states (DEEP fills + ice text via text-onaccent) ----
-success: "#5d6b3c"          # olive deep; ice on it 7.2:1
-success-deep: "#49542e"
+success: "#16724f"          # approved emerald: global healthy state
+success-deep: "#10583d"
 warning: "#a85a00"          # apricot deep; ice on it 4.51:1
 warning-deep: "#7a4200"
 danger: "#8d3a56"           # wine deep; ice on it 6.5:1

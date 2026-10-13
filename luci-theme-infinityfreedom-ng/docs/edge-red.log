@@ -1,0 +1,3686 @@
+{
+  "out": "D:\\DevPortal\\homelede\\wt-palette-global-emerald-theme\\luci-theme-infinityfreedom-ng\\docs\\palette-audit-before.json",
+  "count": 792,
+  "failures": [
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.484863)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        123.64006499999999
+      ],
+      "textContrast": 1.4595380153155135,
+      "boundaryContrast": 7.679540401968979,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.395686)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        100.89993
+      ],
+      "textContrast": 1.8016569144608312,
+      "boundaryContrast": 6.221262809173307,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.991765 0.750667 0.387059)",
+      "effectiveBackground": [
+        252.90007500000002,
+        191.420085,
+        98.700045
+      ],
+      "textContrast": 1.1301559806504395,
+      "boundaryContrast": 9.91772936544053,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.944235 0.682745 0.288784)",
+      "effectiveBackground": [
+        240.77992500000002,
+        174.099975,
+        73.63991999999999
+      ],
+      "textContrast": 1.3323079886832623,
+      "boundaryContrast": 8.41290546332511,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.887216 0.443765 0.360078)",
+      "effectiveBackground": [
+        226.24008,
+        113.160075,
+        91.81989
+      ],
+      "textContrast": 2.145295590408243,
+      "boundaryContrast": 5.224725770630119,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.829961 0.347294 0.259294)",
+      "effectiveBackground": [
+        211.640055,
+        88.55996999999999,
+        66.11997000000001
+      ],
+      "textContrast": 2.7474577700625344,
+      "boundaryContrast": 4.079619086036029,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "danger",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        32,
+        32,
+        37
+      ],
+      "textContrast": 4.496006114466418,
+      "boundaryContrast": 4.496006114466418,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        58.88,
+        40.54,
+        41.480000000000004
+      ],
+      "textContrast": 3.8077206501978007,
+      "boundaryContrast": 3.8077206501978007,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "danger",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        32,
+        32,
+        37
+      ],
+      "textContrast": 4.496006114466418,
+      "boundaryContrast": 4.496006114466418,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.842353)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        214.800015
+      ],
+      "textContrast": 1.3648280811411007,
+      "boundaryContrast": 8.212449107475774,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.786431)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        200.539905
+      ],
+      "textContrast": 1.666827228574247,
+      "boundaryContrast": 6.724500874882264,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.68149 0.565176 0.393804)",
+      "effectiveBackground": [
+        173.77995,
+        144.11988,
+        100.42002
+      ],
+      "textContrast": 2.0800246610573048,
+      "boundaryContrast": 5.388677051130553,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.605098 0.48 0.296157)",
+      "effectiveBackground": [
+        154.29999,
+        122.39999999999999,
+        75.52003500000001
+      ],
+      "textContrast": 2.7451668218072274,
+      "boundaryContrast": 4.083023686497184,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "primary",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        32,
+        32,
+        37
+      ],
+      "textContrast": 4.48764779452721,
+      "boundaryContrast": 4.48764779452721,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        50.34,
+        45.58,
+        42.88
+      ],
+      "textContrast": 3.733336629114847,
+      "boundaryContrast": 3.733336629114847,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card",
+      "role": "primary",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        32,
+        32,
+        37
+      ],
+      "textContrast": 4.48764779452721,
+      "boundaryContrast": 4.48764779452721,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.484863)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        123.64006499999999
+      ],
+      "textContrast": 1.4595380153155135,
+      "boundaryContrast": 6.5622735030720145,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.395686)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        100.89993
+      ],
+      "textContrast": 1.8016569144608312,
+      "boundaryContrast": 5.3161551279576535,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.991765 0.750667 0.387059)",
+      "effectiveBackground": [
+        252.90007500000002,
+        191.420085,
+        98.700045
+      ],
+      "textContrast": 1.1301559806504395,
+      "boundaryContrast": 8.474836932791296,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.944235 0.682745 0.288784)",
+      "effectiveBackground": [
+        240.77992500000002,
+        174.099975,
+        73.63991999999999
+      ],
+      "textContrast": 1.3323079886832623,
+      "boundaryContrast": 7.18894409249716,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.887216 0.443765 0.360078)",
+      "effectiveBackground": [
+        226.24008,
+        113.160075,
+        91.81989
+      ],
+      "textContrast": 2.145295590408243,
+      "boundaryContrast": 4.464600443619365,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.829961 0.347294 0.259294)",
+      "effectiveBackground": [
+        211.640055,
+        88.55996999999999,
+        66.11997000000001
+      ],
+      "textContrast": 2.7474577700625344,
+      "boundaryContrast": 3.48609094159555,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        44,
+        44,
+        51
+      ],
+      "textContrast": 3.8418994171901377,
+      "boundaryContrast": 3.8418994171901377,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        69.2,
+        50.86,
+        53.519999999999996
+      ],
+      "textContrast": 3.274042047314995,
+      "boundaryContrast": 3.274042047314995,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        44,
+        44,
+        51
+      ],
+      "textContrast": 3.8418994171901377,
+      "boundaryContrast": 3.8418994171901377,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.842353)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        214.800015
+      ],
+      "textContrast": 1.3648280811411007,
+      "boundaryContrast": 7.017651363550099,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.786431)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        200.539905
+      ],
+      "textContrast": 1.666827228574247,
+      "boundaryContrast": 5.746179016300293,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.68149 0.565176 0.393804)",
+      "effectiveBackground": [
+        173.77995,
+        144.11988,
+        100.42002
+      ],
+      "textContrast": 2.0800246610573048,
+      "boundaryContrast": 4.604699080713178,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.605098 0.48 0.296157)",
+      "effectiveBackground": [
+        154.29999,
+        122.39999999999999,
+        75.52003500000001
+      ],
+      "textContrast": 2.7451668218072274,
+      "boundaryContrast": 3.489000219784783,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        44,
+        44,
+        51
+      ],
+      "textContrast": 3.83475711718307,
+      "boundaryContrast": 3.83475711718307,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        60.66,
+        55.9,
+        54.92
+      ],
+      "textContrast": 3.201247016501607,
+      "boundaryContrast": 3.201247016501607,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        44,
+        44,
+        51
+      ],
+      "textContrast": 3.83475711718307,
+      "boundaryContrast": 3.83475711718307,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.484863)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        123.64006499999999
+      ],
+      "textContrast": 1.4595380153155135,
+      "boundaryContrast": 8.801441948208941,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.395686)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        100.89993
+      ],
+      "textContrast": 1.8016569144608312,
+      "boundaryContrast": 7.130125058714592,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.991765 0.750667 0.387059)",
+      "effectiveBackground": [
+        252.90007500000002,
+        191.420085,
+        98.700045
+      ],
+      "textContrast": 1.1301559806504395,
+      "boundaryContrast": 11.36660720550299,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.944235 0.682745 0.288784)",
+      "effectiveBackground": [
+        240.77992500000002,
+        174.099975,
+        73.63991999999999
+      ],
+      "textContrast": 1.3323079886832623,
+      "boundaryContrast": 9.641944071580248,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.887216 0.443765 0.360078)",
+      "effectiveBackground": [
+        226.24008,
+        113.160075,
+        91.81989
+      ],
+      "textContrast": 2.145295590408243,
+      "boundaryContrast": 5.988004250061887,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.829961 0.347294 0.259294)",
+      "effectiveBackground": [
+        211.640055,
+        88.55996999999999,
+        66.11997000000001
+      ],
+      "textContrast": 2.7474577700625344,
+      "boundaryContrast": 4.6756093043465405,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(224, 93, 69)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        46.84,
+        29.36,
+        27.72
+      ],
+      "textContrast": 4.423671529896741,
+      "boundaryContrast": 4.423671529896741,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.560078 0.750667 0.842353)",
+      "effectiveBackground": [
+        142.81989,
+        191.420085,
+        214.800015
+      ],
+      "textContrast": 1.3648280811411007,
+      "boundaryContrast": 9.412203112250822,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.472392 0.682745 0.786431)",
+      "effectiveBackground": [
+        120.45996,
+        174.099975,
+        200.539905
+      ],
+      "textContrast": 1.666827228574247,
+      "boundaryContrast": 7.706881008892381,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.68149 0.565176 0.393804)",
+      "effectiveBackground": [
+        173.77995,
+        144.11988,
+        100.42002
+      ],
+      "textContrast": 2.0800246610573048,
+      "boundaryContrast": 6.17590711952125,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(217, 213, 221)",
+      "opacity": "1",
+      "background": "color(srgb 0.605098 0.48 0.296157)",
+      "effectiveBackground": [
+        154.29999,
+        122.39999999999999,
+        75.52003500000001
+      ],
+      "textContrast": 2.7451668218072274,
+      "boundaryContrast": 4.679511281775817,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "blackgold",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(163, 129, 79)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        38.300000000000004,
+        34.400000000000006,
+        29.119999999999997
+      ],
+      "textContrast": 4.352843701337013,
+      "boundaryContrast": 4.352843701337013,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.67702 0.787294 0.640706)",
+      "effectiveBackground": [
+        172.6401,
+        200.75997,
+        163.38003
+      ],
+      "textContrast": 1.145164977998414,
+      "boundaryContrast": 8.80901008258624,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.604706 0.726275 0.571922)",
+      "effectiveBackground": [
+        154.20003,
+        185.200125,
+        145.84011
+      ],
+      "textContrast": 1.0420188488826434,
+      "boundaryContrast": 7.382160350413005,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.919843 0.568078 0.276471)",
+      "effectiveBackground": [
+        234.559965,
+        144.85988999999998,
+        70.500105
+      ],
+      "textContrast": 1.1744965007147217,
+      "boundaryContrast": 6.549487568437531,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.870118 0.486667 0.173804)",
+      "effectiveBackground": [
+        221.88009,
+        124.100085,
+        44.32002
+      ],
+      "textContrast": 1.445547869949788,
+      "boundaryContrast": 5.321408159849906,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.835529 0.453412 0.512549)",
+      "effectiveBackground": [
+        213.05989499999998,
+        115.62006,
+        130.699995
+      ],
+      "textContrast": 1.5303193220620679,
+      "boundaryContrast": 5.026630795093927,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.777961 0.361333 0.431843)",
+      "effectiveBackground": [
+        198.380055,
+        92.139915,
+        110.119965
+      ],
+      "textContrast": 1.9636924717343438,
+      "boundaryContrast": 3.9172886494851844,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "danger",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        52,
+        27,
+        29
+      ],
+      "textContrast": 4.296108513152613,
+      "boundaryContrast": 4.296108513152613,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        73.98,
+        36.8,
+        41.18000000000001
+      ],
+      "textContrast": 3.578300222178773,
+      "boundaryContrast": 3.578300222178773,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "danger",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        52,
+        27,
+        29
+      ],
+      "textContrast": 4.296108513152613,
+      "boundaryContrast": 4.296108513152613,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.616314 0.706353 0.772235)",
+      "effectiveBackground": [
+        157.16007000000002,
+        180.120015,
+        196.919925
+      ],
+      "textContrast": 1.0385879090129653,
+      "boundaryContrast": 7.406547066309456,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.538353 0.637804 0.715686)",
+      "effectiveBackground": [
+        137.280015,
+        162.64002000000002,
+        182.49993
+      ],
+      "textContrast": 1.2759046992088285,
+      "boundaryContrast": 6.028937925672956,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.781569 0.51749 0.401255)",
+      "effectiveBackground": [
+        199.300095,
+        131.95995,
+        102.32002499999999
+      ],
+      "textContrast": 1.4661953975211182,
+      "boundaryContrast": 5.246470043221954,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.71898 0.431373 0.310196)",
+      "effectiveBackground": [
+        183.3399,
+        110.00011500000001,
+        79.09998
+      ],
+      "textContrast": 1.8932440584266812,
+      "boundaryContrast": 4.063052619321002,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "primary",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        52,
+        27,
+        29
+      ],
+      "textContrast": 4.46075781247485,
+      "boundaryContrast": 4.46075781247485,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        71.74000000000001,
+        39.46,
+        36.56
+      ],
+      "textContrast": 3.6908227397982736,
+      "boundaryContrast": 3.6908227397982736,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card",
+      "role": "primary",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        52,
+        27,
+        29
+      ],
+      "textContrast": 4.46075781247485,
+      "boundaryContrast": 4.46075781247485,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.67702 0.787294 0.640706)",
+      "effectiveBackground": [
+        172.6401,
+        200.75997,
+        163.38003
+      ],
+      "textContrast": 1.145164977998414,
+      "boundaryContrast": 7.384482235745285,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.604706 0.726275 0.571922)",
+      "effectiveBackground": [
+        154.20003,
+        185.200125,
+        145.84011
+      ],
+      "textContrast": 1.0420188488826434,
+      "boundaryContrast": 6.188372071092397,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.919843 0.568078 0.276471)",
+      "effectiveBackground": [
+        234.559965,
+        144.85988999999998,
+        70.500105
+      ],
+      "textContrast": 1.1744965007147217,
+      "boundaryContrast": 5.490352962357168,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.870118 0.486667 0.173804)",
+      "effectiveBackground": [
+        221.88009,
+        124.100085,
+        44.32002
+      ],
+      "textContrast": 1.445547869949788,
+      "boundaryContrast": 4.46086945719839,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(234, 131, 46)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        92.1,
+        51.88,
+        41.699999999999996
+      ],
+      "textContrast": 3.935210194759628,
+      "boundaryContrast": 3.935210194759628,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.835529 0.453412 0.512549)",
+      "effectiveBackground": [
+        213.05989499999998,
+        115.62006,
+        130.699995
+      ],
+      "textContrast": 1.5303193220620679,
+      "boundaryContrast": 4.213761303940237,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.777961 0.361333 0.431843)",
+      "effectiveBackground": [
+        198.380055,
+        92.139915,
+        110.119965
+      ],
+      "textContrast": 1.9636924717343438,
+      "boundaryContrast": 3.2838137512855754,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        69,
+        39,
+        41
+      ],
+      "textContrast": 3.601373673180714,
+      "boundaryContrast": 3.601373673180714,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        88.6,
+        47.120000000000005,
+        51.5
+      ],
+      "textContrast": 3.020771971873446,
+      "boundaryContrast": 3.020771971873446,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        69,
+        39,
+        41
+      ],
+      "textContrast": 3.601373673180714,
+      "boundaryContrast": 3.601373673180714,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.616314 0.706353 0.772235)",
+      "effectiveBackground": [
+        157.16007000000002,
+        180.120015,
+        196.919925
+      ],
+      "textContrast": 1.0385879090129653,
+      "boundaryContrast": 6.208815147969048,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.538353 0.637804 0.715686)",
+      "effectiveBackground": [
+        137.280015,
+        162.64002000000002,
+        182.49993
+      ],
+      "textContrast": 1.2759046992088285,
+      "boundaryContrast": 5.053982751200592,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "info",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(144, 172, 193)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        79.5,
+        57.620000000000005,
+        62.28
+      ],
+      "textContrast": 4.418470718545906,
+      "boundaryContrast": 4.418470718545906,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.781569 0.51749 0.401255)",
+      "effectiveBackground": [
+        199.300095,
+        131.95995,
+        102.32002499999999
+      ],
+      "textContrast": 1.4661953975211182,
+      "boundaryContrast": 4.398049777594068,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.71898 0.431373 0.310196)",
+      "effectiveBackground": [
+        183.3399,
+        110.00011500000001,
+        79.09998
+      ],
+      "textContrast": 1.8932440584266812,
+      "boundaryContrast": 3.406005851847718,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        69,
+        39,
+        41
+      ],
+      "textContrast": 3.739397107661335,
+      "boundaryContrast": 3.739397107661335,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        86.36,
+        49.78,
+        46.879999999999995
+      ],
+      "textContrast": 3.112653380924742,
+      "boundaryContrast": 3.112653380924742,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(193, 116, 83)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        69,
+        39,
+        41
+      ],
+      "textContrast": 3.739397107661335,
+      "boundaryContrast": 3.739397107661335,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.67702 0.787294 0.640706)",
+      "effectiveBackground": [
+        172.6401,
+        200.75997,
+        163.38003
+      ],
+      "textContrast": 1.145164977998414,
+      "boundaryContrast": 10.570319633975728,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.604706 0.726275 0.571922)",
+      "effectiveBackground": [
+        154.20003,
+        185.200125,
+        145.84011
+      ],
+      "textContrast": 1.0420188488826434,
+      "boundaryContrast": 8.858179722984078,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.919843 0.568078 0.276471)",
+      "effectiveBackground": [
+        234.559965,
+        144.85988999999998,
+        70.500105
+      ],
+      "textContrast": 1.1744965007147217,
+      "boundaryContrast": 7.859018934941425,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.870118 0.486667 0.173804)",
+      "effectiveBackground": [
+        221.88009,
+        124.100085,
+        44.32002
+      ],
+      "textContrast": 1.445547869949788,
+      "boundaryContrast": 6.385392300055802,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.835529 0.453412 0.512549)",
+      "effectiveBackground": [
+        213.05989499999998,
+        115.62006,
+        130.699995
+      ],
+      "textContrast": 1.5303193220620679,
+      "boundaryContrast": 6.031675941790839,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.777961 0.361333 0.431843)",
+      "effectiveBackground": [
+        198.380055,
+        92.139915,
+        110.119965
+      ],
+      "textContrast": 1.9636924717343438,
+      "boundaryContrast": 4.700527384507978,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(209, 97, 116)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        54.2,
+        22.18,
+        25.700000000000003
+      ],
+      "textContrast": 4.402016673080613,
+      "boundaryContrast": 4.402016673080613,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.616314 0.706353 0.772235)",
+      "effectiveBackground": [
+        157.16007000000002,
+        180.120015,
+        196.919925
+      ],
+      "textContrast": 1.0385879090129653,
+      "boundaryContrast": 8.88744241872761,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.538353 0.637804 0.715686)",
+      "effectiveBackground": [
+        137.280015,
+        162.64002000000002,
+        182.49993
+      ],
+      "textContrast": 1.2759046992088285,
+      "boundaryContrast": 7.234388464799199,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.781569 0.51749 0.401255)",
+      "effectiveBackground": [
+        199.300095,
+        131.95995,
+        102.32002499999999
+      ],
+      "textContrast": 1.4661953975211182,
+      "boundaryContrast": 6.295470749495715,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "canyon",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(204, 174, 164)",
+      "opacity": "1",
+      "background": "color(srgb 0.71898 0.431373 0.310196)",
+      "effectiveBackground": [
+        183.3399,
+        110.00011500000001,
+        79.09998
+      ],
+      "textContrast": 1.8932440584266812,
+      "boundaryContrast": 4.875435999418932,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.602275 0.624706 0.422745)",
+      "effectiveBackground": [
+        153.580125,
+        159.30003,
+        107.79997499999999
+      ],
+      "textContrast": 1.4425312770075436,
+      "boundaryContrast": 5.945372076171255,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.51749 0.541255 0.318118)",
+      "effectiveBackground": [
+        131.95995,
+        138.020025,
+        81.12009
+      ],
+      "textContrast": 1.9015340832431984,
+      "boundaryContrast": 4.510245306093431,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "success",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(140, 146, 84)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        33.36,
+        45.38,
+        66.8
+      ],
+      "textContrast": 4.159867838940374,
+      "boundaryContrast": 4.159867838940374,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.990118 0.594353 0.139451)",
+      "effectiveBackground": [
+        252.48009000000002,
+        151.560015,
+        35.560005
+      ],
+      "textContrast": 1.130928897797962,
+      "boundaryContrast": 7.583487511923551,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.941412 0.508078 0.00847059)",
+      "effectiveBackground": [
+        240.06006,
+        129.55989,
+        2.16000045
+      ],
+      "textContrast": 1.3845942540094827,
+      "boundaryContrast": 6.194150487400169,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.828235 0.513412 0.618353)",
+      "effectiveBackground": [
+        211.199925,
+        130.92006,
+        157.680015
+      ],
+      "textContrast": 1.45251111218409,
+      "boundaryContrast": 5.904522933685721,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.764471 0.419608 0.531922)",
+      "effectiveBackground": [
+        194.94010500000002,
+        107.00004,
+        135.64011
+      ],
+      "textContrast": 1.8886284800697244,
+      "boundaryContrast": 4.541065256522917,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(207, 113, 142)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        42.74,
+        40.760000000000005,
+        74.92
+      ],
+      "textContrast": 4.223063924481279,
+      "boundaryContrast": 4.223063924481279,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.612392 0.746118 0.807216)",
+      "effectiveBackground": [
+        156.15996,
+        190.26009,
+        205.84008
+      ],
+      "textContrast": 1.0199293485581815,
+      "boundaryContrast": 8.408803203328032,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.528549 0.673961 0.738353)",
+      "effectiveBackground": [
+        134.779995,
+        171.86005500000002,
+        188.28001500000002
+      ],
+      "textContrast": 1.2616465112307231,
+      "boundaryContrast": 6.797771877447777,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.487608 0.611216 0.881412)",
+      "effectiveBackground": [
+        124.34004,
+        155.86007999999998,
+        224.76005999999998
+      ],
+      "textContrast": 1.4179033627684128,
+      "boundaryContrast": 6.048638714403767,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.392157 0.52651 0.819451)",
+      "effectiveBackground": [
+        100.000035,
+        134.26005,
+        208.96000500000002
+      ],
+      "textContrast": 1.8529459607555345,
+      "boundaryContrast": 4.6285133808367025,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(106, 142, 220)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        28.6,
+        44.82000000000001,
+        85.84
+      ],
+      "textContrast": 4.183145563372499,
+      "boundaryContrast": 4.183145563372499,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.602275 0.624706 0.422745)",
+      "effectiveBackground": [
+        153.580125,
+        159.30003,
+        107.79997499999999
+      ],
+      "textContrast": 1.4425312770075436,
+      "boundaryContrast": 5.147598047266019,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.51749 0.541255 0.318118)",
+      "effectiveBackground": [
+        131.95995,
+        138.020025,
+        81.12009
+      ],
+      "textContrast": 1.9015340832431984,
+      "boundaryContrast": 3.905042381348937,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "success",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(140, 146, 84)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.326089868903916,
+      "boundaryContrast": 4.326089868903916,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "success",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(140, 146, 84)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        40.24,
+        55.7,
+        79.7
+      ],
+      "textContrast": 3.598313897156976,
+      "boundaryContrast": 3.598313897156976,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "success",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(140, 146, 84)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.326089868903916,
+      "boundaryContrast": 4.326089868903916,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.990118 0.594353 0.139451)",
+      "effectiveBackground": [
+        252.48009000000002,
+        151.560015,
+        35.560005
+      ],
+      "textContrast": 1.130928897797962,
+      "boundaryContrast": 6.565904540155053,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.941412 0.508078 0.00847059)",
+      "effectiveBackground": [
+        240.06006,
+        129.55989,
+        2.16000045
+      ],
+      "textContrast": 1.3845942540094827,
+      "boundaryContrast": 5.362994366863329,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.828235 0.513412 0.618353)",
+      "effectiveBackground": [
+        211.199925,
+        130.92006,
+        157.680015
+      ],
+      "textContrast": 1.45251111218409,
+      "boundaryContrast": 5.112230207642693,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.764471 0.419608 0.531922)",
+      "effectiveBackground": [
+        194.94010500000002,
+        107.00004,
+        135.64011
+      ],
+      "textContrast": 1.8886284800697244,
+      "boundaryContrast": 3.9317267863979533,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(207, 113, 142)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.360855031716833,
+      "boundaryContrast": 4.360855031716833,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(207, 113, 142)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        49.620000000000005,
+        51.08,
+        87.82
+      ],
+      "textContrast": 3.66261793857671,
+      "boundaryContrast": 3.66261793857671,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(207, 113, 142)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.360855031716833,
+      "boundaryContrast": 4.360855031716833,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.612392 0.746118 0.807216)",
+      "effectiveBackground": [
+        156.15996,
+        190.26009,
+        205.84008
+      ],
+      "textContrast": 1.0199293485581815,
+      "boundaryContrast": 7.280476039974055,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.528549 0.673961 0.738353)",
+      "effectiveBackground": [
+        134.779995,
+        171.86005500000002,
+        188.28001500000002
+      ],
+      "textContrast": 1.2616465112307231,
+      "boundaryContrast": 5.885619401745596,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.487608 0.611216 0.881412)",
+      "effectiveBackground": [
+        124.34004,
+        155.86007999999998,
+        224.76005999999998
+      ],
+      "textContrast": 1.4179033627684128,
+      "boundaryContrast": 5.237007951053863,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.392157 0.52651 0.819451)",
+      "effectiveBackground": [
+        100.000035,
+        134.26005,
+        208.96000500000002
+      ],
+      "textContrast": 1.8529459607555345,
+      "boundaryContrast": 4.0074407683300315,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(106, 142, 220)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.435581412911523,
+      "boundaryContrast": 4.435581412911523,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(106, 142, 220)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        35.480000000000004,
+        55.14,
+        98.74000000000001
+      ],
+      "textContrast": 3.6167614714540233,
+      "boundaryContrast": 3.6167614714540233,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(106, 142, 220)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        24,
+        41,
+        79
+      ],
+      "textContrast": 4.435581412911523,
+      "boundaryContrast": 4.435581412911523,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.602275 0.624706 0.422745)",
+      "effectiveBackground": [
+        153.580125,
+        159.30003,
+        107.79997499999999
+      ],
+      "textContrast": 1.4425312770075436,
+      "boundaryContrast": 6.932041639710025,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.51749 0.541255 0.318118)",
+      "effectiveBackground": [
+        131.95995,
+        138.020025,
+        81.12009
+      ],
+      "textContrast": 1.9015340832431984,
+      "boundaryContrast": 5.258747117351275,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.990118 0.594353 0.139451)",
+      "effectiveBackground": [
+        252.48009000000002,
+        151.560015,
+        35.560005
+      ],
+      "textContrast": 1.130928897797962,
+      "boundaryContrast": 8.842011994096902,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.941412 0.508078 0.00847059)",
+      "effectiveBackground": [
+        240.06006,
+        129.55989,
+        2.16000045
+      ],
+      "textContrast": 1.3845942540094827,
+      "boundaryContrast": 7.222106295648316,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.828235 0.513412 0.618353)",
+      "effectiveBackground": [
+        211.199925,
+        130.92006,
+        157.680015
+      ],
+      "textContrast": 1.45251111218409,
+      "boundaryContrast": 6.884413341089138,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.764471 0.419608 0.531922)",
+      "effectiveBackground": [
+        194.94010500000002,
+        107.00004,
+        135.64011
+      ],
+      "textContrast": 1.8886284800697244,
+      "boundaryContrast": 5.294681820339382,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.612392 0.746118 0.807216)",
+      "effectiveBackground": [
+        156.15996,
+        190.26009,
+        205.84008
+      ],
+      "textContrast": 1.0199293485581815,
+      "boundaryContrast": 9.80429369243701,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.528549 0.673961 0.738353)",
+      "effectiveBackground": [
+        134.779995,
+        171.86005500000002,
+        188.28001500000002
+      ],
+      "textContrast": 1.2616465112307231,
+      "boundaryContrast": 7.925902215705235,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.487608 0.611216 0.881412)",
+      "effectiveBackground": [
+        124.34004,
+        155.86007999999998,
+        224.76005999999998
+      ],
+      "textContrast": 1.4179033627684128,
+      "boundaryContrast": 7.052445985653272,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(172, 190, 195)",
+      "opacity": "1",
+      "background": "color(srgb 0.392157 0.52651 0.819451)",
+      "effectiveBackground": [
+        100.000035,
+        134.26005,
+        208.96000500000002
+      ],
+      "textContrast": 1.8529459607555345,
+      "boundaryContrast": 5.3966424766769885,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.324627 0.381725 0.244627)",
+      "effectiveBackground": [
+        82.779885,
+        97.33987499999999,
+        62.379885
+      ],
+      "textContrast": 1.9253008545883012,
+      "boundaryContrast": 7.184514782374089,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.398588 0.451137 0.280941)",
+      "effectiveBackground": [
+        101.63994,
+        115.039935,
+        71.639955
+      ],
+      "textContrast": 2.5036514587502263,
+      "boundaryContrast": 7.184514782374089,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "success",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(93, 107, 60)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        216.84,
+        222.23999999999998,
+        226.84
+      ],
+      "textContrast": 4.272962587880869,
+      "boundaryContrast": 4.272962587880869,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.577569 0.324392 0.0422745)",
+      "effectiveBackground": [
+        147.280095,
+        82.71996,
+        10.7799975
+      ],
+      "textContrast": 2.120721969877996,
+      "boundaryContrast": 7.140620233141978,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 2.7741857302388744,
+      "boundaryContrast": 7.140620233141978,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "warning",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 4.089811742551515,
+      "boundaryContrast": 4.509868487173885,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "warning",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        227.34,
+        219.85999999999999,
+        218.44
+      ],
+      "textContrast": 3.7594418058303893,
+      "boundaryContrast": 3.7594418058303893,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.48651 0.216471 0.332314)",
+      "effectiveBackground": [
+        124.06005,
+        55.200105,
+        84.74007
+      ],
+      "textContrast": 1.5473211354993708,
+      "boundaryContrast": 8.91816798693001,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.575529 0.27051 0.376784)",
+      "effectiveBackground": [
+        146.759895,
+        68.98004999999999,
+        96.07992
+      ],
+      "textContrast": 1.984709937021424,
+      "boundaryContrast": 8.91816798693001,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.230196 0.398588 0.514431)",
+      "effectiveBackground": [
+        58.699980000000004,
+        101.63994,
+        131.179905
+      ],
+      "textContrast": 2.0719583516880706,
+      "boundaryContrast": 6.9390258905597015,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 2.679599462422543,
+      "boundaryContrast": 6.9390258905597015,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "info",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 4.234176612833144,
+      "boundaryContrast": 4.747155795264413,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "info",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        212.92,
+        222.94,
+        238.04
+      ],
+      "textContrast": 3.9811500250881675,
+      "boundaryContrast": 3.9811500250881675,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.102039 0.233333 0.517804)",
+      "effectiveBackground": [
+        26.019945,
+        59.499915,
+        132.04002
+      ],
+      "textContrast": 1.2271643899175535,
+      "boundaryContrast": 10.30491588821303,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.155294 0.288941 0.579529)",
+      "effectiveBackground": [
+        39.59997,
+        73.679955,
+        147.77989499999998
+      ],
+      "textContrast": 1.5151971363747043,
+      "boundaryContrast": 10.30491588821303,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.324627 0.381725 0.244627)",
+      "effectiveBackground": [
+        82.779885,
+        97.33987499999999,
+        62.379885
+      ],
+      "textContrast": 1.9253008545883012,
+      "boundaryContrast": 6.655968343569087,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.398588 0.451137 0.280941)",
+      "effectiveBackground": [
+        101.63994,
+        115.039935,
+        71.639955
+      ],
+      "textContrast": 2.5036514587502263,
+      "boundaryContrast": 6.655968343569087,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "success",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(93, 107, 60)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        207.38,
+        215.35999999999999,
+        221.68
+      ],
+      "textContrast": 3.98273119864876,
+      "boundaryContrast": 3.98273119864876,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.577569 0.324392 0.0422745)",
+      "effectiveBackground": [
+        147.280095,
+        82.71996,
+        10.7799975
+      ],
+      "textContrast": 2.120721969877996,
+      "boundaryContrast": 6.6153030044342955,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 2.7741857302388744,
+      "boundaryContrast": 6.6153030044342955,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 4.089811742551515,
+      "boundaryContrast": 4.1780889584821805,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        226,
+        233,
+        248
+      ],
+      "textContrast": 4.1780889584821805,
+      "boundaryContrast": 4.1780889584821805,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        217.88,
+        212.98,
+        213.28
+      ],
+      "textContrast": 3.5025992089434927,
+      "boundaryContrast": 3.5025992089434927,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "warning",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        226,
+        233,
+        248
+      ],
+      "textContrast": 4.1780889584821805,
+      "boundaryContrast": 4.1780889584821805,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.48651 0.216471 0.332314)",
+      "effectiveBackground": [
+        124.06005,
+        55.200105,
+        84.74007
+      ],
+      "textContrast": 1.5473211354993708,
+      "boundaryContrast": 8.262081101045835,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.575529 0.27051 0.376784)",
+      "effectiveBackground": [
+        146.759895,
+        68.98004999999999,
+        96.07992
+      ],
+      "textContrast": 1.984709937021424,
+      "boundaryContrast": 8.262081101045835,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.230196 0.398588 0.514431)",
+      "effectiveBackground": [
+        58.699980000000004,
+        101.63994,
+        131.179905
+      ],
+      "textContrast": 2.0719583516880706,
+      "boundaryContrast": 6.428539443760423,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 2.679599462422543,
+      "boundaryContrast": 6.428539443760423,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 4.234176612833144,
+      "boundaryContrast": 4.397919644175248,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        226,
+        233,
+        248
+      ],
+      "textContrast": 4.397919644175248,
+      "boundaryContrast": 4.397919644175248,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        203.45999999999998,
+        216.06,
+        232.88
+      ],
+      "textContrast": 3.7122037753569024,
+      "boundaryContrast": 3.7122037753569024,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "info",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        226,
+        233,
+        248
+      ],
+      "textContrast": 4.397919644175248,
+      "boundaryContrast": 4.397919644175248,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.102039 0.233333 0.517804)",
+      "effectiveBackground": [
+        26.019945,
+        59.499915,
+        132.04002
+      ],
+      "textContrast": 1.2271643899175535,
+      "boundaryContrast": 9.546809494130246,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "card2",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.155294 0.288941 0.579529)",
+      "effectiveBackground": [
+        39.59997,
+        73.679955,
+        147.77989499999998
+      ],
+      "textContrast": 1.5151971363747043,
+      "boundaryContrast": 9.546809494130246,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.324627 0.381725 0.244627)",
+      "effectiveBackground": [
+        82.779885,
+        97.33987499999999,
+        62.379885
+      ],
+      "textContrast": 1.9253008545883012,
+      "boundaryContrast": 6.366943990229007,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "success",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.398588 0.451137 0.280941)",
+      "effectiveBackground": [
+        101.63994,
+        115.039935,
+        71.639955
+      ],
+      "textContrast": 2.5036514587502263,
+      "boundaryContrast": 6.366943990229007,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "success",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(93, 107, 60)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        202.22,
+        211.05999999999997,
+        221.68
+      ],
+      "textContrast": 3.8231714409536357,
+      "boundaryContrast": 3.8231714409536357,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.577569 0.324392 0.0422745)",
+      "effectiveBackground": [
+        147.280095,
+        82.71996,
+        10.7799975
+      ],
+      "textContrast": 2.120721969877996,
+      "boundaryContrast": 6.328044475800721,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 2.7741857302388744,
+      "boundaryContrast": 6.328044475800721,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.675059 0.388471 0.0597647)",
+      "effectiveBackground": [
+        172.140045,
+        99.06010500000001,
+        15.239998499999999
+      ],
+      "textContrast": 4.089811742551515,
+      "boundaryContrast": 3.9966623955705076,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        220,
+        228,
+        248
+      ],
+      "textContrast": 3.9966623955705076,
+      "boundaryContrast": 3.9966623955705076,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        212.72,
+        208.67999999999998,
+        213.28
+      ],
+      "textContrast": 3.3612514428875735,
+      "boundaryContrast": 3.3612514428875735,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "warning",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(168, 90, 0)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        220,
+        228,
+        248
+      ],
+      "textContrast": 3.9966623955705076,
+      "boundaryContrast": 3.9966623955705076,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.48651 0.216471 0.332314)",
+      "effectiveBackground": [
+        124.06005,
+        55.200105,
+        84.74007
+      ],
+      "textContrast": 1.5473211354993708,
+      "boundaryContrast": 7.903313972926864,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "danger",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.575529 0.27051 0.376784)",
+      "effectiveBackground": [
+        146.759895,
+        68.98004999999999,
+        96.07992
+      ],
+      "textContrast": 1.984709937021424,
+      "boundaryContrast": 7.903313972926864,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.230196 0.398588 0.514431)",
+      "effectiveBackground": [
+        58.699980000000004,
+        101.63994,
+        131.179905
+      ],
+      "textContrast": 2.0719583516880706,
+      "boundaryContrast": 6.149390812074211,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 2.679599462422543,
+      "boundaryContrast": 6.149390812074211,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "solid",
+      "state": "checked",
+      "color": "rgb(237, 241, 254)",
+      "opacity": "1",
+      "background": "color(srgb 0.295373 0.469569 0.575843)",
+      "effectiveBackground": [
+        75.320115,
+        119.740095,
+        146.839965
+      ],
+      "textContrast": 4.234176612833144,
+      "boundaryContrast": 4.206947299418304,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "outline",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        220,
+        228,
+        248
+      ],
+      "textContrast": 4.206947299418304,
+      "boundaryContrast": 4.206947299418304,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "alert-link",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        198.29999999999998,
+        211.76,
+        232.88
+      ],
+      "textContrast": 3.5647949283370286,
+      "boundaryContrast": 3.5647949283370286,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "info",
+      "kind": "text",
+      "state": "rest",
+      "color": "rgb(65, 112, 140)",
+      "opacity": "1",
+      "background": "rgba(0, 0, 0, 0)",
+      "effectiveBackground": [
+        220,
+        228,
+        248
+      ],
+      "textContrast": 4.206947299418304,
+      "boundaryContrast": 4.206947299418304,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "hover",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.102039 0.233333 0.517804)",
+      "effectiveBackground": [
+        26.019945,
+        59.499915,
+        132.04002
+      ],
+      "textContrast": 1.2271643899175535,
+      "boundaryContrast": 9.132255172644042,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    },
+    {
+      "name": "luminousblue-light",
+      "surface": "deep",
+      "role": "primary",
+      "kind": "solid",
+      "state": "active",
+      "color": "rgb(35, 50, 79)",
+      "opacity": "1",
+      "background": "color(srgb 0.155294 0.288941 0.579529)",
+      "effectiveBackground": [
+        39.59997,
+        73.679955,
+        147.77989499999998
+      ],
+      "textContrast": 1.5151971363747043,
+      "boundaryContrast": 9.132255172644042,
+      "required": 4.5,
+      "applicable": true,
+      "pass": false
+    }
+  ]
+}

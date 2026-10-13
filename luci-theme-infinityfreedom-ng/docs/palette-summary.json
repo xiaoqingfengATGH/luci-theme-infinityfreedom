@@ -1,0 +1,366 @@
+{
+  "baseline": "59651e6",
+  "sourceCensus": {
+    "bootstrap-dark.min.css": {
+      "before": {
+        "literalOccurrences": 962,
+        "distinctLiterals": 241,
+        "rules": 2776,
+        "selectors": 3379
+      },
+      "after": {
+        "literalOccurrences": 962,
+        "distinctLiterals": 241,
+        "rules": 2776,
+        "selectors": 3379
+      }
+    },
+    "app-dark.min.css": {
+      "before": {
+        "literalOccurrences": 791,
+        "distinctLiterals": 118,
+        "rules": 1132,
+        "selectors": 1503
+      },
+      "after": {
+        "literalOccurrences": 791,
+        "distinctLiterals": 118,
+        "rules": 1132,
+        "selectors": 1503
+      }
+    },
+    "ng.css": {
+      "before": {
+        "literalOccurrences": 291,
+        "distinctLiterals": 109,
+        "rules": 265,
+        "selectors": 469
+      },
+      "after": {
+        "literalOccurrences": 291,
+        "distinctLiterals": 109,
+        "rules": 265,
+        "selectors": 469
+      }
+    },
+    "palette-blackgold.min.css": {
+      "before": {
+        "literalOccurrences": 1907,
+        "distinctLiterals": 181,
+        "rules": 1176,
+        "selectors": 1956
+      },
+      "after": {
+        "literalOccurrences": 1954,
+        "distinctLiterals": 191,
+        "rules": 1199,
+        "selectors": 2052
+      }
+    },
+    "palette-canyon.min.css": {
+      "before": {
+        "literalOccurrences": 1907,
+        "distinctLiterals": 182,
+        "rules": 1176,
+        "selectors": 1956
+      },
+      "after": {
+        "literalOccurrences": 1954,
+        "distinctLiterals": 194,
+        "rules": 1199,
+        "selectors": 2052
+      }
+    },
+    "palette-luminousblue.min.css": {
+      "before": {
+        "literalOccurrences": 1907,
+        "distinctLiterals": 181,
+        "rules": 1176,
+        "selectors": 1956
+      },
+      "after": {
+        "literalOccurrences": 1954,
+        "distinctLiterals": 189,
+        "rules": 1199,
+        "selectors": 2052
+      }
+    },
+    "palette-luminousblue-light.min.css": {
+      "before": {
+        "literalOccurrences": 1947,
+        "distinctLiterals": 192,
+        "rules": 1206,
+        "selectors": 2013
+      },
+      "after": {
+        "literalOccurrences": 1995,
+        "distinctLiterals": 204,
+        "rules": 1230,
+        "selectors": 2110
+      }
+    }
+  },
+  "roles": {
+    "blackgold": {
+      "success": {
+        "fill": "#7fb86a",
+        "textInk": "#7fb86a",
+        "alertLinkInk": "#80b96b"
+      },
+      "warning": {
+        "fill": "#ffb84d",
+        "textInk": "#ffb84d",
+        "alertLinkInk": "#ffb84d"
+      },
+      "danger": {
+        "fill": "#e05d45",
+        "textInk": "#e37561",
+        "alertLinkInk": "#e58a78"
+      },
+      "info": {
+        "fill": "#7fb8d4",
+        "textInk": "#7fb8d4",
+        "alertLinkInk": "#7fb8d4"
+      },
+      "primary": {
+        "fill": "#A3814F",
+        "textInk": "#ae9064",
+        "alertLinkInk": "#b9a07b"
+      }
+    },
+    "canyon": {
+      "success": {
+        "fill": "#a2c49a",
+        "textInk": "#a2c49a",
+        "alertLinkInk": "#a2c49a"
+      },
+      "warning": {
+        "fill": "#ea832e",
+        "textInk": "#ea832e",
+        "alertLinkInk": "#eb9853"
+      },
+      "danger": {
+        "fill": "#d16174",
+        "textInk": "#d77e8b",
+        "alertLinkInk": "#dc949c"
+      },
+      "info": {
+        "fill": "#90acc1",
+        "textInk": "#90acc1",
+        "alertLinkInk": "#97b0c3"
+      },
+      "primary": {
+        "fill": "#c17453",
+        "textInk": "#c9896c",
+        "alertLinkInk": "#d19c83"
+      }
+    },
+    "luminousblue": {
+      "success": {
+        "fill": "#70d6b0",
+        "textInk": "#70d6b0",
+        "alertLinkInk": "#70d6b0"
+      },
+      "warning": {
+        "fill": "#ff8900",
+        "textInk": "#ff8900",
+        "alertLinkInk": "#ff8900"
+      },
+      "danger": {
+        "fill": "#cf718e",
+        "textInk": "#d17995",
+        "alertLinkInk": "#d58ba4"
+      },
+      "info": {
+        "fill": "#8fb6c6",
+        "textInk": "#8fb6c6",
+        "alertLinkInk": "#8fb6c6"
+      },
+      "primary": {
+        "fill": "#6a8edc",
+        "textInk": "#6e91dd",
+        "alertLinkInk": "#86a3e3"
+      }
+    },
+    "luminousblue-light": {
+      "success": {
+        "fill": "#16724f",
+        "textInk": "#16724f",
+        "alertLinkInk": "#16644f"
+      },
+      "warning": {
+        "fill": "#a85a00",
+        "textInk": "#965409",
+        "alertLinkInk": "#824c14"
+      },
+      "danger": {
+        "fill": "#8d3a56",
+        "textInk": "#8d3a56",
+        "alertLinkInk": "#8d3a56"
+      },
+      "info": {
+        "fill": "#41708c",
+        "textInk": "#3d6986",
+        "alertLinkInk": "#355d7c"
+      },
+      "primary": {
+        "fill": "#1b3f8d",
+        "textInk": "#1b3f8d",
+        "alertLinkInk": "#1b3f8d"
+      }
+    }
+  },
+  "audits": {
+    "palette-audit-before": {
+      "count": 792,
+      "failures": 184,
+      "applicable": 672,
+      "disabledBehaviorOnly": 120,
+      "failureKinds": {
+        "solid": 126,
+        "outline": 15,
+        "alert-link": 28,
+        "text": 15
+      },
+      "minimumTextContrastByPalette": {
+        "blackgold": 1.1301559806504395,
+        "canyon": 1.0385879090129653,
+        "luminousblue": 1.0199293485581815,
+        "luminousblue-light": 1.2271643899175535
+      }
+    },
+    "palette-audit-after": {
+      "count": 792,
+      "failures": 0,
+      "applicable": 672,
+      "disabledBehaviorOnly": 120,
+      "failureKinds": {},
+      "minimumTextContrastByPalette": {
+        "blackgold": 4.60215995294183,
+        "canyon": 4.520703758460107,
+        "luminousblue": 4.600161588694558,
+        "luminousblue-light": 4.509868487173885
+      }
+    },
+    "palette-interactions-before": {
+      "count": 840,
+      "failures": 183,
+      "applicable": 840,
+      "disabledBehaviorOnly": 0,
+      "failureKinds": {
+        "solid": 123,
+        "outline": 60
+      },
+      "minimumTextContrastByPalette": {
+        "blackgold": 1.4946641617676641,
+        "canyon": 1.072938303570382,
+        "luminousblue": 1.1274466241976684,
+        "luminousblue-light": 1.2722228816700625
+      }
+    },
+    "palette-interactions-after": {
+      "count": 840,
+      "failures": 0,
+      "applicable": 840,
+      "disabledBehaviorOnly": 0,
+      "failureKinds": {},
+      "minimumTextContrastByPalette": {
+        "blackgold": 4.60215995294183,
+        "canyon": 4.520703758460107,
+        "luminousblue": 4.600161588694558,
+        "luminousblue-light": 4.509868487173885
+      }
+    },
+    "palette-focus-before": {
+      "count": 240,
+      "failures": 102,
+      "applicable": 240,
+      "disabledBehaviorOnly": 0,
+      "failureKinds": {
+        "outline": 66,
+        "solid": 36
+      },
+      "minimumTextContrastByPalette": {
+        "blackgold": 1,
+        "canyon": 1,
+        "luminousblue": 1,
+        "luminousblue-light": 1
+      }
+    },
+    "palette-focus-after": {
+      "count": 240,
+      "failures": 0,
+      "applicable": 240,
+      "disabledBehaviorOnly": 0,
+      "failureKinds": {},
+      "minimumTextContrastByPalette": {
+        "blackgold": 4.60215995294183,
+        "canyon": 4.520703758460107,
+        "luminousblue": 4.600161588694558,
+        "luminousblue-light": 4.509868487173885
+      }
+    },
+    "palette-owners-before": {
+      "count": 104,
+      "failures": 0,
+      "applicable": 88,
+      "disabledBehaviorOnly": 16,
+      "failureKinds": {},
+      "minimumTextContrastByPalette": {
+        "blackgold": 6.681251713981523,
+        "canyon": 5.315852854379729,
+        "luminousblue": 6.531327481808357,
+        "luminousblue-light": 8.57638517332431
+      }
+    },
+    "palette-owners-after": {
+      "count": 104,
+      "failures": 0,
+      "applicable": 88,
+      "disabledBehaviorOnly": 16,
+      "failureKinds": {},
+      "minimumTextContrastByPalette": {
+        "blackgold": 6.681251713981523,
+        "canyon": 5.315852854379729,
+        "luminousblue": 6.531327481808357,
+        "luminousblue-light": 8.57638517332431
+      }
+    }
+  },
+  "sha256": {
+    "independent-targeted-after.json": "61e5de18863c28cb15b5c222a5ce5a8531dadbbbc961f4023e4df9135cae309d",
+    "palette-audit-after.json": "ecfab441c891ee45e50a5e7bd2d5f1d8b82f01791b9660103bd341cbeae2a4a3",
+    "palette-audit-before.json": "04f1c711ca40b5beaccd2edba1576f5e1698d1b476cf47a02f72302125f9d724",
+    "palette-focus-after.json": "ba18e51b25d0db6e50cf8ae310ed1b0520859ab9f06fa6656c7deaa206ae38cf",
+    "palette-focus-before.json": "48f55939279fb208ef033cb410299a020bd3af4927a16f65b7b20852155443bc",
+    "palette-focus-review-red.json": "655cf0c129c478dad3938079147871407b95f05dc79537aada1d73cea6d48e9c",
+    "palette-interactions-after.json": "a8a42bd1d7ed9bfada1ca3089456078d29ddacf84901ac7e4717bea0607f06df",
+    "palette-interactions-before.json": "85115c5a159ea6b5c3b5082603c6cf76130318efd6db5ea008c755a476c147a4",
+    "palette-owners-after.json": "86b537ef51c5e86fec7c10076eec32b1598e627197b48193b72e260940a1e072",
+    "palette-owners-before.json": "db05b95cd3136a7c760dab9460b2f0695454caced94ab03b11d769d093950440",
+    "htdocs/luci-static/infinityfreedom-ng/assets/css/palette-blackgold.min.css": "5e75d0eef2e7463fa45b0bb5becd910d3bc673e0ecab39ab92fc39d90fcca9e2",
+    "htdocs/luci-static/infinityfreedom-ng/assets/css/palette-canyon.min.css": "222694d708b64497893226f739f3d1aef16a71dc6de0fe368c0670160486f260",
+    "htdocs/luci-static/infinityfreedom-ng/assets/css/palette-luminousblue.min.css": "c2c814c4bd291b8130e397dd42ca5e80c7eec9a6f7015c223bb429c145b3b485",
+    "htdocs/luci-static/infinityfreedom-ng/assets/css/palette-luminousblue-light.min.css": "0e3c81f4568879fee1a2784758987a484cf41b3dec1e09c80c2aed9c69fad593"
+  },
+  "extendedSemanticTotals": {
+    "before": {
+      "count": 1872,
+      "failures": 469,
+      "applicable": 1752,
+      "disabledBehaviorOnly": 120
+    },
+    "after": {
+      "count": 1872,
+      "failures": 0,
+      "applicable": 1752,
+      "disabledBehaviorOnly": 120
+    }
+  },
+  "independentTargetedProbe": {
+    "count": 24,
+    "finalCount": 12,
+    "finalFailures": 0,
+    "scope": "Unmodified independent targeted.cjs; final source only, no remote deployment"
+  }
+}

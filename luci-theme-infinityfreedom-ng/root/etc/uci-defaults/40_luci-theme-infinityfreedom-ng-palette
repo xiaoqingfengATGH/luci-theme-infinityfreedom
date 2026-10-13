@@ -1,6 +1,10 @@
 #!/bin/sh
 
 # palette (color scheme) section for the theme; values: default | blackgold | canyon | luminousblue | luminousblue-light
+# Never alter live user configuration during upgrades or image construction.
+[ -n "$IPKG_INSTROOT" ] && exit 0
+[ "$PKG_UPGRADE" = "1" ] && exit 0
+
 uci -q get infinityfreedom-ng.palette >/dev/null 2>&1 || uci -q batch <<-EOF
 	set infinityfreedom-ng.palette=theme
 	set infinityfreedom-ng.palette.name='default'

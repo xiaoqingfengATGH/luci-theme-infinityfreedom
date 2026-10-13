@@ -8,7 +8,7 @@
 #   #edf1fe  ice white   - headings / bright text
 #   #1b3f8d  royal blue  - primary accent family
 #   #5b3644  wine        - danger family
-#   #a3a969  olive       - success (lifted for contrast)
+#   #a3a969  olive       - original board reference; success now approved emerald
 #   #ffb865  apricot     - warning (kept bright: dark text on it)
 #   #86a1a9  misty blue-gray - text / lines / borders / info family
 #
@@ -55,8 +55,8 @@ accent-soft: "#a3d0f2"       # bright sky: hover, highlight, glow
 accent-glow: "#a3d0f2"
 
 # ---- semantic states ----
-success: "#8c9254"           # board swatch 6 olive, lifted (dark text 5.83)
-success-deep: "#6d7141"
+success: "#70d6b0"           # approved emerald: global healthy state
+success-deep: "#459e7c"
 warning: "#ff8900"           # apricot bright, 8.10:1 dark text on it
 warning-deep: "#cc6e00"
 danger: "#cf718e"            # wine lifted to rose, 5.87:1 dark text on it

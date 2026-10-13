@@ -42,6 +42,7 @@ import re
 import sys
 import glob
 import os
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PKG = os.path.dirname(HERE)
@@ -52,7 +53,7 @@ BASE_FILES = [
     'bootstrap-dark.min.css',
     'app-dark.min.css',
     'ng.css',
-    'ngOverview.css',
+    'homestatus/overview.css',
 ]
 
 # ---------------------------------------------------------------- helpers --
@@ -79,6 +80,26 @@ def parse_tokens(path):
 def hex2rgb(h):
     h = h.lstrip('#')
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+def readable_state(tokens, tok, wash=0):
+    """Derive text ink, not a fill redesign; composite the actual soft rail."""
+    def luminance(rgb):
+        linear = [v / 255 / 12.92 if v / 255 <= .04045 else
+                  ((v / 255 + .055) / 1.055) ** 2.4 for v in rgb]
+        return sum(a * b for a, b in zip(linear, (.2126, .7152, .0722)))
+    def contrast(a, b):
+        a, b = luminance(a), luminance(b)
+        return (max(a, b) + .05) / (min(a, b) + .05)
+    hue, bright = hex2rgb(tokens[tok]), hex2rgb(tokens['text-bright'])
+    backgrounds = [tuple(h * wash + b * (1 - wash) for h, b in
+                         zip(hue, hex2rgb(tokens[key])))
+                   for key in ('bg-card', 'bg-card2', 'bg-deep')]
+    for step in range(101):
+        rgb = tuple(round(h * (1 - step / 100) + b * step / 100)
+                    for h, b in zip(hue, bright))
+        if min(contrast(rgb, bg) for bg in backgrounds) >= 4.6:
+            return '#' + ''.join(f'{v:02x}' for v in rgb)
+    return tokens['text-bright']
 
 # ------------------------------------------------------------ color maps --
 # old color -> token name. Per file where the same hex is used with
@@ -377,7 +398,16 @@ def map_hex(css_text, tokens):
 
 def generate_for_file(base_name, tokens):
     """Yield override rules for one baseline css file."""
-    css = open(os.path.join(CSS_DIR, base_name), encoding='utf-8').read()
+    if base_name == 'homestatus/overview.css':
+        source = os.environ.get('HOMESTATUS_OVERVIEW_CSS')
+        if not source:
+            raise SystemExit('Set HOMESTATUS_OVERVIEW_CSS to the application overview.css (absolute path).')
+        overview_css = Path(source)
+        if not overview_css.is_file():
+            raise SystemExit(f'HOMESTATUS_OVERVIEW_CSS is not a file: {overview_css}')
+        css = overview_css.read_text(encoding='utf-8')
+    else:
+        css = open(os.path.join(CSS_DIR, base_name), encoding='utf-8').read()
     out = []
     for m in re.finditer(r'([^{}]+)\{([^{}]*)\}', css):
         sel, body = m.group(1), m.group(2)
@@ -578,7 +608,7 @@ def format_state_fixups(tokens):
             f'body[data-if-palette] .alert-{st}{{'
             f'color:{BODY};background-color:{soft};border-color:{edge}}}')
         fix.append(
-            f'body[data-if-palette] .alert-{st} .alert-link{{color:{color}}}')
+            f'body[data-if-palette] .alert-{st} .alert-link{{color:{readable_state(tokens, tok, .14)}}}')
         # list-group state items
         fix.append(
             f'body[data-if-palette] .list-group-item-{st}{{'
@@ -605,6 +635,9 @@ def format_state_fixups(tokens):
     # ---- RAIL B: solid state fills ----
     for st, tok in states.items():
         color = tokens[tok]
+        ink = readable_state(tokens, tok)
+        fix.append(f'body[data-if-palette] .text-{st}{{color:{ink}!important}}')
+        fix.append(f'body[data-if-palette] .btn-outline-{st}{{color:{ink}}}')
         # pink / purple are chart/tag families: RAIL A owns their soft
         # surfaces, and their BUTTON classes are owned by the neutral
         # rail below (the violet family never belonged to this palette)
@@ -614,22 +647,29 @@ def format_state_fixups(tokens):
         if solid:
             base_sel = (
                 f'body[data-if-palette] .btn-{st},'
+                f'body[data-if-palette] .btn-{st}:focus,'
+                f'body[data-if-palette] .btn-check:focus+.btn-{st},'
                 f'body[data-if-palette] .btn-check:checked+.btn-{st},'
                 f'body[data-if-palette] .btn-{st}.active,'
                 f'body[data-if-palette] .show>.btn-{st}.dropdown-toggle,'
                 f'body[data-if-palette] .table > tr > td > .btn-{st}')
             fix.append(f'{base_sel}{{color:{ON};background-color:{color};border-color:{color}}}')
             # hover: lighten toward text-bright (keeps dark text >= 4.5:1)
-            hsel = f'body[data-if-palette] .btn-{st}:hover'
-            fix.append(f'{hsel}{{background-color:{color}}}')
+            hsel = (f'body[data-if-palette] .btn-{st}:hover,'
+                    f'body[data-if-palette] .btn-check:focus+.btn-{st}:hover')
+            fix.append(f'{hsel}{{color:{ON};background-color:{color}}}')
             fix.append(f'{hsel}{{background-color:color-mix(in srgb,{color} 86%,{BR})}}')
             # active/checked: darken slightly toward text-onaccent
             asel = (
                 f'body[data-if-palette] .btn-{st}:active,'
                 f'body[data-if-palette] .btn-{st}.active,'
+                f'body[data-if-palette] .btn-check:active+.btn-{st},'
+                f'body[data-if-palette] .btn-check:focus+.btn-{st}.active,'
+                f'body[data-if-palette] .btn-check:focus:checked+.btn-{st},'
                 f'body[data-if-palette] .btn-check:checked+.btn-{st}')
-            fix.append(f'{asel}{{background-color:{color}}}')
-            fix.append(f'{asel}{{background-color:color-mix(in srgb,{color} 94%,{ON})}}')
+            fix.append(f'{asel}{{color:{ON};background-color:{color}}}')
+            pressed = BR if tokens.get('is_light') else ON
+            fix.append(f'{asel}{{background-color:color-mix(in srgb,{color} 94%,{pressed})}}')
             # focus ring in the state color
             fix.append(
                 f'body[data-if-palette] .btn-{st}:focus,'
@@ -643,12 +683,19 @@ def format_state_fixups(tokens):
         # outline variants flip solid on hover/active: dark text there
         # too - kept for EVERY state (pink/purple included: the census
         # paints their outline-hover text and fill as the SAME token)
+        # Focus alone is rest, not pressed: defeat the census independently
+        # for foreground and background; retain its state-colored focus ring.
+        fix.append(f'body[data-if-palette] .btn-outline-{st}:focus'
+                   f'{{color:{ink};background-color:transparent}}')
         osel = (
             f'body[data-if-palette] .btn-outline-{st}:hover,'
+            f'body[data-if-palette] .btn-outline-{st}:active,'
+            f'body[data-if-palette] .btn-outline-{st}:active:focus,'
             f'body[data-if-palette] .btn-outline-{st}.active,'
             f'body[data-if-palette] .btn-check:checked+.btn-outline-{st},'
+            f'body[data-if-palette] .btn-outline-{st}.dropdown-toggle.show,'
             f'body[data-if-palette] .show>.btn-outline-{st}.dropdown-toggle')
-        fix.append(f'{osel}{{color:{ON}}}')
+        fix.append(f'{osel}{{color:{ON};background-color:{color};border-color:{color}}}')
         # badges / text-bg utilities ride the same bright fill
         fix.append(f'body[data-if-palette] .badge.bg-{st}{{color:{ON}}}')
         fix.append(f'body[data-if-palette] .text-bg-{st}{{color:{ON}}}')
@@ -731,17 +778,20 @@ def format_fixups(name, tokens):
     """Palette-aware rules that a pure color swap cannot express."""
     fix = []
     A, S = tokens['accent'], tokens['accent-soft']
-    # input placeholders: the baseline paints them #586877, which the color
-    # census maps to bg-card2 (a SURFACE color - 1.2:1 on the input fill,
-    # effectively invisible). Placeholders are hint TEXT: use the dim line
-    # gray instead (~2:1, matching the default theme's 1.8:1 subtlety).
+    # Component ink is separate from brand/fill. Derive against the actual
+    # 16% semantic wash on every supported card surface; never change tokens.
+    for cls, tok in (('g', 'success'), ('w', 'warning'), ('r', 'danger')):
+        fix.append(f'body[data-if-palette] .ngov .ngov-pill.{cls}'
+                   f'{{color:{readable_state(tokens, tok, .16)}}}')
+    # Search hints are enabled muted text, not disabled decoration. Include
+    # plain theme inputs and both dashboard toolbar/modal search families.
+    hint = readable_state(tokens, 'line-muted')
     fix.append(
-        f'body[data-if-palette] .form-control::placeholder'
-        f'{{color:{tokens["line-muted"]};opacity:1}}')
-    fix.append(
+        f'body[data-if-palette] .form-control::placeholder,'
         f'body[data-if-palette] .select2-container input::placeholder,'
-        f'body[data-if-palette] .selectize-input>input::placeholder'
-        f'{{color:{tokens["line-muted"]}}}')
+        f'body[data-if-palette] .selectize-input>input::placeholder,'
+        f'body[data-if-palette] .ngov .ngov-device-tools input::placeholder'
+        f'{{color:{hint};opacity:1}}')
     # overview drawer separators: ngOverview.css draws them with
     # --ngov-line: var(--bs-gray-300, ...), and the census maps that var to
     # bg-card2 (a SURFACE) - so the divider lands ~1.2:1 on the card it
@@ -997,6 +1047,13 @@ def format_fixups(name, tokens):
             f'body[data-if-palette] .profile-dropdown a[data-palette="{tokens["name"]}"]'
             f'{{border-left:3px solid rgb({asR},{asG},{asB})!important;'
             f'color:{tokens["text-bright"]}!important;background-color:rgba({asR},{asG},{asB},.08)!important}}')
+        # Blue pills use accent-soft as dark-surface ink in the census.
+        # On light cards retain the 16% brand wash, but use brand ink for
+        # the whole component family (including the body-level portal).
+        # Do not remap the pastel globally: it also paints decorative fills.
+        fix.append(
+            f'body[data-if-palette] .ngov-pill.b'
+            f'{{color:{tokens["accent"]}}}')
         # global link family rides the dark-on-ice rail
         fix.append(
             f'body[data-if-palette] a{{color:{tokens["accent"]}}}')

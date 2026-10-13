@@ -1,0 +1,3 @@
+# OpenWrt sources scripts without extensions during postinst; keep blobs and checkouts LF.
+luci-theme-infinityfreedom-ng/root/etc/uci-defaults/* text eol=lf
+luci-theme-infinityfreedom-ng/tests/*.py text eol=lf
