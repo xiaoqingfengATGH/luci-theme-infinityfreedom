@@ -29,7 +29,11 @@
 		return;
 
 	var current = picker.getAttribute('data-current') || 'default';
-	var baseUrl = document.querySelector('link#if-palette-stylesheet')?.href;
+	/* Server metadata exists even on default (no palette link), and is
+	 * retained across default -> palette switches for this page lifetime. */
+	var assets = document.querySelector('meta[name="if-palette-assets"]');
+	var paletteDir = assets?.getAttribute('content');
+	var paletteVersion = assets?.getAttribute('data-version');
 
 	function ensureLink(palette) {
 		var link = document.getElementById('if-palette-stylesheet');
@@ -45,11 +49,7 @@
 			link.type = 'text/css';
 			document.head.appendChild(link);
 		}
-		/* derive /assets/css/palette-<name>.min.css?v=1 from any theme asset url;
-		 * the ?v= mirrors the server-emitted <link> so both share one cache entry */
-		var base = baseUrl || (document.querySelector('link[id="app-dark-stylesheet"]')?.href || '');
-		var dir = base.replace(/[^/]*$/, '');
-		link.href = dir + 'palette-' + palette + '.min.css?v=13';
+		link.href = paletteDir + 'palette-' + palette + '.min.css?v=' + encodeURIComponent(paletteVersion);
 	}
 
 	function applyPalette(palette) {
