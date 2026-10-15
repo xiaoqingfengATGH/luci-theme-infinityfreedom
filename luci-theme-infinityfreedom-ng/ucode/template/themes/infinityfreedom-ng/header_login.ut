@@ -17,9 +17,9 @@
 	/* ---- palette (color scheme) selection --------------------------
 	   Mirrors header.ut: read once per request from
 	   /etc/config/infinityfreedom-ng (config theme 'palette'). */
-	const ng_palette_version = '24';
+	const ng_palette_version = '29';
 	const ng_palettes = {
-		default:   { label: '默认' },
+		default:   { label: '默认 · 灰蓝', meta: '#1c2630' },
 		blackgold: { label: '黑金', meta: '#121315' },
 		canyon:    { label: '峡谷', meta: '#1d0a0b' },
 		luminousblue: { label: '光耀蓝', meta: '#060d24' },
@@ -54,13 +54,13 @@
 		<meta name="full-screen" content="yes">
 		<meta name="x5-page-mode" content="app">
 		<meta name="browsermode" content="application">
-		<meta name="theme-color" content="{% if (ng_palette != 'default'): %}{{ ng_palettes[ng_palette].meta ?? '#121315' }}{% else %}#0099CC{% endif %}">
+		<meta name="theme-color" content="{{ ng_palettes[ng_palette].meta ?? '#1c2630' }}">
 		<meta name="if-palette-assets" content="{{ media }}/assets/css/" data-version="{{ ng_palette_version }}">
 		<meta name="msapplication-tap-highlight" content="no">
 		<meta name="msapplication-TileColor" content="#0099CC">
 
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{{ media }}/assets/images/favicon.ico">
+        <link rel="shortcut icon" href="{{ media }}/assets/images/favicon.ico?v=homelede-1">
 
 		<!-- App css -->
 		<link href="{{ media }}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
@@ -68,17 +68,17 @@
 
 		<link href="{{ media }}/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
 		<link href="{{ media }}/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
-{% if (ng_palette != 'default'): %}
+
 		<!-- palette override sheet, mirrors header.ut -->
 		<link href="{{ media }}/assets/css/palette-{{ ng_palette }}.min.css?v={{ ng_palette_version }}" rel="stylesheet" type="text/css" id="if-palette-stylesheet" />
-{% endif %}
+
 
 		<!-- icons -->
 		<link href="{{ media }}/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-		<link href="{{ media }}/assets/css/ng.css" rel="stylesheet" type="text/css" />
+		<link href="{{ media }}/assets/css/ng.css?v=24" rel="stylesheet" type="text/css" />
 
-		<link rel="shortcut icon" href="{{ media }}/favicon.ico">
+
 		{% if (node?.css): %}
 		<link rel="stylesheet" href="{{ resource }}/{{ node.css }}">
 		{% endif %}
@@ -91,8 +91,8 @@
 		<script src="{{ media }}/assets/js/vue.global.prod.js"></script>
 	</head>
 
-<body class="authentication-bg lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"{% if (ng_palette != 'default'): %}
-    data-if-palette="{{ ng_palette }}"{% endif %}
+<body class="authentication-bg lang_{{ dispatcher.lang }} {{ entityencode(striptags(dispatched?.title ?? ''), true) }} {% if (ctx.authsession): %}logged-in{% endif %}"
+    data-if-palette="{{ ng_palette }}"
     data-layout='{"mode": "dark", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "dark", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
 	<!-- App js-->
 	<script src="{{ media }}/assets/js/app.min.js"></script>

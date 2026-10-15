@@ -3,7 +3,7 @@
 Palette generator for luci-theme-infinityfreedom-ng.
 
 Reads token files from scripts/palettes/*.yaml and emits, for every
-non-default palette, a self-contained override stylesheet:
+palette (including default), a self-contained override stylesheet:
 
     htdocs/luci-static/infinityfreedom-ng/assets/css/palette-<name>.min.css
 
@@ -63,7 +63,7 @@ def parse_tokens(path):
     Inline comments (# after the value) are stripped; values containing #
     (hex colors) must be quoted."""
     tokens = {}
-    for line in open(path, encoding='utf-8'):
+    for line in Path(path).read_text(encoding='utf-8').splitlines():
         line = line.strip()
         if not line or line.startswith('#'):
             continue
@@ -823,6 +823,36 @@ def format_fixups(name, tokens):
     fix.append(
         f'body[data-if-palette]{{background-image:'
         f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
+    # Default slate keeps the legacy photograph as texture, not visual noise.
+    if name == 'default':
+        r, g, b = hex2rgb(tokens['bg-deep'])
+        fix.append(
+            f'body[data-if-palette]{{background-image:'
+            f'linear-gradient(rgba({r},{g},{b},.78),rgba({r},{g},{b},.78)),'
+            f'url(../images/backgrounds/{tokens["bg-image"]})!important}}')
+        fix.append('body[data-if-palette="default"]:not(.logged-out) .Line:after'
+                   '{background:linear-gradient(90deg,#506b83 0%,#72b5e8 32%,#82c4cf 62%,#506b83 100%)!important}')
+        # Default previously bypassed census: own the full soft-button fill
+        # transition and selected-navigation pair now, not foreground alone.
+        prefix = 'body[data-if-palette="default"] '
+        for role, token in (('primary', 'accent'), ('success', 'success'),
+                            ('info', 'info'), ('warning', 'warning'),
+                            ('danger', 'danger'), ('pink', 'pink'), ('purple', 'purple')):
+            ink = readable_state(tokens, token, .18)
+            sr, sg, sb = hex2rgb(tokens[token])
+            fix.append(f'{prefix}.btn-soft-{role},{prefix}.btn-soft-{role}:focus'
+                       f'{{color:{ink};background-color:rgba({sr},{sg},{sb},.18)}}')
+            selectors = ','.join(prefix + '.btn-soft-' + role + suffix
+                                 for suffix in (':hover', ':active', '.active',
+                                                '.show', ':active:focus'))
+            fix.append(f'{selectors}{{color:{tokens["text-onaccent"]};'
+                       f'background-color:{tokens[token]};border-color:{tokens[token]}}}')
+        selected = ('.nav-pills>li>a.active', '.nav-pills .nav-link.active',
+                    '.nav-pills .show>.nav-link', '.list-group-item.active')
+        selectors = ','.join(prefix + selector + suffix
+                             for selector in selected for suffix in ('', ':hover', ':focus'))
+        fix.append(f'{selectors}{{color:{tokens["text-onaccent"]};'
+                   f'background-color:{tokens["accent"]};border-color:{tokens["accent"]}}}')
     # page-title texts sit directly on the photo; bright highlights
     # behind the right-hand breadcrumb can crush light text to ~1:1.
     # Give each title group a frosted scrim chip and recolor the
@@ -1073,8 +1103,6 @@ def main():
     generated = {}
     for pf in palette_files:
         name = os.path.basename(pf).rsplit('.', 1)[0]
-        if name == 'default':
-            continue
         tokens = parse_tokens(pf)
         # every token must be a valid hex or filename
         for k, v in tokens.items():

@@ -28,13 +28,15 @@
 										<div class="auth-logo">
 											<a href="{{ dispatcher.build_url() }}" class="logo logo-dark text-center">
 												<span class="logo-lg">
-													<img src="{{ media }}/assets/images/Homelede2023-logo-light.png" alt="" height="44">
+													<img src="{{ media }}/assets/images/homelede-lockup-since2020-on-dark.png" class="ng-brand-on-dark" alt="Homelede — Since 2020" width="240" height="60">
+                                                <img src="{{ media }}/assets/images/homelede-lockup-since2020-on-light.png" class="ng-brand-on-light" alt="Homelede — Since 2020" width="240" height="60">
 												</span>
 											</a>
 
 											<a href="{{ dispatcher.build_url() }}" class="logo logo-light text-center">
 												<span class="logo-lg">
-													<img src="{{ media }}/assets/images/Homelede2023-logo-light.png" alt="" height="44">
+													<img src="{{ media }}/assets/images/homelede-lockup-since2020-on-dark.png" class="ng-brand-on-dark" alt="Homelede — Since 2020" width="240" height="60">
+                                                <img src="{{ media }}/assets/images/homelede-lockup-since2020-on-light.png" class="ng-brand-on-light" alt="Homelede — Since 2020" width="240" height="60">
 												</span>
 											</a>
 										</div>

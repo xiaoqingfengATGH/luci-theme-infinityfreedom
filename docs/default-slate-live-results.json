@@ -1,0 +1,744 @@
+[
+  {
+    "palette": "default",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(28, 38, 48)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(213, 223, 233)",
+      "bg": "rgb(28, 38, 48)"
+    },
+    "card": [
+      {
+        "color": "rgb(213, 223, 233)",
+        "bg": "rgba(41, 53, 65, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-default.min.css?v=28",
+    "success": "#68bc96",
+    "logo_wall": "rgb(41, 53, 65)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "default",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(28, 38, 48)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "default",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(41, 53, 65, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(41, 53, 65)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(213, 223, 233)",
+      "bg": "rgb(41, 53, 65)"
+    },
+    "card": [
+      {
+        "color": "rgb(213, 223, 233)",
+        "bg": "rgba(41, 53, 65, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "blackgold",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(32, 32, 37)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(32, 32, 37)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(18, 19, 21)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(217, 213, 221)",
+      "bg": "rgb(18, 19, 21)"
+    },
+    "card": [
+      {
+        "color": "rgb(217, 213, 221)",
+        "bg": "rgba(32, 32, 37, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-blackgold.min.css?v=28",
+    "success": "#7fb86a",
+    "logo_wall": "rgb(32, 32, 37)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "blackgold",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(32, 32, 37)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(32, 32, 37)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(18, 19, 21)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "blackgold",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(32, 32, 37, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(32, 32, 37)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(217, 213, 221)",
+      "bg": "rgb(32, 32, 37)"
+    },
+    "card": [
+      {
+        "color": "rgb(217, 213, 221)",
+        "bg": "rgba(32, 32, 37, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "canyon",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(52, 27, 29)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(52, 27, 29)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(29, 10, 11)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(204, 174, 164)",
+      "bg": "rgb(29, 10, 11)"
+    },
+    "card": [
+      {
+        "color": "rgb(204, 174, 164)",
+        "bg": "rgba(52, 27, 29, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-canyon.min.css?v=28",
+    "success": "#a2c49a",
+    "logo_wall": "rgb(52, 27, 29)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "canyon",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(52, 27, 29)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(52, 27, 29)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(29, 10, 11)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "canyon",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(52, 27, 29, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(52, 27, 29)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(204, 174, 164)",
+      "bg": "rgb(52, 27, 29)"
+    },
+    "card": [
+      {
+        "color": "rgb(204, 174, 164)",
+        "bg": "rgba(52, 27, 29, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "luminousblue",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(6, 13, 36)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(172, 190, 195)",
+      "bg": "rgb(6, 13, 36)"
+    },
+    "card": [
+      {
+        "color": "rgb(172, 190, 195)",
+        "bg": "rgba(16, 29, 64, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-luminousblue.min.css?v=28",
+    "success": "#70d6b0",
+    "logo_wall": "rgb(16, 29, 64)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "luminousblue",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(6, 13, 36)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "luminousblue",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(16, 29, 64, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(16, 29, 64)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(172, 190, 195)",
+      "bg": "rgb(16, 29, 64)"
+    },
+    "card": [
+      {
+        "color": "rgb(172, 190, 195)",
+        "bg": "rgba(16, 29, 64, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "luminousblue-light",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(237, 241, 254)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(220, 228, 248)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(35, 50, 79)",
+      "bg": "rgb(220, 228, 248)"
+    },
+    "card": [
+      {
+        "color": "rgb(35, 50, 79)",
+        "bg": "rgba(237, 241, 254, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-luminousblue-light.min.css?v=28",
+    "success": "#16724f",
+    "logo_wall": "rgb(16, 29, 64)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "luminousblue-light",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(237, 241, 254)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(220, 228, 248)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "luminousblue-light",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-light.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(237, 241, 254, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(237, 241, 254)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(35, 50, 79)",
+      "bg": "rgb(237, 241, 254)"
+    },
+    "card": [
+      {
+        "color": "rgb(35, 50, 79)",
+        "bg": "rgba(237, 241, 254, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "luminousblue",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(6, 13, 36)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(172, 190, 195)",
+      "bg": "rgb(6, 13, 36)"
+    },
+    "card": [
+      {
+        "color": "rgb(172, 190, 195)",
+        "bg": "rgba(16, 29, 64, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-luminousblue.min.css?v=28",
+    "success": "#70d6b0",
+    "logo_wall": "rgb(16, 29, 64)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "luminousblue",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(16, 29, 64)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(6, 13, 36)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "luminousblue",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(16, 29, 64, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(16, 29, 64)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(172, 190, 195)",
+      "bg": "rgb(16, 29, 64)"
+    },
+    "card": [
+      {
+        "color": "rgb(172, 190, 195)",
+        "bg": "rgba(16, 29, 64, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  },
+  {
+    "palette": "default",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 200,
+        "h": 50,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(28, 38, 48)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(213, 223, 233)",
+      "bg": "rgb(28, 38, 48)"
+    },
+    "card": [
+      {
+        "color": "rgb(213, 223, 233)",
+        "bg": "rgba(41, 53, 65, 0.9)"
+      }
+    ],
+    "controls": 0,
+    "fallback": false,
+    "case": "expanded",
+    "css": "/luci-static/infinityfreedom-ng/assets/css/palette-default.min.css?v=28",
+    "success": "#68bc96",
+    "logo_wall": "rgb(41, 53, 65)",
+    "menu_count": 8
+  },
+  {
+    "case": "condensed",
+    "palette": "default",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-symbol-on-dark.png",
+        "w": 40,
+        "h": 40,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "logo-box",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "navbar-custom",
+            "bg": "rgb(41, 53, 65)"
+          },
+          {
+            "tag": "lang_zh-cn 驾驶舱 logged-in",
+            "bg": "rgb(28, 38, 48)"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "palette": "default",
+    "title": "HOMELEDE - 驾驶舱 - LuCI",
+    "logos": [
+      {
+        "src": "/luci-static/infinityfreedom-ng/assets/images/homelede-lockup-since2020-on-dark.png",
+        "w": 240,
+        "h": 60,
+        "loaded": true,
+        "layers": [
+          {
+            "tag": "card shadow-none",
+            "bg": "rgba(41, 53, 65, 0.9)"
+          },
+          {
+            "tag": "authentication-bg lang_zh-cn 驾驶舱",
+            "bg": "rgb(41, 53, 65)"
+          }
+        ]
+      }
+    ],
+    "body": {
+      "color": "rgb(213, 223, 233)",
+      "bg": "rgb(41, 53, 65)"
+    },
+    "card": [
+      {
+        "color": "rgb(213, 223, 233)",
+        "bg": "rgba(41, 53, 65, 0.9)"
+      }
+    ],
+    "controls": 1,
+    "fallback": false,
+    "case": "login",
+    "toggle_and_reset": "PASS",
+    "native_reveal": "block"
+  }
+]

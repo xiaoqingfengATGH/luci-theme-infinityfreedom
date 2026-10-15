@@ -1,0 +1,12 @@
+{
+  "text": "\u8d1f\u8f7d",
+  "style": {
+    "color": "rgb(21, 35, 49)",
+    "bg": "rgb(114, 181, 232)",
+    "shadow": "none",
+    "focus": false,
+    "active": false,
+    "hover": false
+  },
+  "contrast": 7.21
+}

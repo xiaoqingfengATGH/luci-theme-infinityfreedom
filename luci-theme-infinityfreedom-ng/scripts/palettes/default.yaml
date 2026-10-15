@@ -1,60 +1,37 @@
-# Homelede InfinityFreedom-NG theme - default palette (baseline).
-#
-# This is the CURRENT color set of the theme, tokenized. It exists so the
-# generator has a single source of truth for every hardcoded color it must
-# be able to recolor, and so new palettes can diff against the baseline.
-#
-# Structure: role -> color. Roles map to hardcoded colors via the per-file
-# COLOR_MAP in gen-palettes.py (each map entry: old hardcoded color -> role).
-
+# Default Slate: derived from the legacy #348cd4 blue and cool slate neutrals.
+# Keep the legacy identity; separate readable text, fill ink and depth roles.
 name: default
-label: "默认（现有配色）"
-
-# ---- backgrounds (page depth scale) ----
-bg-deep: "#303841"           # body background base (under bg image)
-bg-base: "#323a46"           # section/table head backgrounds
-bg-card: "#36404a"           # card / panel surface
-bg-card2: "#424e5a"          # raised surface: table headers, inputs, hover rows
-bg-hover: "#3b4651"          # hover/active surface between card and card2
-
-# ---- lines & borders ----
-line: "#5d7186"              # primary border color
-line-muted: "#76838f"        # subtle dividers
-line-bright: "#8ea3b5"       # lifted line: neutral button borders
-
-# ---- text ----
-text-body: "#94a0ad"         # default body text
-text-dim: "#8c98a5"          # secondary text
-text-bright: "#cedeef"       # headings, strong text
-text-onaccent: "#f3f7f9"     # text on accent surfaces
-
-# ---- accent (brand color) ----
-accent: "#348cd4"            # primary accent (buttons, active menu, links)
-accent-strong: "#21649b"     # pressed / active buttons
-accent-soft: "#94b7dc"       # soft accent: hovers, subtle fills
-accent-glow: "#82add6"       # glow / highlight variant
-
-# ---- semantic states (calibrated per palette) ----
-success: "#78c350"
-success-deep: "#487530"
-warning: "#ff9800"
-warning-deep: "#b36a00"
-danger: "#f7531f"
-danger-deep: "#943213"
-info: "#45bbe0"
-info-deep: "#297086"
-pink: "#f06292"
-purple: "#8892d6"
-
-# ---- special surfaces ----
-scrollbar: "#3b4651"
-loading-cover: "#37424c"
-progress-track: "#424e5a"
-badge-danger-bg: "#f7531f"
-
-# page background image (under /assets/images/backgrounds/); gray-scale
-# canyon photo that reads neutral under both palettes
+label: "默认 · 灰蓝"
+bg-deep: "#1c2630"
+bg-base: "#23303b"
+bg-card: "#293541"
+bg-card2: "#344352"
+bg-hover: "#30404e"
+line: "#73889c"
+line-muted: "#506171"
+line-bright: "#8ba0b4"
+text-body: "#d5dfe9"
+text-dim: "#b2c0ce"
+text-bright: "#f1f5f9"
+text-onaccent: "#152331"
+# Lift the original blue for readable links and dark-ink button fills.
+accent: "#72b5e8"
+accent-strong: "#5ba1d4"
+accent-soft: "#acd5f3"
+accent-glow: "#91c7ee"
+success: "#68bc96"
+success-deep: "#56ad83"
+warning: "#e6ad58"
+warning-deep: "#d7983e"
+danger: "#e48388"
+danger-deep: "#d36d70"
+info: "#72bdd3"
+info-deep: "#54abc4"
+pink: "#d69bb7"
+purple: "#aea5dd"
+scrollbar: "#506171"
+loading-cover: "#1c2630"
+progress-track: "#344352"
+badge-danger-bg: "#e48388"
 bg-image: "12.jpg"
-
-# mobile browser chrome color (meta theme-color)
-meta-theme-color: "#303841"
+meta-theme-color: "#1c2630"

@@ -29,7 +29,7 @@
 		return;
 
 	var current = picker.getAttribute('data-current') || 'default';
-	/* Server metadata exists even on default (no palette link), and is
+	/* Server metadata exists for every palette, including default, and is
 	 * retained across default -> palette switches for this page lifetime. */
 	var assets = document.querySelector('meta[name="if-palette-assets"]');
 	var paletteDir = assets?.getAttribute('content');
@@ -37,11 +37,6 @@
 
 	function ensureLink(palette) {
 		var link = document.getElementById('if-palette-stylesheet');
-		if (palette == 'default') {
-			if (link)
-				link.remove();
-			return;
-		}
 		if (!link) {
 			link = document.createElement('link');
 			link.id = 'if-palette-stylesheet';
@@ -53,10 +48,7 @@
 	}
 
 	function applyPalette(palette) {
-		if (palette == 'default')
-			document.body.removeAttribute('data-if-palette');
-		else
-			document.body.setAttribute('data-if-palette', palette);
+		document.body.setAttribute('data-if-palette', palette);
 		ensureLink(palette);
 		current = palette;
 		picker.setAttribute('data-current', palette);
@@ -75,10 +67,8 @@
 		/* meta theme-color follows the palette (mobile browser chrome) */
 		var meta = document.querySelector('meta[name="theme-color"]');
 		if (meta) {
-			if (palette == 'default')
-				meta.setAttribute('content', '#0099CC');
-			else
-				meta.setAttribute('content', getComputedStyle(document.body).backgroundColor || '#121315');
+			var option = picker.querySelector('[data-palette="' + palette + '"]');
+			meta.setAttribute('content', option?.getAttribute('data-theme-color') || '#1c2630');
 		}
 	}
 

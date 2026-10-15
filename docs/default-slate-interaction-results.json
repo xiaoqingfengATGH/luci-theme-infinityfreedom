@@ -1,0 +1,482 @@
+[
+  {
+    "role": "primary",
+    "rest": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 181, 232)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.21
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.516784 0.744941 0.919137)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 8.0
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.425176 0.675451 0.866745)",
+      "shadow": "rgba(145, 199, 238, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 6.54
+    },
+    "release_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 181, 232)",
+      "shadow": "rgba(114, 181, 232, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.21
+    },
+    "keyboard_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 181, 232)",
+      "shadow": "rgba(114, 181, 232, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.21
+    }
+  },
+  {
+    "role": "outline-primary",
+    "rest": {
+      "color": "rgb(115, 182, 232)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 181, 232)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 7.21
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 181, 232)",
+      "shadow": "rgba(114, 181, 232, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 7.21
+    },
+    "release_focus": {
+      "color": "rgb(115, 182, 232)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(114, 181, 232, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    },
+    "keyboard_focus": {
+      "color": "rgb(115, 182, 232)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(114, 181, 232, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    }
+  },
+  {
+    "role": "success",
+    "rest": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(104, 188, 150)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.483059 0.768549 0.642588)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 7.8
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.388314 0.701255 0.564471)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 6.35
+    },
+    "release_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(104, 188, 150)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    },
+    "keyboard_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(104, 188, 150)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.0
+    }
+  },
+  {
+    "role": "outline-success",
+    "rest": {
+      "color": "rgb(111, 191, 155)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(104, 188, 150)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 7.0
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(104, 188, 150)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 7.0
+    },
+    "release_focus": {
+      "color": "rgb(111, 191, 155)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    },
+    "keyboard_focus": {
+      "color": "rgb(111, 191, 155)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(104, 188, 150, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    }
+  },
+  {
+    "role": "warning",
+    "rest": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(230, 173, 88)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.96
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.908 0.717961 0.43349)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 8.68
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.852784 0.645961 0.335922)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 7.18
+    },
+    "release_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(230, 173, 88)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.96
+    },
+    "keyboard_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(230, 173, 88)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.96
+    }
+  },
+  {
+    "role": "outline-warning",
+    "rest": {
+      "color": "rgb(230, 173, 88)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.66
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(230, 173, 88)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 7.96
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(230, 173, 88)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 7.96
+    },
+    "release_focus": {
+      "color": "rgb(230, 173, 88)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.66
+    },
+    "keyboard_focus": {
+      "color": "rgb(230, 173, 88)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(230, 173, 88, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.66
+    }
+  },
+  {
+    "role": "danger",
+    "rest": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(228, 131, 136)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 6.0
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.901255 0.576314 0.595373)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 6.82
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.845412 0.491137 0.512863)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 5.45
+    },
+    "release_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(228, 131, 136)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 6.0
+    },
+    "keyboard_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(228, 131, 136)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 6.0
+    }
+  },
+  {
+    "role": "outline-danger",
+    "rest": {
+      "color": "rgb(231, 155, 160)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(228, 131, 136)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 6.0
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(228, 131, 136)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 6.0
+    },
+    "release_focus": {
+      "color": "rgb(231, 155, 160)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    },
+    "keyboard_focus": {
+      "color": "rgb(231, 155, 160)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(228, 131, 136, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.01
+    }
+  },
+  {
+    "role": "info",
+    "rest": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 189, 211)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.55
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.516784 0.771922 0.848314)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 8.31
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "color(srgb 0.425176 0.704941 0.789333)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 6.83
+    },
+    "release_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 189, 211)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.55
+    },
+    "keyboard_focus": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 189, 211)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.55
+    }
+  },
+  {
+    "role": "outline-info",
+    "rest": {
+      "color": "rgb(114, 189, 211)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": false,
+      "contrast": 7.26
+    },
+    "hover": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 189, 211)",
+      "shadow": "none",
+      "focus": false,
+      "active": false,
+      "hover": true,
+      "contrast": 7.55
+    },
+    "pressed": {
+      "color": "rgb(21, 35, 49)",
+      "bg": "rgb(114, 189, 211)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": true,
+      "hover": true,
+      "contrast": 7.55
+    },
+    "release_focus": {
+      "color": "rgb(114, 189, 211)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.26
+    },
+    "keyboard_focus": {
+      "color": "rgb(114, 189, 211)",
+      "bg": "rgba(0, 0, 0, 0)",
+      "shadow": "rgba(114, 189, 211, 0.5) 0px 0px 0px 2.4px",
+      "focus": true,
+      "active": false,
+      "hover": false,
+      "contrast": 7.26
+    }
+  }
+]
