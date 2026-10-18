@@ -902,7 +902,7 @@
 {% for (let pname, pdef in ng_palettes): %}
 	{% let pactive = (pname == ng_palette); %}
                                 <a href="#" class="dropdown-item notify-item if-palette-option" data-palette="{{ pname }}" data-theme-color="{{ pdef.meta }}">
-                                    <i class="mdi {% if (pactive): %}mdi-radiobox-marked{% else %}mdi-radiobox-blank{% endif %}"></i>
+                                    <i class="{{ pactive ? 'mdi mdi-radiobox-marked' : 'mdi mdi-radiobox-blank' }}"></i>
                                     <span>{{ pdef.label ?? pname }}</span>
                                 </a>
 {% endfor %}
