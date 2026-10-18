@@ -17,7 +17,7 @@
 	/* ---- palette (color scheme) selection --------------------------
 	   Mirrors header.ut: read once per request from
 	   /etc/config/infinityfreedom-ng (config theme 'palette'). */
-	const ng_palette_version = '29';
+	const ng_palette_version = '30';
 	const ng_palettes = {
 		default:   { label: '默认 · 灰蓝', meta: '#1c2630' },
 		blackgold: { label: '黑金', meta: '#121315' },

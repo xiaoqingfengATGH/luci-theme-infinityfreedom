@@ -1084,6 +1084,16 @@ def format_fixups(name, tokens):
         fix.append(
             f'body[data-if-palette] .ngov-pill.b'
             f'{{color:{tokens["accent"]}}}')
+        # PushBot custom controls need dark ink on dawn's light surfaces.
+        fix.append(
+            f'body[data-if-palette] .pushbot-body .pushbot-choice-button.is-on,'
+            f'body[data-if-palette] .pushbot-body .pushbot-card-subtitle a'
+            f'{{color:{tokens["accent"]}}}')
+        fix.append(
+            f'body[data-if-palette] .pushbot-body .pushbot-toggle-button.is-off,'
+            f'body[data-if-palette] .pushbot-body #pushbot_status_badge.is-stopped,'
+            f'body[data-if-palette] .pushbot-body .pushbot-status-badge.is-stopped'
+            f'{{color:{tokens["danger"]}}}')
         # global link family rides the dark-on-ice rail
         fix.append(
             f'body[data-if-palette] a{{color:{tokens["accent"]}}}')
