@@ -125,6 +125,7 @@ config menuorder
 	list order 'acme'          # ACME 证书
 #	list order 'homeredirect'  # 端口转发
 #	list order 'nlbw'          # 带宽监控
+	list order 'homepublish'   # HomePublish
 	list order 'hometunnel'    # HomeTunnel
 #	list order 'wol'           # 网络唤醒
 #	list order 'ddns-go'       # DDNS-Go
@@ -132,6 +133,8 @@ config menuorder
 #	list order 'ksmbd'         # 网络共享
 #	list order 'upnp'          # UPnP IGD 和 PCP
 	list order 'vlmcsd'        # Vlmcsd KMS 服务器
+	list order 'pushbot'       # 全能推送
+	list order 'homekms'       # HomeKMS
 
 config menurename
  	option path 'admin/services/dockerman'
