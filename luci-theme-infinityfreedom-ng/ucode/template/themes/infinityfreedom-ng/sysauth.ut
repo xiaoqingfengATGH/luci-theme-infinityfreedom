@@ -18,7 +18,7 @@
 							<div class="card shadow-none">
 								{% if (fuser): %}
 								<div class="alert alert-warning bg-warning text-white border-0 alert-dismissible fade show" role="alert">
-									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Close') }}"></button>
 									{{ _('Invalid username and/or password! Please try again.') }}
 								</div>
 								{% endif %}
@@ -40,28 +40,28 @@
 												</span>
 											</a>
 										</div>
-										<p class="text-muted mb-4 mt-3">{{ _('请输入用户名密码登录到您的路由器') }}</p>
+										<p class="text-muted mb-4 mt-3">{{ _('Please enter your username and password.') }}</p>
 									</div>
 
 									<form action="{{ entityencode(http.getenv('REQUEST_URI'), true) }}">
 
 										<div class="mb-3">
 											<label for="luci_username" class="form-label">{{ _('Username') }}</label>
-											<input class="form-control form-control-login" required="true" placeholder="Enter your username" type="text" name="luci_username" value="{{ entityencode(duser, true) }}">
+											<input class="form-control form-control-login" required="true" placeholder="{{ _('Enter your username') }}" type="text" name="luci_username" value="{{ entityencode(duser, true) }}">
 										</div>
 
 										<div class="mb-3">
 											<label for="password" class="form-label">{{ _('Password') }}</label>
 											<div class="input-group input-group-merge">
-												<input type="password" id="password" class="form-control" placeholder="Enter your password" name="luci_password">
-												<button type="button" id="login-password-toggle" class="input-group-text" aria-controls="password" aria-label="{{ _('Password') }}" aria-pressed="false">
+												<input type="password" id="password" class="form-control" placeholder="{{ _('Enter your password') }}" name="luci_password">
+												<button type="button" id="login-password-toggle" class="input-group-text" aria-controls="password" aria-label="{{ _('Show password') }}" data-show-label="{{ _('Show password') }}" data-hide-label="{{ _('Hide password') }}" aria-pressed="false">
 													<span class="password-eye" aria-hidden="true"></span>
 												</button>
 											</div>
 										</div>
 
 										<div class="text-center d-grid button-list">
-											<button class="btn btn-primary" type="submit"> {{ _('Login') }} </button>
+											<button class="btn btn-primary" type="submit"> {{ _('Log in') }} </button>
 											<button class="btn btn-light waves-effect" type="reset"> {{ _('Reset') }} </button>
 										</div>
 

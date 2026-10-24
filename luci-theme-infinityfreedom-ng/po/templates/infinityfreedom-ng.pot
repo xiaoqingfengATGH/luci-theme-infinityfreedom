@@ -1,0 +1,78 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-theme-infinityfreedom-ng\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Automatic refresh"
+msgstr ""
+
+msgid "Black Gold"
+msgstr ""
+
+msgid "Canyon"
+msgstr ""
+
+msgid "Changelog"
+msgstr ""
+
+msgid "Chat group"
+msgstr ""
+
+msgid "Click to expand the page description."
+msgstr ""
+
+msgid "Color scheme"
+msgstr ""
+
+msgid "Community discussions"
+msgstr ""
+
+msgid "Default · Gray Blue"
+msgstr ""
+
+msgid "Enter your password"
+msgstr ""
+
+msgid "Show password"
+msgstr ""
+
+msgid "Hide password"
+msgstr ""
+
+msgid ""
+"There is no password set on this router. Please configure a root password to"
+" protect the web interface and enable SSH."
+msgstr ""
+
+msgid "Enter your username"
+msgstr ""
+
+msgid "Firmware downloads"
+msgstr ""
+
+msgid "Firmware resources"
+msgstr ""
+
+msgid "Firmware source code"
+msgstr ""
+
+msgid "Google Drive"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Luminous Blue"
+msgstr ""
+
+msgid "Luminous Blue · Dawn"
+msgstr ""
+
+msgid "There are unsaved configuration changes, click to view"
+msgstr ""

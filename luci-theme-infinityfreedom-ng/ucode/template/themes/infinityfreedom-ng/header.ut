@@ -31,11 +31,11 @@
 	   body[data-if-palette] anchors win the cascade. */
 	const ng_palette_version = '30';
 	const ng_palettes = {
-		default:   { label: '默认 · 灰蓝', meta: '#1c2630' },
-		blackgold: { label: '黑金', meta: '#121315' },
-		canyon:    { label: '峡谷', meta: '#1d0a0b' },
-		luminousblue: { label: '光耀蓝', meta: '#060d24' },
-		'luminousblue-light': { label: '光耀蓝·晨曦', meta: '#dce4f8' },
+		default:   { label: _('Default · Gray Blue'), meta: '#1c2630' },
+		blackgold: { label: _('Black Gold'), meta: '#121315' },
+		canyon:    { label: _('Canyon'), meta: '#1d0a0b' },
+		luminousblue: { label: _('Luminous Blue'), meta: '#060d24' },
+		'luminousblue-light': { label: _('Luminous Blue · Dawn'), meta: '#dce4f8' },
 	};
 	let ng_palette = uci.get('infinityfreedom-ng', 'palette', 'name') ?? 'default';
 	if (!(ng_palette in ng_palettes))
@@ -897,7 +897,7 @@
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
-                            <h6 class="dropdown-header">{{ _('配色') }}</h6>
+                            <h6 class="dropdown-header">{{ _('Color scheme') }}</h6>
                             <div id="if-palette-picker" data-current="{{ ng_palette }}">
 {% for (let pname, pdef in ng_palettes): %}
 	{% let pactive = (pname == ng_palette); %}
@@ -971,14 +971,14 @@
                     <li class="dropdown d-none d-xl-block">
                         <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#"
                             role="button" aria-haspopup="false" aria-expanded="false">
-                            {{ _('固件资源') }}
+                            {{ _('Firmware resources') }}
                             <i class="mdi mdi-chevron-down"></i>
                         </a>
                         <div class="dropdown-menu">
                             <!-- item-->
                             <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki/HomeLede%E7%89%88%E6%9C%AC%E5%8F%91%E5%B8%83" target="_blank" class="dropdown-item">
                                 <i class="fe-briefcase me-1"></i>
-                                <span>{{ _('版本下载') }}</span>
+                                <span>{{ _('Firmware downloads') }}</span>
                             </a>
 
                             <!-- item-->
@@ -990,13 +990,13 @@
                             <!-- item-->
                             <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki/HomeLede-%E9%87%8A%E6%94%BE%E8%AF%B4%E6%98%8E" class="dropdown-item" target="_blank">
                                 <i class="fe-bar-chart-line- me-1"></i>
-                                <span>{{ _('更新记录') }}</span>
+                                <span>{{ _('Changelog') }}</span>
                             </a>
 
                             <!-- item-->
                             <a href="https://drive.google.com/open?id=1iUDsgh1y5qouP48V61aTsswi3IekscKk" class="dropdown-item" target="_blank">
                                 <i class="fe-settings me-1"></i>
-                                <span>{{ _('谷歌网盘') }}</span>
+                                <span>{{ _('Google Drive') }}</span>
                             </a>
 
                             <div class="dropdown-divider"></div>
@@ -1004,7 +1004,7 @@
                             <!-- item-->
                             <a href="https://t.me/t_homelede" class="dropdown-item" target="_blank">
                                 <i class="fe-headphones me-1"></i>
-                                <span>{{ _('交流群') }}</span>
+                                <span>{{ _('Chat group') }}</span>
                             </a>
 
                         </div>
@@ -1181,7 +1181,7 @@ if (typeof(topMenu) != "undefined") {
                                     <img src="{{ media }}/assets/images/homelede-symbol-on-light.png" alt="Homelede" height="12" class="me-1 ng-brand-on-light">
 									<strong class="me-auto">PAGETITLE</strong>
 									<small></small>
-									<button type="button" class="btn-close ms-2" data-bs-dismiss="toast" aria-label="Close"></button>
+									<button type="button" class="btn-close ms-2" data-bs-dismiss="toast" aria-label="{{ _('Close') }}"></button>
 								</div>
 								<div class="toast-body">
 									PAGEDESC
@@ -1190,7 +1190,7 @@ if (typeof(topMenu) != "undefined") {
 							<div class="page-title-box">
 								<div>
 									<span id="homelede_page_title" class="page-title mx-1" style="font-size:1.25rem">{{ _('Loading...') }}</span>
-									<span id="homelede_page_desc"></span>
+									<span id="homelede_page_desc" data-description-title="{{ _('Click to expand the page description.') }}"></span>
 								</div>
 								<div>
 									<ol id="homelede_breadcrumb" class="breadcrumb m-0">

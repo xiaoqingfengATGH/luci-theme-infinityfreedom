@@ -1,0 +1,77 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: luci-theme-infinityfreedom-ng\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_Hans\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Automatic refresh"
+msgstr "自动刷新"
+
+msgid "Black Gold"
+msgstr "黑金"
+
+msgid "Canyon"
+msgstr "峡谷"
+
+msgid "Changelog"
+msgstr "更新记录"
+
+msgid "Chat group"
+msgstr "交流群"
+
+msgid "Click to expand the page description."
+msgstr "点击放大页面描述。"
+
+msgid "Color scheme"
+msgstr "配色"
+
+msgid "Community discussions"
+msgstr "交流讨论"
+
+msgid "Default · Gray Blue"
+msgstr "默认 · 灰蓝"
+
+msgid "Enter your password"
+msgstr "请输入密码"
+
+msgid "Show password"
+msgstr "显示密码"
+
+msgid "Hide password"
+msgstr "隐藏密码"
+
+msgid "There is no password set on this router. Please configure a root password to protect the web interface and enable SSH."
+msgstr "此路由器尚未设置密码。请设置 root 密码，以保护 Web 管理界面并启用 SSH。"
+
+msgid "Enter your username"
+msgstr "请输入用户名"
+
+msgid "Firmware downloads"
+msgstr "版本下载"
+
+msgid "Firmware resources"
+msgstr "固件资源"
+
+msgid "Firmware source code"
+msgstr "固件源码"
+
+msgid "Google Drive"
+msgstr "谷歌网盘"
+
+msgid "Loading..."
+msgstr "加载中…"
+
+msgid "Logout"
+msgstr "退出登录"
+
+msgid "Luminous Blue"
+msgstr "光耀蓝"
+
+msgid "Luminous Blue · Dawn"
+msgstr "光耀蓝·晨曦"
+
+msgid "There are unsaved configuration changes, click to view"
+msgstr "有未保存的配置更改，点击查看"

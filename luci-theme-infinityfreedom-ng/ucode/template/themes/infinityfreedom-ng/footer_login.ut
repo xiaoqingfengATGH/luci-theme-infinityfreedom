@@ -28,6 +28,7 @@
 			input.type = visible ? 'text' : 'password';
 			toggle.classList.toggle('show-password', visible);
 			toggle.setAttribute('aria-pressed', String(visible));
+			toggle.setAttribute('aria-label', toggle.getAttribute(visible ? 'data-hide-label' : 'data-show-label'));
 		}
 
 		toggle.addEventListener('click', function() {

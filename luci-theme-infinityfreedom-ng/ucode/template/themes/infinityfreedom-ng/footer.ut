@@ -13,7 +13,7 @@
                 </div><!-- container-fluid -->
 
        </div> <!-- content -->
-	   <script src="{{ media }}/assets/js/ngRender.js"></script>
+	   <script src="{{ media }}/assets/js/ngRender.js?v=2"></script>
 {% if (ctx.path?.[1] == 'status' && ctx.path?.[2] == 'overview'): %}
 	   <!-- status-first overview relayout; only meaningful on the overview page -->
 	   <link rel="stylesheet" type="text/css" href="{{ resource }}/view/homestatus/overview.css?v=6" />
@@ -29,8 +29,8 @@
                     </div>
                     <div class="col-md-3">
                         <div class="text-md-end footer-links d-none d-sm-block">
-                            <a href="https://github.com/xiaoqingfengATGH/HomeLede" target="_blank">{{ _('固件源码') }}</a>
-                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki" target="_blank">{{ _('交流讨论') }}</a>
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede" target="_blank">{{ _('Firmware source code') }}</a>
+                            <a href="https://github.com/xiaoqingfengATGH/HomeLede/wiki" target="_blank">{{ _('Community discussions') }}</a>
                         </div>
                     </div>
                 </div>
@@ -493,7 +493,7 @@
 			let descr = jQuery("div.cbi-map-descr");
 			if (descr.length > 0) {
 				let d = jQuery(descr[0]);
-				jQuery("#homelede_page_desc").html(d.html()).attr("title", "点击放大页面描述。")
+				jQuery("#homelede_page_desc").html(d.html()).attr("title", jQuery("#homelede_page_desc").attr("data-description-title"))
 					.off('click.ngPageDesc').on('click.ngPageDesc', function() {
 						/* Use the toast lifecycle so data-bs-dismiss also hides it.
 						   jQuery.fadeIn() leaves display:block behind after close. */
